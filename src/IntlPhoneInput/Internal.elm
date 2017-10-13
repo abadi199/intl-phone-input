@@ -4,6 +4,7 @@ module IntlPhoneInput.Internal
         , State(..)
         , StateData
         , initialState
+        , toggleCountryPickerState
         )
 
 
@@ -23,3 +24,13 @@ type CountryPickerState
 initialState : State
 initialState =
     State { countryPickerState = CountryPickerClosed }
+
+
+toggleCountryPickerState : StateData -> StateData
+toggleCountryPickerState state =
+    case state.countryPickerState of
+        CountryPickerClosed ->
+            { state | countryPickerState = CountryPickerOpened }
+
+        CountryPickerOpened ->
+            { state | countryPickerState = CountryPickerClosed }

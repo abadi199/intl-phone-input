@@ -13,19 +13,19 @@ import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Country as Country
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Flag as Flag
-import IntlPhoneInput.Internal exposing (CountryPickerState(..), State(State), StateData)
+import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State), StateData)
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
 import String
 
 
 type alias State =
-    IntlPhoneInput.Internal.State
+    Internal.State
 
 
 initialState : State
 initialState =
-    IntlPhoneInput.Internal.initialState
+    Internal.initialState
 
 
 intlPhoneInput : Config msg -> State -> PhoneNumber -> Html msg
@@ -59,17 +59,7 @@ countryPickerView config (State state) phoneNumber =
 
 toggleCountryDropdown : Config msg -> State -> PhoneNumber -> msg
 toggleCountryDropdown config (State state) phoneNumber =
-    config.onChange (State (toggleCountryPickerState state)) phoneNumber
-
-
-toggleCountryPickerState : StateData -> StateData
-toggleCountryPickerState state =
-    case state.countryPickerState of
-        CountryPickerClosed ->
-            { state | countryPickerState = CountryPickerOpened }
-
-        CountryPickerOpened ->
-            { state | countryPickerState = CountryPickerClosed }
+    config.onChange (State (Internal.toggleCountryPickerState state)) phoneNumber
 
 
 arrow : Config msg -> State -> Html msg

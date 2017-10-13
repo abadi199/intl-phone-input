@@ -8,6 +8,9 @@ import Css exposing (..)
 import Css.Namespace
 
 
+-- CONSTANT
+
+
 countryPickerWidth : Float
 countryPickerWidth =
     54
@@ -18,9 +21,8 @@ countryDropdownWidth =
     400
 
 
-boxSizingMixin : Mixin
-boxSizingMixin =
-    mixin [ boxSizing borderBox ]
+
+-- CLASS
 
 
 type Class
@@ -40,6 +42,10 @@ css : String -> Css.Stylesheet
 css namespace =
     (Css.stylesheet << Css.Namespace.namespace namespace)
         [ intlPhoneInput ]
+
+
+
+-- SNIPPET
 
 
 intlPhoneInput : Snippet
@@ -66,13 +72,12 @@ countryPicker : Snippet
 countryPicker =
     class CountryPicker
         [ boxSizingMixin
+        , buttonMixin
         , width (px countryPickerWidth)
         , displayFlex
         , alignItems center
         , justifyContent center
         , zIndex (int 1)
-        , border zero
-        , backgroundColor (rgba 0 0 0 0)
         , hover
             [ hoverMixin
             ]
@@ -82,7 +87,8 @@ countryPicker =
 countryList : Snippet
 countryList =
     class CountryList
-        [ padding2 (em 0.5) zero
+        [ boxSizingMixin
+        , padding2 (em 0.5) zero
         , margin zero
         ]
 
@@ -90,7 +96,8 @@ countryList =
 countryListItem : Snippet
 countryListItem =
     class CountryListItem
-        [ listStyle none
+        [ boxSizingMixin
+        , listStyle none
         , margin zero
         , padding zero
         ]
@@ -99,10 +106,13 @@ countryListItem =
 country : Snippet
 country =
     class Country
-        [ displayFlex
+        [ boxSizingMixin
+        , buttonMixin
+        , width (pct 100)
+        , displayFlex
         , alignItems center
         , justifyContent left
-        , padding4 (em 0.25) (em 1) (em 0.25) (em 0.5)
+        , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
         , hover
             [ hoverMixin ]
         ]
@@ -111,13 +121,16 @@ country =
 countryName : Snippet
 countryName =
     class CountryName
-        [ marginLeft (em 0.5) ]
+        [ boxSizingMixin
+        , marginLeft (em 0.5)
+        ]
 
 
 flag : Snippet
 flag =
     class Flag
-        [ width (px 25)
+        [ boxSizingMixin
+        , width (px 25)
         , height (px 15)
         , display inlineBlock
         ]
@@ -126,7 +139,8 @@ flag =
 arrow : Snippet
 arrow =
     class Arrow
-        [ width (px 5)
+        [ boxSizingMixin
+        , width (px 5)
         , marginLeft (px 7)
         , marginTop (px -4)
         ]
@@ -144,7 +158,8 @@ phoneInput =
 countryDropdown : Snippet
 countryDropdown =
     class CountryDropdown
-        [ position absolute
+        [ boxSizingMixin
+        , position absolute
         , top (pct 100)
         , left zero
         , border3 (px 1) solid (hex "#ccc")
@@ -154,9 +169,26 @@ countryDropdown =
         ]
 
 
+
+-- MIXIN
+
+
+boxSizingMixin : Mixin
+boxSizingMixin =
+    mixin [ boxSizing borderBox ]
+
+
 hoverMixin : Mixin
 hoverMixin =
     mixin
         [ backgroundColor (rgba 0 0 0 0.075)
         , cursor pointer
+        ]
+
+
+buttonMixin : Mixin
+buttonMixin =
+    mixin
+        [ border zero
+        , backgroundColor (rgba 0 0 0 0)
         ]
