@@ -13,6 +13,7 @@ import IntlPhoneInput.Css exposing (Class(..))
 type Class
     = Demo
     | PhoneNumber
+    | FormField
 
 
 css : String -> Css.Stylesheet
@@ -20,7 +21,8 @@ css namespace =
     (Css.stylesheet << Css.Namespace.namespace namespace)
         [ class Demo
             [ displayFlex
-            , alignItems flexEnd
+            , flexDirection column
+            , alignItems flexStart
             , fontFamilies [ .value sansSerif ]
             , descendants
                 [ class IntlPhoneInput
@@ -41,6 +43,11 @@ css namespace =
                 , class PhoneNumber
                     [ paddingBottom (em 0.5)
                     , marginLeft (em 1)
+                    ]
+                , class FormField
+                    [ marginBottom (em 1)
+                    , displayFlex
+                    , alignItems flexEnd
                     ]
                 ]
             ]

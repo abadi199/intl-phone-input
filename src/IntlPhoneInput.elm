@@ -10,7 +10,7 @@ import Html.Attributes exposing (id, type_, value)
 import Html.CssHelpers
 import Html.Events exposing (on, onClick, onInput)
 import IntlPhoneInput.Action as Action
-import IntlPhoneInput.Config exposing (Config)
+import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Country as Country
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
@@ -93,21 +93,14 @@ countryDropdownView config (State state) phoneNumber =
 phoneInputView : Config msg -> State -> PhoneNumber -> Html msg
 phoneInputView config (State state) phoneNumber =
     let
-        idAttribute =
-            if String.isEmpty config.id then
-                []
-            else
-                [ id config.id ]
-
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
     input
-        ([ type_ "tel"
-         , class [ Css.PhoneInput ]
-         , value phoneNumber.phoneNumber
-         , onInput (Action.updatePhoneNumber config (State state) phoneNumber)
-         ]
-            ++ idAttribute
-        )
+        [ type_ "tel"
+        , class [ Css.PhoneInput ]
+        , value phoneNumber.phoneNumber
+        , onInput (Action.updatePhoneNumber config (State state) phoneNumber)
+        , id <| Config.getPhoneNumberInputId config
+        ]
         []

@@ -1,26 +1,53 @@
-module IntlPhoneInput.Config exposing (Config, defaultConfig)
+module IntlPhoneInput.Config
+    exposing
+        ( Config
+        , defaultConfig
+        , getCountryElementId
+        , getPhoneNumberInputId
+        )
 
 import Dict exposing (Dict)
-import IntlPhoneInput.Internal exposing (State)
+import IntlPhoneInput.Internal exposing (State, initialState)
 import IntlPhoneInput.Svg as Svg
-import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
+import IntlPhoneInput.Type exposing (CountryData, PhoneNumber, emptyPhoneNumber)
+import Murmur3
 
 
 type alias Config msg =
-    { id : String
+    { hash : String
     , onChange : State -> PhoneNumber -> msg
     , namespace : String
     , countries : Dict String (CountryData msg)
     }
 
 
+defaultHashSeed : Int
+defaultHashSeed =
+    118999881999119
+
+
 defaultConfig : (State -> PhoneNumber -> msg) -> Config msg
-defaultConfig onChange =
-    { id = ""
+defaultConfig =
+    configWithSeed defaultHashSeed
+
+
+configWithSeed : Int -> (State -> PhoneNumber -> msg) -> Config msg
+configWithSeed hashSeed onChange =
+    { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber |> toString) |> toString
     , onChange = onChange
     , namespace = "IntlPhoneInput"
     , countries = countries
     }
+
+
+getPhoneNumberInputId : Config msg -> String
+getPhoneNumberInputId config =
+    config.namespace ++ "_PhoneNumberInput_" ++ config.hash
+
+
+getCountryElementId : Config msg -> String -> String
+getCountryElementId config isoCode =
+    config.namespace ++ "_Country_" ++ isoCode ++ "_" ++ config.hash
 
 
 countries : Dict String (CountryData msg)

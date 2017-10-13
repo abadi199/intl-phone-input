@@ -6,7 +6,7 @@ import Html.Attributes exposing (type_)
 import Html.CssHelpers
 import Html.Events exposing (onClick)
 import IntlPhoneInput.Action as Action
-import IntlPhoneInput.Config exposing (Config)
+import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (State(State))
@@ -48,6 +48,7 @@ countryView config isoCode countryData (State state) phoneNumber =
         , onClick <| Action.selectCountry config isoCode (State state) phoneNumber
         , Html.Events.onMouseOut <| Action.removeHighlightedCountry config (State state) phoneNumber
         , Html.Events.onMouseOver <| Action.highlightCountry config (State state) phoneNumber isoCode
+        , id (Config.getCountryElementId config isoCode)
         ]
         [ Flag.flagWrapper config countryData.flag
         , span [ class [ Css.CountryName ] ] [ text countryData.name ]

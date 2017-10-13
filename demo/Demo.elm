@@ -1,32 +1,33 @@
 module Demo exposing (main)
 
 import Css
-import Demo.Css exposing (Class(..))
+import Demo.Css as Css exposing (Class(..))
 import Dict
 import Html exposing (Html, div, label, span, text)
 import Html.Attributes exposing (for)
 import Html.CssHelpers
 import IntlPhoneInput
-import IntlPhoneInput.Config
+import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css
-import IntlPhoneInput.Type
+import IntlPhoneInput.Type exposing (PhoneNumber)
 
 
 type Msg
     = NoOp
-    | IntlPhoneInputChanged IntlPhoneInput.State IntlPhoneInput.Type.PhoneNumber
+    | HomePhoneChanged IntlPhoneInput.State PhoneNumber
+    | OfficePhoneChanged IntlPhoneInput.State PhoneNumber
 
 
 type alias Model =
-    { state : IntlPhoneInput.State
-    , phoneNumber : IntlPhoneInput.Type.PhoneNumber
+    { homePhoneNumber : ( IntlPhoneInput.State, PhoneNumber )
+    , officePhoneNumber : ( IntlPhoneInput.State, PhoneNumber )
     }
 
 
 initialModel : Model
 initialModel =
-    { state = IntlPhoneInput.initialState
-    , phoneNumber = { isoCode = "US", phoneNumber = "5551234" }
+    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "US", phoneNumber = "5551234" } )
+    , officePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "US", phoneNumber = "5559876" } )
     }
 
 
@@ -45,38 +46,52 @@ subscriptions model =
     Sub.none
 
 
+homePhoneConfig : Config Msg
+homePhoneConfig =
+    Config.defaultConfig HomePhoneChanged
+
+
+officePhoneConfig : Config Msg
+officePhoneConfig =
+    Config.defaultConfig OfficePhoneChanged
+
+
 view : Model -> Html Msg
 view model =
     let
-        defaultConfig =
-            IntlPhoneInput.Config.defaultConfig IntlPhoneInputChanged
-
-        config =
-            { defaultConfig | id = "homePhoneInput" }
-
         { css } =
-            Css.compile [ IntlPhoneInput.Css.css config.namespace, Demo.Css.css config.namespace ]
+            Css.compile [ IntlPhoneInput.Css.css homePhoneConfig.namespace, Css.css homePhoneConfig.namespace ]
 
         { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
+            Html.CssHelpers.withNamespace homePhoneConfig.namespace
     in
     div [ class [ Demo ] ]
         [ Html.node "style" [] [ Html.text css ]
-        , label [ for config.id ]
-            [ text "Home Phone"
-            , IntlPhoneInput.intlPhoneInput config model.state model.phoneNumber
+        , div [ class [ FormField ] ]
+            [ label [ for (Config.getPhoneNumberInputId homePhoneConfig) ]
+                [ text "Home Phone"
+                , IntlPhoneInput.intlPhoneInput homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
+                ]
+            , phoneNumberView homePhoneConfig (Tuple.second model.homePhoneNumber)
             ]
-        , phoneNumberView config model.phoneNumber
+        , div [ class [ FormField ] ]
+            [ label
+                [ for (Config.getPhoneNumberInputId officePhoneConfig) ]
+                [ text "Office Phone"
+                , IntlPhoneInput.intlPhoneInput officePhoneConfig (Tuple.first model.officePhoneNumber) (Tuple.second model.officePhoneNumber)
+                ]
+            , phoneNumberView officePhoneConfig (Tuple.second model.officePhoneNumber)
+            ]
         ]
 
 
-phoneNumberView : IntlPhoneInput.Config.Config msg -> IntlPhoneInput.Type.PhoneNumber -> Html msg
+phoneNumberView : Config msg -> IntlPhoneInput.Type.PhoneNumber -> Html msg
 phoneNumberView config phoneNumber =
     let
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
-    span [ class [ PhoneNumber ] ]
+    span [ class [ Css.PhoneNumber ] ]
         [ Html.text <|
             "+"
                 ++ (Dict.get phoneNumber.isoCode config.countries |> Maybe.map .dialCode |> Maybe.withDefault "XX")
@@ -91,5 +106,8 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        IntlPhoneInputChanged state phoneNumber ->
-            ( { model | state = state, phoneNumber = phoneNumber }, Cmd.none )
+        HomePhoneChanged state phoneNumber ->
+            ( { model | homePhoneNumber = ( state, phoneNumber ) }, Cmd.none )
+
+        OfficePhoneChanged state phoneNumber ->
+            ( { model | officePhoneNumber = ( state, phoneNumber ) }, Cmd.none )
