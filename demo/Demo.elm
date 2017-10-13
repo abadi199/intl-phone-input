@@ -5,24 +5,26 @@ import Demo.Css exposing (Class(..))
 import Html exposing (Html, div, label, text)
 import Html.CssHelpers
 import IntlPhoneInput
+import IntlPhoneInput.Config
 import IntlPhoneInput.Css
+import IntlPhoneInput.Type
 
 
 type Msg
     = NoOp
-    | IntlPhoneInputChanged IntlPhoneInput.State IntlPhoneInput.PhoneNumber
+    | IntlPhoneInputChanged IntlPhoneInput.State IntlPhoneInput.Type.PhoneNumber
 
 
 type alias Model =
     { state : IntlPhoneInput.State
-    , phoneNumber : IntlPhoneInput.PhoneNumber
+    , phoneNumber : IntlPhoneInput.Type.PhoneNumber
     }
 
 
 initialModel : Model
 initialModel =
     { state = IntlPhoneInput.initialState
-    , phoneNumber = { countryCode = "US", phoneNumber = "5551234" }
+    , phoneNumber = { isoCode = "US", phoneNumber = "5551234" }
     }
 
 
@@ -45,7 +47,7 @@ view : Model -> Html Msg
 view model =
     let
         config =
-            IntlPhoneInput.defaultConfig IntlPhoneInputChanged
+            IntlPhoneInput.Config.defaultConfig IntlPhoneInputChanged
 
         { css } =
             Css.compile [ IntlPhoneInput.Css.css config.namespace, Demo.Css.css config.namespace ]

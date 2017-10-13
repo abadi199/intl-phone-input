@@ -1,6 +1,5 @@
-module Flags.Us exposing (flag)
+module IntlPhoneInput.Flag.US exposing (flag)
 
-import Html exposing (Html)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
@@ -10,7 +9,7 @@ path =
     Svg.path
 
 
-flag : Html msg
+flag : Svg msg
 flag =
     svg [ height "100%", viewBox "0 0 640 480", width "100%" ]
         [ g [ fillRule "evenodd" ]

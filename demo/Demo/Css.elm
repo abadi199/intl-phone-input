@@ -19,6 +19,7 @@ css namespace =
     (Css.stylesheet << Css.Namespace.namespace namespace)
         [ class Demo
             [ displayFlex
+            , fontFamilies [ .value sansSerif ]
             , descendants
                 [ class IntlPhoneInput
                     [ descendants
