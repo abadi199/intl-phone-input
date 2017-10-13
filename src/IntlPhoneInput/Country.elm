@@ -37,8 +37,17 @@ countryView config isoCode countryData (State state) phoneNumber =
     in
     button
         [ type_ "button"
-        , class [ Css.Country ]
+        , class
+            (Css.Country
+                :: (if state.highlightedCountryByIsoCode == Just isoCode then
+                        [ Css.Highlighted ]
+                    else
+                        []
+                   )
+            )
         , onClick <| Action.selectCountry config isoCode (State state) phoneNumber
+        , Html.Events.onMouseOut <| Action.removeHighlightedCountry config (State state) phoneNumber
+        , Html.Events.onMouseOver <| Action.highlightCountry config (State state) phoneNumber isoCode
         ]
         [ Flag.flagWrapper config countryData.flag
         , span [ class [ Css.CountryName ] ] [ text countryData.name ]

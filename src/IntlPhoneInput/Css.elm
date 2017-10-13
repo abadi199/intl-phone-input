@@ -36,6 +36,7 @@ type Class
     | CountryListItem
     | Country
     | CountryName
+    | Highlighted
 
 
 css : String -> Css.Stylesheet
@@ -113,7 +114,7 @@ country =
         , alignItems center
         , justifyContent left
         , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
-        , hover
+        , withClass Highlighted
             [ hoverMixin ]
         ]
 
