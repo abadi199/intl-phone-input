@@ -12,6 +12,7 @@ import IntlPhoneInput.Css exposing (Class(..))
 
 type Class
     = Demo
+    | PhoneNumber
 
 
 css : String -> Css.Stylesheet
@@ -19,6 +20,7 @@ css namespace =
     (Css.stylesheet << Css.Namespace.namespace namespace)
         [ class Demo
             [ displayFlex
+            , alignItems flexEnd
             , fontFamilies [ .value sansSerif ]
             , descendants
                 [ class IntlPhoneInput
@@ -35,6 +37,10 @@ css namespace =
                     , backgroundColor (rgba 0 0 0 0.05)
                     , borderRadius (px 2)
                     , boxShadow6 inset zero (px 1) (px 3) zero (rgba 0 0 0 0.15)
+                    ]
+                , class PhoneNumber
+                    [ paddingBottom (em 0.5)
+                    , marginLeft (em 1)
                     ]
                 ]
             ]

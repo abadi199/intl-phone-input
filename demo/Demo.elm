@@ -2,7 +2,8 @@ module Demo exposing (main)
 
 import Css
 import Demo.Css exposing (Class(..))
-import Html exposing (Html, div, label, text)
+import Dict
+import Html exposing (Html, div, label, span, text)
 import Html.CssHelpers
 import IntlPhoneInput
 import IntlPhoneInput.Config
@@ -61,6 +62,22 @@ view model =
             [ text "Home Phone"
             , IntlPhoneInput.intlPhoneInput config model.state model.phoneNumber
             ]
+        , phoneNumberView config model.phoneNumber
+        ]
+
+
+phoneNumberView : IntlPhoneInput.Config.Config msg -> IntlPhoneInput.Type.PhoneNumber -> Html msg
+phoneNumberView config phoneNumber =
+    let
+        { id, class, classList } =
+            Html.CssHelpers.withNamespace config.namespace
+    in
+    span [ class [ PhoneNumber ] ]
+        [ Html.text <|
+            "+"
+                ++ (Dict.get phoneNumber.isoCode config.countries |> Maybe.map .dialCode |> Maybe.withDefault "XX")
+                ++ " "
+                ++ phoneNumber.phoneNumber
         ]
 
 
