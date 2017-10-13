@@ -4,6 +4,7 @@ import Css
 import Demo.Css exposing (Class(..))
 import Dict
 import Html exposing (Html, div, label, span, text)
+import Html.Attributes exposing (for)
 import Html.CssHelpers
 import IntlPhoneInput
 import IntlPhoneInput.Config
@@ -47,8 +48,11 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     let
-        config =
+        defaultConfig =
             IntlPhoneInput.Config.defaultConfig IntlPhoneInputChanged
+
+        config =
+            { defaultConfig | id = "homePhoneInput" }
 
         { css } =
             Css.compile [ IntlPhoneInput.Css.css config.namespace, Demo.Css.css config.namespace ]
@@ -58,7 +62,7 @@ view model =
     in
     div [ class [ Demo ] ]
         [ Html.node "style" [] [ Html.text css ]
-        , label []
+        , label [ for config.id ]
             [ text "Home Phone"
             , IntlPhoneInput.intlPhoneInput config model.state model.phoneNumber
             ]
