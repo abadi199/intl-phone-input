@@ -5,6 +5,7 @@ import Html exposing (Html, button, div, li, span, text, ul)
 import Html.Attributes exposing (type_)
 import Html.CssHelpers
 import Html.Events exposing (onClick)
+import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Flag as Flag
@@ -37,15 +38,8 @@ countryView config isoCode countryData (State state) phoneNumber =
     button
         [ type_ "button"
         , class [ Css.Country ]
-        , onClick <| selectCountry config isoCode (State state) phoneNumber
+        , onClick <| Action.selectCountry config isoCode (State state) phoneNumber
         ]
         [ Flag.flagWrapper config countryData.flag
         , span [ class [ Css.CountryName ] ] [ text countryData.name ]
         ]
-
-
-selectCountry : Config msg -> String -> State -> PhoneNumber -> msg
-selectCountry config isoCode (State state) phoneNumber =
-    config.onChange
-        (State (Internal.toggleCountryPickerState state))
-        { phoneNumber | isoCode = isoCode }

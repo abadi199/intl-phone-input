@@ -8,7 +8,8 @@ module IntlPhoneInput
 import Html exposing (Html, button, div, input, label, span, text)
 import Html.Attributes exposing (id, type_, value)
 import Html.CssHelpers
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
+import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Country as Country
 import IntlPhoneInput.Css as Css
@@ -50,16 +51,11 @@ countryPickerView config (State state) phoneNumber =
     button
         [ class [ Css.CountryPicker ]
         , type_ "button"
-        , onClick (toggleCountryDropdown config (State state) phoneNumber)
+        , onClick (Action.toggleCountryDropdown config (State state) phoneNumber)
         ]
         [ Flag.flag config phoneNumber
         , arrow config (State state)
         ]
-
-
-toggleCountryDropdown : Config msg -> State -> PhoneNumber -> msg
-toggleCountryDropdown config (State state) phoneNumber =
-    config.onChange (State (Internal.toggleCountryPickerState state)) phoneNumber
 
 
 arrow : Config msg -> State -> Html msg
@@ -103,6 +99,7 @@ phoneInputView config (State state) phoneNumber =
         ([ type_ "tel"
          , class [ Css.PhoneInput ]
          , value phoneNumber.phoneNumber
+         , onInput (Action.updatePhoneNumber config (State state) phoneNumber)
          ]
             ++ idAttribute
         )
