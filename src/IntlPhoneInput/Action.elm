@@ -1,13 +1,15 @@
 module IntlPhoneInput.Action
     exposing
         ( highlightCountry
-        , processKeyboard
+        , processKeyboardOnCountry
+        , processKeyboardOnPicker
         , removeHighlightedCountry
         , selectCountry
         , toggleCountryDropdown
         , updatePhoneNumber
         )
 
+import Dict
 import Dom
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State))
@@ -21,8 +23,8 @@ updatePhoneNumber config (State state) phoneNumber newPhoneNumber =
     config.onChange (State state) { phoneNumber | phoneNumber = newPhoneNumber } Cmd.none
 
 
-selectCountry : Config msg -> String -> State -> PhoneNumber -> msg
-selectCountry config isoCode (State state) phoneNumber =
+selectCountry : Config msg -> State -> PhoneNumber -> String -> msg
+selectCountry config (State state) phoneNumber isoCode =
     config.onChange
         (State (Internal.toggleCountryPickerState state))
         { phoneNumber | isoCode = isoCode }
@@ -39,8 +41,8 @@ toggleCountryDropdown config (State state) phoneNumber =
             openCountryDropdown config (State state) phoneNumber
 
 
-processKeyboard : Config msg -> State -> PhoneNumber -> Int -> msg
-processKeyboard config state phoneNumber keyCode =
+processKeyboardOnPicker : Config msg -> State -> PhoneNumber -> Int -> msg
+processKeyboardOnPicker config state phoneNumber keyCode =
     case KeyCode.toKeyCode keyCode of
         Esc ->
             closeCountryDropdown config state phoneNumber
@@ -106,3 +108,51 @@ removeHighlightedCountry config (State state) phoneNumber =
         (State { state | highlightedCountryByIsoCode = Nothing })
         phoneNumber
         Cmd.none
+
+
+processKeyboardOnCountry : Config msg -> State -> PhoneNumber -> Int -> msg
+processKeyboardOnCountry config (State state) phoneNumber keyCode =
+    case KeyCode.toKeyCode keyCode of
+        Esc ->
+            closeCountryDropdown config (State state) phoneNumber
+
+        Left ->
+            openCountryDropdown config (State state) phoneNumber
+
+        Up ->
+            openCountryDropdown config (State state) phoneNumber
+
+        Right ->
+            openCountryDropdown config (State state) phoneNumber
+
+        Down ->
+            highlightNextCountry config (State state) phoneNumber
+
+        Ignore ->
+            doNothing config (State state) phoneNumber
+
+        Enter ->
+            state.highlightedCountryByIsoCode
+                |> Maybe.map (selectCountry config (State state) phoneNumber)
+                |> Maybe.withDefault (doNothing config (State state) phoneNumber)
+
+
+highlightNextCountry : Config msg -> State -> PhoneNumber -> msg
+highlightNextCountry config (State state) phoneNumber =
+    config.onChange
+        (State { state | highlightedCountryByIsoCode = next config state })
+        phoneNumber
+
+
+nextCountry : Config msg -> Just String -> Just String
+nextCountry config current =
+    case current of
+        Just currentIsoCode ->
+            let
+                currentIndex =
+                    config.countries |> Dict.keys
+            in
+            Nothing
+
+        Nothing ->
+            Nothing

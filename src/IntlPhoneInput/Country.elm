@@ -4,10 +4,11 @@ import Dict
 import Html exposing (Html, button, div, li, span, text, ul)
 import Html.Attributes exposing (type_)
 import Html.CssHelpers
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onFocus, onMouseOver)
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css as Css
+import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (State(State))
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
@@ -45,9 +46,11 @@ countryView config isoCode countryData (State state) phoneNumber =
                         []
                    )
             )
-        , onClick <| Action.selectCountry config isoCode (State state) phoneNumber
-        , Html.Events.onMouseOver <| Action.highlightCountry config (State state) phoneNumber isoCode
         , id (Config.getCountryElementId config isoCode)
+        , onClick <| Action.selectCountry config (State state) phoneNumber isoCode
+        , onMouseOver <| Action.highlightCountry config (State state) phoneNumber isoCode
+        , onFocus <| Action.highlightCountry config (State state) phoneNumber isoCode
+        , Event.onKeyDown (Action.processKeyboardOnCountry config (State state) phoneNumber)
         ]
         [ Flag.flagWrapper config countryData.flag
         , span [ class [ Css.CountryName ] ] [ text countryData.name ]

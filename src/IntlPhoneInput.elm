@@ -58,7 +58,7 @@ countryPickerView config (State state) phoneNumber =
         [ class [ Css.CountryPicker ]
         , type_ "button"
         , onClick (Action.toggleCountryDropdown config (State state) phoneNumber)
-        , Event.onKeyDown (Action.processKeyboard config (State state) phoneNumber)
+        , Event.onKeyDown (Action.processKeyboardOnPicker config (State state) phoneNumber)
         ]
         [ Flag.flag config phoneNumber
         , arrowView config (State state)
