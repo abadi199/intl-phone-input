@@ -206,8 +206,13 @@ prevCountry config current =
 
 focus : Maybe String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 focus maybeIsoCode config state phoneNumber cmd =
+    let
+        focusCmd isoCode =
+            Dom.focus (Config.getCountryElementId config isoCode)
+                |> Task.attempt (always <| config.onChange state phoneNumber cmd)
+    in
     maybeIsoCode
-        |> Maybe.map (\isoCode -> Dom.focus (Config.getCountryElementId config isoCode) |> Task.attempt (always <| config.onChange state phoneNumber cmd))
+        |> Maybe.map focusCmd
         |> Maybe.withDefault Cmd.none
         |> appendCmd config state phoneNumber cmd
 
