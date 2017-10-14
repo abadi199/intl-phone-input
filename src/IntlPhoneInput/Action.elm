@@ -31,10 +31,12 @@ selectCountry config isoCode (State state) phoneNumber =
 
 toggleCountryDropdown : Config msg -> State -> PhoneNumber -> msg
 toggleCountryDropdown config (State state) phoneNumber =
-    config.onChange
-        (State (Internal.toggleCountryPickerState state))
-        phoneNumber
-        Cmd.none
+    case state.countryPickerState of
+        CountryPickerOpened ->
+            closeCountryDropdown config (State state) phoneNumber
+
+        CountryPickerClosed ->
+            openCountryDropdown config (State state) phoneNumber
 
 
 processKeyboard : Config msg -> State -> PhoneNumber -> Int -> msg
@@ -72,10 +74,11 @@ closeCountryDropdown config (State state) phoneNumber =
 
 openCountryDropdown : Config msg -> State -> PhoneNumber -> msg
 openCountryDropdown config (State state) phoneNumber =
-    config.onChange
+    highlightCountry
+        config
         (State { state | countryPickerState = CountryPickerOpened })
         phoneNumber
-        Cmd.none
+        phoneNumber.isoCode
 
 
 doNothing : Config msg -> State -> PhoneNumber -> msg

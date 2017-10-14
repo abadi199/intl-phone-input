@@ -79,9 +79,8 @@ countryPicker =
         , alignItems center
         , justifyContent center
         , zIndex (int 1)
-        , hover
-            [ hoverMixin
-            ]
+        , hover [ hoverMixin ]
+        , focus [ outline none, hoverMixin ]
         ]
 
 
@@ -115,7 +114,7 @@ country =
         , justifyContent left
         , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
         , withClass Highlighted [ hoverMixin ]
-        , focus [ outline none ]
+        , focus [ outline none, hoverMixin ]
         ]
 
 
