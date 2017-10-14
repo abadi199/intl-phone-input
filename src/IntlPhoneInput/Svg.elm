@@ -5,6 +5,7 @@ module IntlPhoneInput.Svg
         )
 
 import IntlPhoneInput.Flag.AD as AD
+import IntlPhoneInput.Flag.AE as AE
 import IntlPhoneInput.Flag.GB as GB
 import IntlPhoneInput.Flag.US as US
 import IntlPhoneInput.Flag.Unknown as Unknown
@@ -28,6 +29,9 @@ flag isoCode =
     case String.toUpper isoCode of
         "AD" ->
             AD.flag
+
+        "AE" ->
+            AE.flag
 
         "US" ->
             US.flag
