@@ -1,4 +1,9 @@
-module IntlPhoneInput.KeyCode exposing (KeyCode(..), toKeyCode)
+module IntlPhoneInput.KeyCode
+    exposing
+        ( KeyCode(..)
+        , keyCodes
+        , toKeyCode
+        )
 
 
 type KeyCode
@@ -9,6 +14,11 @@ type KeyCode
     | Right
     | Enter
     | Ignore
+
+
+keyCodes : List Int
+keyCodes =
+    [ 27, 37, 38, 39, 40, 13 ]
 
 
 toKeyCode : Int -> KeyCode
