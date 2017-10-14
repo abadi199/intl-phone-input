@@ -12,6 +12,7 @@ import IntlPhoneInput.Flag.AF as AF
 import IntlPhoneInput.Flag.AG as AG
 import IntlPhoneInput.Flag.AL as AL
 import IntlPhoneInput.Flag.AM as AM
+import IntlPhoneInput.Flag.AO as AO
 import IntlPhoneInput.Flag.GB as GB
 import IntlPhoneInput.Flag.US as US
 import IntlPhoneInput.Flag.Unknown as Unknown
@@ -55,6 +56,9 @@ flag isoCode =
 
         "AM" ->
             AM.flag
+
+        "AO" ->
+            AO.flag
 
         "US" ->
             US.flag
