@@ -3,6 +3,7 @@ module Demo exposing (main)
 import Css
 import Demo.Css as Css exposing (Class(..))
 import Dict
+import Dom
 import Html exposing (Html, div, label, span, text)
 import Html.Attributes exposing (for)
 import Html.CssHelpers
@@ -10,12 +11,13 @@ import IntlPhoneInput
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css
 import IntlPhoneInput.Type exposing (PhoneNumber)
+import Task exposing (Task)
 
 
 type Msg
     = NoOp
-    | HomePhoneChanged IntlPhoneInput.State PhoneNumber
-    | OfficePhoneChanged IntlPhoneInput.State PhoneNumber
+    | HomePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
+    | OfficePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
 
 
 type alias Model =
@@ -106,8 +108,8 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        HomePhoneChanged state phoneNumber ->
-            ( { model | homePhoneNumber = ( state, phoneNumber ) }, Cmd.none )
+        HomePhoneChanged state phoneNumber cmd ->
+            ( { model | homePhoneNumber = ( state, phoneNumber ) }, cmd )
 
-        OfficePhoneChanged state phoneNumber ->
-            ( { model | officePhoneNumber = ( state, phoneNumber ) }, Cmd.none )
+        OfficePhoneChanged state phoneNumber cmd ->
+            ( { model | officePhoneNumber = ( state, phoneNumber ) }, cmd )

@@ -114,8 +114,8 @@ country =
         , alignItems center
         , justifyContent left
         , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
-        , withClass Highlighted
-            [ hoverMixin ]
+        , withClass Highlighted [ hoverMixin ]
+        , focus [ outline none ]
         ]
 
 
@@ -161,7 +161,9 @@ countryDropdown =
     class CountryDropdown
         [ boxSizingMixin
         , position absolute
+        , backgroundColor (rgba 255 255 255 1)
         , top (pct 100)
+        , zIndex (int 2)
         , left zero
         , border3 (px 1) solid (hex "#ccc")
         , height (px 200)

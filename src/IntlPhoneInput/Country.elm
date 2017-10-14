@@ -46,7 +46,6 @@ countryView config isoCode countryData (State state) phoneNumber =
                    )
             )
         , onClick <| Action.selectCountry config isoCode (State state) phoneNumber
-        , Html.Events.onMouseOut <| Action.removeHighlightedCountry config (State state) phoneNumber
         , Html.Events.onMouseOver <| Action.highlightCountry config (State state) phoneNumber isoCode
         , id (Config.getCountryElementId config isoCode)
         ]

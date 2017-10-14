@@ -15,7 +15,7 @@ import Murmur3
 
 type alias Config msg =
     { hash : String
-    , onChange : State -> PhoneNumber -> msg
+    , onChange : State -> PhoneNumber -> Cmd msg -> msg
     , namespace : String
     , countries : Dict String (CountryData msg)
     }
@@ -26,12 +26,12 @@ defaultHashSeed =
     118999881999119
 
 
-defaultConfig : (State -> PhoneNumber -> msg) -> Config msg
+defaultConfig : (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 defaultConfig =
     configWithSeed defaultHashSeed
 
 
-configWithSeed : Int -> (State -> PhoneNumber -> msg) -> Config msg
+configWithSeed : Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 configWithSeed hashSeed onChange =
     { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber |> toString) |> toString
     , onChange = onChange
