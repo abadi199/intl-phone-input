@@ -6,6 +6,7 @@ module IntlPhoneInput.Svg
 
 import IntlPhoneInput.Flag.AD as AD
 import IntlPhoneInput.Flag.AE as AE
+import IntlPhoneInput.Flag.AF as AF
 import IntlPhoneInput.Flag.GB as GB
 import IntlPhoneInput.Flag.US as US
 import IntlPhoneInput.Flag.Unknown as Unknown
@@ -32,6 +33,9 @@ flag isoCode =
 
         "AE" ->
             AE.flag
+
+        "AF" ->
+            AF.flag
 
         "US" ->
             US.flag
