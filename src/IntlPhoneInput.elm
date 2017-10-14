@@ -57,8 +57,8 @@ countryPickerView config (State state) phoneNumber =
     button
         [ class [ Css.CountryPicker ]
         , type_ "button"
-        , onClick (Action.start config (State state) phoneNumber |> Action.toggleCountryDropdown |> Action.finish)
-        , Event.onKeyDown (\keyCode -> Action.start config (State state) phoneNumber |> Action.processKeyboardOnPicker keyCode |> Action.finish)
+        , onClick (Action.toggleCountryDropdown config (State state) phoneNumber Cmd.none |> Action.done)
+        , Event.onKeyDown (\keyCode -> Action.processKeyboardOnPicker keyCode config (State state) phoneNumber Cmd.none |> Action.done)
         ]
         [ Flag.flag config phoneNumber
         , arrowView config (State state)
@@ -102,9 +102,8 @@ phoneInputView config (State state) phoneNumber =
         , value phoneNumber.phoneNumber
         , onInput
             (\value ->
-                Action.start config (State state) phoneNumber
-                    |> Action.updatePhoneNumber value
-                    |> Action.finish
+                Action.updatePhoneNumber value config (State state) phoneNumber Cmd.none
+                    |> Action.done
             )
         , id <| Config.getPhoneNumberInputId config
         ]
