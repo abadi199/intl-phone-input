@@ -3,6 +3,7 @@ module IntlPhoneInput.Action
         ( Action
         , andThen
         , done
+        , focus
         , highlightCountry
         , processKeyboardOnCountry
         , processKeyboardOnPicker
@@ -102,6 +103,7 @@ openCountryDropdown config (State state) phoneNumber cmd =
         phoneNumber
         cmd
         |> andThen (highlightCountry phoneNumber.isoCode)
+        |> andThen (focus (Just phoneNumber.isoCode))
 
 
 highlightCountry : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -110,7 +112,6 @@ highlightCountry isoCode config (State state) phoneNumber cmd =
         (State { state | highlightedCountryByIsoCode = Just isoCode })
         phoneNumber
         cmd
-        |> andThen (focus (Just isoCode))
 
 
 removeHighlightedCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
