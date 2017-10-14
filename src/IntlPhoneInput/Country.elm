@@ -49,7 +49,6 @@ countryView config isoCode countryData (State state) phoneNumber =
         , id (Config.getCountryElementId config isoCode)
         , onClick (Action.start config (State state) phoneNumber |> Action.selectCountry isoCode |> Action.finish)
         , onMouseOver (Action.start config (State state) phoneNumber |> Action.highlightCountry isoCode |> Action.finish)
-        , onFocus (Action.start config (State state) phoneNumber |> Action.highlightCountry isoCode |> Action.finish)
         , Event.onKeyDown (\keyCode -> Action.start config (State state) phoneNumber |> Action.processKeyboardOnCountry keyCode |> Action.finish)
         ]
         [ Flag.flagWrapper config countryData.flag
