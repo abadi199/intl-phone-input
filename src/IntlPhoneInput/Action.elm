@@ -81,7 +81,7 @@ processKeyboardOnPicker keyCode ((Action config state phoneNumber cmd) as action
             action
 
         Enter ->
-            action
+            toggleCountryDropdown action
 
 
 closeCountryDropdown : Action msg -> Action msg
