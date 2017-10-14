@@ -29,5 +29,8 @@ toKeyCode keyCode =
         40 ->
             Down
 
+        13 ->
+            Enter
+
         _ ->
             Ignore

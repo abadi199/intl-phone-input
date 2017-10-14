@@ -5,13 +5,16 @@ module IntlPhoneInput.Event
         )
 
 import Html
-import Html.Events exposing (keyCode, on)
+import Html.Events exposing (keyCode, on, onWithOptions)
 import Json.Decode
 
 
 onKeyDown : (Int -> msg) -> Html.Attribute msg
 onKeyDown action =
-    on "keydown" (Json.Decode.map action keyCode)
+    onWithOptions
+        "keydown"
+        { preventDefault = True, stopPropagation = True }
+        (Json.Decode.map action keyCode)
 
 
 onKeyPress : (Int -> msg) -> Html.Attribute msg

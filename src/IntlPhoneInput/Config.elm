@@ -33,7 +33,7 @@ defaultConfig =
 
 configWithSeed : Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 configWithSeed hashSeed onChange =
-    { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber |> toString) |> toString
+    { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString
     , onChange = onChange
     , namespace = "IntlPhoneInput"
     , countries = countries
