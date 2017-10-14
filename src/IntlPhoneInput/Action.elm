@@ -20,6 +20,7 @@ import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), Sta
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.List as List
 import IntlPhoneInput.Type as Type exposing (PhoneNumber)
+import String
 import Task
 
 
@@ -62,6 +63,10 @@ toggleCountryDropdown config (State state) phoneNumber cmd =
 
 processKeyboardOnPicker : Int -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 processKeyboardOnPicker keyCode config state phoneNumber cmd =
+    let
+        doNothing =
+            Action config state phoneNumber cmd
+    in
     case KeyCode.toKeyCode keyCode of
         Esc ->
             closeCountryDropdown config state phoneNumber cmd
@@ -78,11 +83,17 @@ processKeyboardOnPicker keyCode config state phoneNumber cmd =
         Down ->
             openCountryDropdown config state phoneNumber cmd
 
-        Ignore ->
-            Action config state phoneNumber cmd
-
         Enter ->
             toggleCountryDropdown config state phoneNumber cmd
+
+        Alphabet char ->
+            openCountryDropdown config state phoneNumber cmd
+
+        Backspace ->
+            doNothing
+
+        Ignore ->
+            doNothing
 
 
 closeCountryDropdown : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -125,6 +136,10 @@ removeHighlightedCountry config (State state) phoneNumber cmd =
 
 processKeyboardOnCountry : Int -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 processKeyboardOnCountry keyCode config (State state) phoneNumber cmd =
+    let
+        doNothing =
+            Action config (State state) phoneNumber cmd
+    in
     case KeyCode.toKeyCode keyCode of
         Esc ->
             closeCountryDropdown config (State state) phoneNumber cmd
@@ -141,14 +156,38 @@ processKeyboardOnCountry keyCode config (State state) phoneNumber cmd =
         Down ->
             highlightNextCountry config (State state) phoneNumber cmd
 
-        Ignore ->
-            Action config (State state) phoneNumber cmd
+        Alphabet char ->
+            appendKeyword char config (State state) phoneNumber cmd
 
         Enter ->
             state.highlightedCountryByIsoCode
                 |> Maybe.map (\isoCode -> selectCountry isoCode config (State state) phoneNumber cmd)
                 |> Maybe.withDefault (Action config (State state) phoneNumber cmd)
                 |> andThen closeCountryDropdown
+
+        Backspace ->
+            deleteKeyword config (State state) phoneNumber cmd
+
+        Ignore ->
+            doNothing
+
+
+appendKeyword : Char -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+appendKeyword char config (State state) phoneNumber cmd =
+    Action
+        config
+        (State { state | keyword = state.keyword ++ (char |> String.fromChar |> String.toLower) })
+        phoneNumber
+        cmd
+
+
+deleteKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+deleteKeyword config (State state) phoneNumber cmd =
+    Action
+        config
+        (State { state | keyword = String.dropRight 1 state.keyword })
+        phoneNumber
+        cmd
 
 
 highlightNextCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg

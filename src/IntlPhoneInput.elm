@@ -6,7 +6,7 @@ module IntlPhoneInput
         )
 
 import Html exposing (Html, button, div, input, label, span, text)
-import Html.Attributes exposing (id, type_, value)
+import Html.Attributes exposing (id, placeholder, type_, value)
 import Html.CssHelpers
 import Html.Events exposing (on, onClick, onInput)
 import IntlPhoneInput.Action as Action
@@ -18,8 +18,6 @@ import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State), StateData)
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
-import Json.Decode
-import String
 
 
 type alias State =
@@ -86,7 +84,14 @@ countryDropdownView config (State state) phoneNumber =
 
         CountryPickerOpened ->
             div [ class [ Css.CountryDropdown ] ]
-                [ Country.countriesView config (State state) phoneNumber
+                [ input
+                    [ type_ "text"
+                    , class [ Css.SearchInput ]
+                    , value state.keyword
+                    , placeholder "Search"
+                    ]
+                    []
+                , Country.countriesView config (State state) phoneNumber
                 ]
 
 

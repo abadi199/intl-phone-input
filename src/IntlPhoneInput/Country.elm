@@ -20,14 +20,16 @@ countriesView config (State state) phoneNumber =
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
-    ul [ class [ Css.CountryList ] ]
-        (List.map
-            (\( isoCode, countryData ) ->
-                li [ class [ Css.CountryListItem ] ]
-                    [ countryView config isoCode countryData (State state) phoneNumber ]
+    div [ class [ Css.CountryListScroll ] ]
+        [ ul [ class [ Css.CountryList ] ]
+            (List.map
+                (\( isoCode, countryData ) ->
+                    li [ class [ Css.CountryListItem ] ]
+                        [ countryView config isoCode countryData (State state) phoneNumber ]
+                )
+                (Dict.toList <| config.countries)
             )
-            (Dict.toList <| config.countries)
-        )
+        ]
 
 
 countryView : Config msg -> String -> CountryData msg -> State -> PhoneNumber -> Html msg

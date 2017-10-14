@@ -15,6 +15,7 @@ type State
 type alias StateData =
     { countryPickerState : CountryPickerState
     , highlightedCountryByIsoCode : Maybe String
+    , keyword : String
     }
 
 
@@ -28,6 +29,7 @@ initialState =
     State
         { countryPickerState = CountryPickerClosed
         , highlightedCountryByIsoCode = Nothing
+        , keyword = ""
         }
 
 

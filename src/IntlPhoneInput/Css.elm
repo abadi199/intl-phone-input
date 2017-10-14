@@ -32,11 +32,13 @@ type Class
     | Flag
     | Arrow
     | CountryDropdown
+    | CountryListScroll
     | CountryList
     | CountryListItem
     | Country
     | CountryName
     | Highlighted
+    | SearchInput
 
 
 css : String -> Css.Stylesheet
@@ -61,10 +63,12 @@ intlPhoneInput =
             , arrow
             , phoneInput
             , countryDropdown
+            , countryListScroll
             , countryList
             , countryListItem
             , country
             , countryName
+            , searchInput
             ]
         ]
 
@@ -165,9 +169,30 @@ countryDropdown =
         , zIndex (int 2)
         , left zero
         , border3 (px 1) solid (hex "#ccc")
-        , height (px 200)
+        , height (px 250)
         , minWidth (px countryDropdownWidth)
+        , displayFlex
+        , flexDirection column
+        ]
+
+
+countryListScroll : Snippet
+countryListScroll =
+    class CountryListScroll
+        [ boxSizingMixin
         , overflowY scroll
+        ]
+
+
+searchInput : Snippet
+searchInput =
+    class SearchInput
+        [ boxSizingMixin
+        , backgroundColor (hex "#fff")
+        , border zero
+        , padding (px 10)
+        , margin zero
+        , boxShadow5 (px 0) (px 5) (px 10) (px -5) (rgba 0 0 0 0.15)
         ]
 
 

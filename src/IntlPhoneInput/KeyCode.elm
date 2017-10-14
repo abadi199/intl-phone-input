@@ -5,6 +5,8 @@ module IntlPhoneInput.KeyCode
         , toKeyCode
         )
 
+import Char
+
 
 type KeyCode
     = Esc
@@ -13,12 +15,19 @@ type KeyCode
     | Left
     | Right
     | Enter
+    | Backspace
+    | Alphabet Char
     | Ignore
 
 
 keyCodes : List Int
 keyCodes =
-    [ 27, 37, 38, 39, 40, 13 ]
+    [ 27, 37, 38, 39, 40, 13, 8 ] ++ alphabet
+
+
+alphabet : List Int
+alphabet =
+    List.range 65 90
 
 
 toKeyCode : Int -> KeyCode
@@ -42,5 +51,11 @@ toKeyCode keyCode =
         13 ->
             Enter
 
+        8 ->
+            Backspace
+
         _ ->
-            Ignore
+            if List.member keyCode alphabet then
+                Alphabet (Char.fromCode keyCode)
+            else
+                Ignore

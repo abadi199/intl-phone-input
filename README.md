@@ -1,2 +1,4 @@
-# intl-phone-input
-International Phone Input in Elm
+# International Phone Input in Elm 
+
+(Work In Progress)
+
