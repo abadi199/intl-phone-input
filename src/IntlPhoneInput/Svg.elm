@@ -4,6 +4,7 @@ module IntlPhoneInput.Svg
         , flag
         )
 
+import IntlPhoneInput.Flag.AD as AD
 import IntlPhoneInput.Flag.GB as GB
 import IntlPhoneInput.Flag.US as US
 import IntlPhoneInput.Flag.Unknown as Unknown
@@ -25,6 +26,9 @@ arrow =
 flag : String -> Svg msg
 flag isoCode =
     case String.toUpper isoCode of
+        "AD" ->
+            AD.flag
+
         "US" ->
             US.flag
 
