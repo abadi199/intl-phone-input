@@ -80,7 +80,8 @@ view model =
             [ label
                 [ for (Config.getPhoneNumberInputId officePhoneConfig) ]
                 [ text "Office Phone"
-                , IntlPhoneInput.intlPhoneInput officePhoneConfig (Tuple.first model.officePhoneNumber) (Tuple.second model.officePhoneNumber)
+
+                -- , IntlPhoneInput.intlPhoneInput officePhoneConfig (Tuple.first model.officePhoneNumber) (Tuple.second model.officePhoneNumber)
                 ]
             , phoneNumberView officePhoneConfig (Tuple.second model.officePhoneNumber)
             ]

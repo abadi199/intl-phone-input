@@ -16,6 +16,7 @@ import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State), StateData)
+import IntlPhoneInput.KeyCode as KeyCode
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
 
@@ -101,6 +102,16 @@ searchInput config (State state) phoneNumber =
         , class [ Css.SearchInput ]
         , value state.keyword
         , placeholder "Search"
+        , Event.batch
+            [ ( KeyCode.arrowKey, Action.navigateCountry )
+            , ( KeyCode.enterKey, always Action.selectHighlightedCountry )
+            ]
+            config
+            (State state)
+            phoneNumber
+
+        -- , Event.onArrowKey (\arrowKey -> Action.processArrowKey arrowKey config (State state) phoneNumber Cmd.none |> Action.done)
+        -- , Event.onEnterKey (Action.selectHighlightedCountry config (State state) phoneNumber Cmd.none |> Action.done)
         , onInput
             (\value ->
                 Action.updateKeyword value config (State state) phoneNumber Cmd.none

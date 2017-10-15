@@ -5,10 +5,12 @@ module IntlPhoneInput.Action
         , done
         , focus
         , highlightCountry
+        , navigateCountry
         , processKeyboardOnCountry
         , processKeyboardOnPicker
         , removeHighlightedCountry
         , selectCountry
+        , selectHighlightedCountry
         , toggleCountryDropdown
         , updateKeyword
         , updatePhoneNumber
@@ -19,7 +21,7 @@ import Dom
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Filter as Filter
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State))
-import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
+import IntlPhoneInput.KeyCode as KeyCode exposing (ArrowKey(..), KeyCode(..))
 import IntlPhoneInput.List as List
 import IntlPhoneInput.Type as Type exposing (PhoneNumber)
 import Set
@@ -74,18 +76,6 @@ processKeyboardOnPicker keyCode config state phoneNumber cmd =
         Esc ->
             closeCountryDropdown config state phoneNumber cmd
 
-        Left ->
-            openCountryDropdown config state phoneNumber cmd
-
-        Up ->
-            openCountryDropdown config state phoneNumber cmd
-
-        Right ->
-            openCountryDropdown config state phoneNumber cmd
-
-        Down ->
-            openCountryDropdown config state phoneNumber cmd
-
         Enter ->
             toggleCountryDropdown config state phoneNumber cmd
 
@@ -96,6 +86,9 @@ processKeyboardOnPicker keyCode config state phoneNumber cmd =
             doNothing
 
         Ignore ->
+            doNothing
+
+        Arrow _ ->
             doNothing
 
 
@@ -199,25 +192,11 @@ processKeyboardOnCountry keyCode config (State state) phoneNumber cmd =
         Esc ->
             closeCountryDropdown config (State state) phoneNumber cmd
 
-        Left ->
-            highlightPrevCountry config (State state) phoneNumber cmd
-
-        Up ->
-            highlightPrevCountry config (State state) phoneNumber cmd
-
-        Right ->
-            highlightNextCountry config (State state) phoneNumber cmd
-
-        Down ->
-            highlightNextCountry config (State state) phoneNumber cmd
-
         Alphabet char ->
             appendKeyword char config (State state) phoneNumber cmd
 
         Enter ->
-            state.highlightedCountryByIsoCode
-                |> Maybe.map (\isoCode -> selectCountry isoCode config (State state) phoneNumber cmd)
-                |> Maybe.withDefault (Action config (State state) phoneNumber cmd)
+            selectHighlightedCountry config (State state) phoneNumber cmd
                 |> andThen closeCountryDropdown
 
         Backspace ->
@@ -225,6 +204,16 @@ processKeyboardOnCountry keyCode config (State state) phoneNumber cmd =
 
         Ignore ->
             doNothing
+
+        Arrow _ ->
+            doNothing
+
+
+selectHighlightedCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+selectHighlightedCountry config (State state) phoneNumber cmd =
+    state.highlightedCountryByIsoCode
+        |> Maybe.map (\isoCode -> selectCountry isoCode config (State state) phoneNumber cmd)
+        |> Maybe.withDefault (Action config (State state) phoneNumber cmd)
 
 
 appendKeyword : Char -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -357,3 +346,26 @@ updateKeyword keyword config (State state) phoneNumber cmd =
         phoneNumber
         cmd
         |> andThen filterCountries
+
+
+navigateCountry : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+navigateCountry arrowKey config (State state) phoneNumber cmd =
+    let
+        doNothing =
+            Action config (State state) phoneNumber cmd
+    in
+    case arrowKey of
+        Arrow Left ->
+            highlightPrevCountry config (State state) phoneNumber cmd
+
+        Arrow Up ->
+            highlightPrevCountry config (State state) phoneNumber cmd
+
+        Arrow Right ->
+            highlightNextCountry config (State state) phoneNumber cmd
+
+        Arrow Down ->
+            highlightNextCountry config (State state) phoneNumber cmd
+
+        _ ->
+            doNothing
