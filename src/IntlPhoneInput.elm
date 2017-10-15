@@ -97,6 +97,7 @@ searchInput config (State state) phoneNumber =
     in
     input
         [ type_ "text"
+        , id <| Config.getSearchInputId config
         , class [ Css.SearchInput ]
         , value state.keyword
         , placeholder "Search"
@@ -117,6 +118,7 @@ phoneInputView config (State state) phoneNumber =
     in
     input
         [ type_ "tel"
+        , id <| Config.getPhoneNumberInputId config
         , class [ Css.PhoneInput ]
         , value phoneNumber.phoneNumber
         , onInput
@@ -124,6 +126,5 @@ phoneInputView config (State state) phoneNumber =
                 Action.updatePhoneNumber value config (State state) phoneNumber Cmd.none
                     |> Action.done
             )
-        , id <| Config.getPhoneNumberInputId config
         ]
         []

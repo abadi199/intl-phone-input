@@ -309,12 +309,27 @@ prevCountry config (State state) =
             Nothing
 
 
+ignoreTaskError : Config msg -> State -> PhoneNumber -> Result.Result Dom.Error () -> msg
+ignoreTaskError config state phoneNumber result =
+    let
+        _ =
+            case result of
+                Result.Err err ->
+                    Debug.log "Task error" err |> toString
+
+                Result.Ok _ ->
+                    ""
+    in
+    config.onChange state phoneNumber Cmd.none
+
+
 focus : Maybe String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 focus maybeIsoCode config state phoneNumber cmd =
     let
         focusCmd isoCode =
             Dom.focus (Config.getCountryElementId config isoCode)
-                |> Task.attempt (always <| config.onChange state phoneNumber cmd)
+                |> Task.andThen (\_ -> Dom.focus (Config.getSearchInputId config))
+                |> Task.attempt (ignoreTaskError config state phoneNumber)
     in
     maybeIsoCode
         |> Maybe.map focusCmd
@@ -325,7 +340,7 @@ focus maybeIsoCode config state phoneNumber cmd =
 focusInput : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 focusInput config state phoneNumber cmd =
     Dom.focus (Config.getPhoneNumberInputId config)
-        |> Task.attempt (always <| config.onChange state phoneNumber cmd)
+        |> Task.attempt (ignoreTaskError config state phoneNumber)
         |> appendCmd config state phoneNumber cmd
 
 

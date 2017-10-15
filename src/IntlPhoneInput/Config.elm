@@ -6,6 +6,7 @@ module IntlPhoneInput.Config
         , defaultConfig
         , getCountryElementId
         , getPhoneNumberInputId
+        , getSearchInputId
         , isoCodes
         , toCountryData
         , toCountryDataList
@@ -57,6 +58,11 @@ defaultCountriesSorter countries =
 getPhoneNumberInputId : Config msg -> String
 getPhoneNumberInputId config =
     config.namespace ++ "_PhoneNumberInput_" ++ config.hash
+
+
+getSearchInputId : Config msg -> String
+getSearchInputId config =
+    config.namespace ++ "_SearchInput_" ++ config.hash
 
 
 getCountryElementId : Config msg -> String -> String

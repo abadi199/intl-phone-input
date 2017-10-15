@@ -84,7 +84,7 @@ countryPicker =
         , justifyContent center
         , zIndex (int 1)
         , hover [ hoverMixin ]
-        , focus [ outline none, hoverMixin ]
+        , focus [ focusMixin, hoverMixin ]
         ]
 
 
@@ -118,7 +118,7 @@ country =
         , justifyContent left
         , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
         , withClass Highlighted [ hoverMixin ]
-        , focus [ outline none, hoverMixin ]
+        , focus [ focusMixin, hoverMixin ]
         ]
 
 
@@ -193,6 +193,7 @@ searchInput =
         , padding (px 10)
         , margin zero
         , boxShadow5 (px 0) (px 5) (px 10) (px -5) (rgba 0 0 0 0.15)
+        , focus [ focusMixin ]
         ]
 
 
@@ -218,4 +219,13 @@ buttonMixin =
     mixin
         [ border zero
         , backgroundColor (rgba 0 0 0 0)
+        ]
+
+
+focusMixin : Mixin
+focusMixin =
+    mixin
+        [ outline none
+        , pseudoClass "-moz-focus-inner"
+            [ border zero ]
         ]
