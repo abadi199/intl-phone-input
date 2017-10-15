@@ -84,15 +84,29 @@ countryDropdownView config (State state) phoneNumber =
 
         CountryPickerOpened ->
             div [ class [ Css.CountryDropdown ] ]
-                [ input
-                    [ type_ "text"
-                    , class [ Css.SearchInput ]
-                    , value state.keyword
-                    , placeholder "Search"
-                    ]
-                    []
+                [ searchInput config (State state) phoneNumber
                 , Country.countriesView config (State state) phoneNumber
                 ]
+
+
+searchInput : Config msg -> State -> PhoneNumber -> Html msg
+searchInput config (State state) phoneNumber =
+    let
+        { id, class, classList } =
+            Html.CssHelpers.withNamespace config.namespace
+    in
+    input
+        [ type_ "text"
+        , class [ Css.SearchInput ]
+        , value state.keyword
+        , placeholder "Search"
+        , onInput
+            (\value ->
+                Action.updateKeyword value config (State state) phoneNumber Cmd.none
+                    |> Action.done
+            )
+        ]
+        []
 
 
 phoneInputView : Config msg -> State -> PhoneNumber -> Html msg

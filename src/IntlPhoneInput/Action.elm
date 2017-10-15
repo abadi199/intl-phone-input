@@ -10,6 +10,7 @@ module IntlPhoneInput.Action
         , removeHighlightedCountry
         , selectCountry
         , toggleCountryDropdown
+        , updateKeyword
         , updatePhoneNumber
         )
 
@@ -140,20 +141,23 @@ filterCountries config (State state) phoneNumber cmd =
                 |> List.map Tuple.first
                 |> Set.fromList
 
+        firstCountry =
+            filteredCountries
+                |> Config.toCountryDataList config
+                |> config.countriesSorter
+                |> List.head
+                |> Maybe.map Tuple.first
+
         highlightedCountry =
-            state.highlightedCountryByIsoCode
-                |> Maybe.map (\isoCode -> Set.member isoCode filteredCountries)
-                |> Maybe.andThen
-                    (\stillInDict ->
-                        if stillInDict then
-                            state.highlightedCountryByIsoCode
-                        else
-                            filteredCountries
-                                |> Config.toCountryDataList config
-                                |> config.countriesSorter
-                                |> List.head
-                                |> Maybe.map Tuple.first
-                    )
+            case state.highlightedCountryByIsoCode of
+                Just isoCode ->
+                    if Set.member isoCode filteredCountries then
+                        state.highlightedCountryByIsoCode
+                    else
+                        firstCountry
+
+                Nothing ->
+                    firstCountry
     in
     Action
         config
@@ -328,3 +332,13 @@ focusInput config state phoneNumber cmd =
 appendCmd : Config msg -> State -> PhoneNumber -> Cmd msg -> Cmd msg -> Action msg
 appendCmd config state phoneNumber firstCmd secondCmd =
     Action config state phoneNumber (Cmd.batch [ firstCmd, secondCmd ])
+
+
+updateKeyword : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+updateKeyword keyword config (State state) phoneNumber cmd =
+    Action
+        config
+        (State { state | keyword = keyword })
+        phoneNumber
+        cmd
+        |> andThen filterCountries
