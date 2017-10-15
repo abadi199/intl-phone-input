@@ -8,6 +8,7 @@ module IntlPhoneInput.Config
         , getPhoneNumberInputId
         , isoCodes
         , toCountryData
+        , toCountryDataList
         )
 
 import Dict exposing (Dict)
@@ -15,13 +16,15 @@ import IntlPhoneInput.Internal exposing (State, initialState)
 import IntlPhoneInput.Svg as Svg
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber, emptyPhoneNumber)
 import Murmur3
+import Set exposing (Set)
 
 
 type alias Config msg =
     { hash : String
-    , onChange : State msg -> PhoneNumber -> Cmd msg -> msg
+    , onChange : State -> PhoneNumber -> Cmd msg -> msg
     , namespace : String
     , countries : Dict String (CountryData msg)
+    , countriesSorter : List ( String, CountryData msg ) -> List ( String, CountryData msg )
     }
 
 
@@ -30,18 +33,25 @@ defaultHashSeed =
     118999881999119
 
 
-defaultConfig : (State msg -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+defaultConfig : (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 defaultConfig =
     configWithSeed defaultHashSeed
 
 
-configWithSeed : Int -> (State msg -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+configWithSeed : Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 configWithSeed hashSeed onChange =
     { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString
     , onChange = onChange
     , namespace = "IntlPhoneInput"
     , countries = countries
+    , countriesSorter = defaultCountriesSorter
     }
+
+
+defaultCountriesSorter : List ( String, CountryData msg ) -> List ( String, CountryData msg )
+defaultCountriesSorter countries =
+    countries
+        |> List.sortBy (Tuple.second >> .name)
 
 
 getPhoneNumberInputId : Config msg -> String
@@ -65,6 +75,14 @@ countryList : List ( String, CountryData msg )
 countryList =
     isoCodes
         |> List.map toCountryData
+
+
+toCountryDataList : Config msg -> Set String -> List ( String, CountryData msg )
+toCountryDataList config set =
+    set
+        |> Set.toList
+        |> List.map toCountryData
+        |> config.countriesSorter
 
 
 toCountryData : String -> ( String, CountryData msg )

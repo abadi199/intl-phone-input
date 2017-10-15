@@ -9,16 +9,17 @@ module IntlPhoneInput.Internal
 
 import Dict exposing (Dict)
 import IntlPhoneInput.Type exposing (CountryData)
+import Set exposing (Set)
 
 
-type State msg
-    = State (StateData msg)
+type State
+    = State StateData
 
 
-type alias StateData msg =
+type alias StateData =
     { countryPickerState : CountryPickerState
     , highlightedCountryByIsoCode : Maybe String
-    , filteredCountries : Dict String (CountryData msg)
+    , filteredCountries : Set String
     , keyword : String
     }
 
@@ -28,17 +29,17 @@ type CountryPickerState
     | CountryPickerClosed
 
 
-initialState : State msg
+initialState : State
 initialState =
     State
         { countryPickerState = CountryPickerClosed
         , highlightedCountryByIsoCode = Nothing
-        , filteredCountries = Dict.empty
+        , filteredCountries = Set.empty
         , keyword = ""
         }
 
 
-toggleCountryPickerState : StateData msg -> StateData msg
+toggleCountryPickerState : StateData -> StateData
 toggleCountryPickerState state =
     case state.countryPickerState of
         CountryPickerClosed ->

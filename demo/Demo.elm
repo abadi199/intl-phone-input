@@ -16,13 +16,13 @@ import Task exposing (Task)
 
 type Msg
     = NoOp
-    | HomePhoneChanged (IntlPhoneInput.State Msg) PhoneNumber (Cmd Msg)
-    | OfficePhoneChanged (IntlPhoneInput.State Msg) PhoneNumber (Cmd Msg)
+    | HomePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
+    | OfficePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
 
 
 type alias Model =
-    { homePhoneNumber : ( IntlPhoneInput.State Msg, PhoneNumber )
-    , officePhoneNumber : ( IntlPhoneInput.State Msg, PhoneNumber )
+    { homePhoneNumber : ( IntlPhoneInput.State, PhoneNumber )
+    , officePhoneNumber : ( IntlPhoneInput.State, PhoneNumber )
     }
 
 
