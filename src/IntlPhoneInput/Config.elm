@@ -1,9 +1,13 @@
 module IntlPhoneInput.Config
     exposing
         ( Config
+        , countries
+        , countryList
         , defaultConfig
         , getCountryElementId
         , getPhoneNumberInputId
+        , isoCodes
+        , toCountryData
         )
 
 import Dict exposing (Dict)
@@ -15,7 +19,7 @@ import Murmur3
 
 type alias Config msg =
     { hash : String
-    , onChange : State -> PhoneNumber -> Cmd msg -> msg
+    , onChange : State msg -> PhoneNumber -> Cmd msg -> msg
     , namespace : String
     , countries : Dict String (CountryData msg)
     }
@@ -26,12 +30,12 @@ defaultHashSeed =
     118999881999119
 
 
-defaultConfig : (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+defaultConfig : (State msg -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 defaultConfig =
     configWithSeed defaultHashSeed
 
 
-configWithSeed : Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+configWithSeed : Int -> (State msg -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 configWithSeed hashSeed onChange =
     { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString
     , onChange = onChange
@@ -55,6 +59,12 @@ countries =
     isoCodes
         |> List.map toCountryData
         |> Dict.fromList
+
+
+countryList : List ( String, CountryData msg )
+countryList =
+    isoCodes
+        |> List.map toCountryData
 
 
 toCountryData : String -> ( String, CountryData msg )

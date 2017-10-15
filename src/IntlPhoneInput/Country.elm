@@ -14,7 +14,7 @@ import IntlPhoneInput.Internal as Internal exposing (State(State))
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
 
 
-countriesView : Config msg -> State -> PhoneNumber -> Html msg
+countriesView : Config msg -> State msg -> PhoneNumber -> Html msg
 countriesView config (State state) phoneNumber =
     let
         { id, class, classList } =
@@ -27,12 +27,12 @@ countriesView config (State state) phoneNumber =
                     li [ class [ Css.CountryListItem ] ]
                         [ countryView config isoCode countryData (State state) phoneNumber ]
                 )
-                (Dict.toList <| config.countries)
+                (Dict.toList <| state.filteredCountries)
             )
         ]
 
 
-countryView : Config msg -> String -> CountryData msg -> State -> PhoneNumber -> Html msg
+countryView : Config msg -> String -> CountryData msg -> State msg -> PhoneNumber -> Html msg
 countryView config isoCode countryData (State state) phoneNumber =
     let
         { id, class, classList } =

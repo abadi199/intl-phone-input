@@ -169,7 +169,7 @@ countryDropdown =
         , zIndex (int 2)
         , left zero
         , border3 (px 1) solid (hex "#ccc")
-        , height (px 250)
+        , maxHeight (px 250)
         , minWidth (px countryDropdownWidth)
         , displayFlex
         , flexDirection column
@@ -180,7 +180,7 @@ countryListScroll : Snippet
 countryListScroll =
     class CountryListScroll
         [ boxSizingMixin
-        , overflowY scroll
+        , overflowY auto
         ]
 
 

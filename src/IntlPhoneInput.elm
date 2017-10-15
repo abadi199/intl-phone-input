@@ -20,11 +20,11 @@ import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
 
 
-type alias State =
-    Internal.State
+type alias State msg =
+    Internal.State msg
 
 
-initialState : State
+initialState : State msg
 initialState =
     Internal.initialState
 
@@ -33,7 +33,7 @@ initialState =
 -- VIEW
 
 
-intlPhoneInput : Config msg -> State -> PhoneNumber -> Html msg
+intlPhoneInput : Config msg -> State msg -> PhoneNumber -> Html msg
 intlPhoneInput config (State state) phoneNumber =
     let
         { id, class, classList } =
@@ -46,7 +46,7 @@ intlPhoneInput config (State state) phoneNumber =
         ]
 
 
-countryPickerView : Config msg -> State -> PhoneNumber -> Html msg
+countryPickerView : Config msg -> State msg -> PhoneNumber -> Html msg
 countryPickerView config (State state) phoneNumber =
     let
         { id, class, classList } =
@@ -63,7 +63,7 @@ countryPickerView config (State state) phoneNumber =
         ]
 
 
-arrowView : Config msg -> State -> Html msg
+arrowView : Config msg -> State msg -> Html msg
 arrowView config (State state) =
     let
         { id, class, classList } =
@@ -72,7 +72,7 @@ arrowView config (State state) =
     span [ class [ Css.Arrow ] ] [ IntlPhoneInput.Svg.arrow ]
 
 
-countryDropdownView : Config msg -> State -> PhoneNumber -> Html msg
+countryDropdownView : Config msg -> State msg -> PhoneNumber -> Html msg
 countryDropdownView config (State state) phoneNumber =
     let
         { id, class, classList } =
@@ -95,7 +95,7 @@ countryDropdownView config (State state) phoneNumber =
                 ]
 
 
-phoneInputView : Config msg -> State -> PhoneNumber -> Html msg
+phoneInputView : Config msg -> State msg -> PhoneNumber -> Html msg
 phoneInputView config (State state) phoneNumber =
     let
         { id, class, classList } =

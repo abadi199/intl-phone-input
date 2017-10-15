@@ -7,14 +7,18 @@ module IntlPhoneInput.Internal
         , toggleCountryPickerState
         )
 
+import Dict exposing (Dict)
+import IntlPhoneInput.Type exposing (CountryData)
 
-type State
-    = State StateData
+
+type State msg
+    = State (StateData msg)
 
 
-type alias StateData =
+type alias StateData msg =
     { countryPickerState : CountryPickerState
     , highlightedCountryByIsoCode : Maybe String
+    , filteredCountries : Dict String (CountryData msg)
     , keyword : String
     }
 
@@ -24,16 +28,17 @@ type CountryPickerState
     | CountryPickerClosed
 
 
-initialState : State
+initialState : State msg
 initialState =
     State
         { countryPickerState = CountryPickerClosed
         , highlightedCountryByIsoCode = Nothing
+        , filteredCountries = Dict.empty
         , keyword = ""
         }
 
 
-toggleCountryPickerState : StateData -> StateData
+toggleCountryPickerState : StateData msg -> StateData msg
 toggleCountryPickerState state =
     case state.countryPickerState of
         CountryPickerClosed ->
