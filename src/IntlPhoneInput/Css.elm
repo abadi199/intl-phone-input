@@ -85,6 +85,7 @@ countryPicker =
         , zIndex (int 1)
         , hover [ hoverMixin ]
         , focus [ focusMixin, hoverMixin ]
+        , withClass Highlighted [ hoverMixin ]
         ]
 
 

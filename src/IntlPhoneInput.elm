@@ -54,7 +54,16 @@ countryPickerView config (State state) phoneNumber =
             Html.CssHelpers.withNamespace config.namespace
     in
     button
-        [ class [ Css.CountryPicker ]
+        [ class
+            (Css.CountryPicker
+                :: (case state.countryPickerState of
+                        CountryPickerOpened ->
+                            [ Css.Highlighted ]
+
+                        CountryPickerClosed ->
+                            []
+                   )
+            )
         , type_ "button"
         , onClick (Action.toggleCountryDropdown config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
