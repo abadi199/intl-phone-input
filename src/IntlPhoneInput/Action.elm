@@ -159,9 +159,17 @@ removeHighlightedCountry config (State state) phoneNumber cmd =
 
 selectHighlightedCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectHighlightedCountry config (State state) phoneNumber cmd =
-    state.highlightedCountryByIsoCode
-        |> Maybe.map (\isoCode -> selectCountry isoCode config (State state) phoneNumber cmd)
-        |> Maybe.withDefault (Action config (State state) phoneNumber cmd)
+    let
+        doNothing =
+            Action config (State state) phoneNumber cmd
+    in
+    case state.highlightedCountryByIsoCode of
+        Just isoCode ->
+            selectCountry isoCode config (State state) phoneNumber cmd
+                |> andThen closeCountryDropdown
+
+        Nothing ->
+            doNothing
 
 
 appendKeyword : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
