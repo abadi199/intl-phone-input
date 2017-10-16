@@ -4,12 +4,11 @@ module IntlPhoneInput.Svg
         , flag
         )
 
---import IntlPhoneInput.Flag.AI as AI
-
 import IntlPhoneInput.Flag.AD as AD
 import IntlPhoneInput.Flag.AE as AE
 import IntlPhoneInput.Flag.AF as AF
 import IntlPhoneInput.Flag.AG as AG
+import IntlPhoneInput.Flag.AI as AI
 import IntlPhoneInput.Flag.AL as AL
 import IntlPhoneInput.Flag.AM as AM
 import IntlPhoneInput.Flag.AO as AO
@@ -54,11 +53,9 @@ flag isoCode =
         "AG" ->
             AG.flag
 
-        {-
-               This flag is cauing and issue with elm reactor...
-           "AI" ->
-               AI.flag
-        -}
+        "AI" ->
+            AI.flag
+
         "AL" ->
             AL.flag
 

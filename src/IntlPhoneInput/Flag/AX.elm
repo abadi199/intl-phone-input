@@ -16,7 +16,6 @@ flag =
             [ Svg.clipPath [ id "a" ]
                 [ path [ d "M106.25 0h1133.3v850H106.25z", Svg.Attributes.fillOpacity ".67" ]
                     []
-                , text "    "
                 ]
             ]
         , g [ Svg.Attributes.clipPath "url(#a)", transform "matrix(.56472 0 0 .56482 -60.002 -.1)" ]
@@ -25,18 +24,14 @@ flag =
             , g [ fill "#ffce00" ]
                 [ path [ d "M400 0h250v850H400z" ]
                     []
-                , text "      "
                 , path [ d "M0 300h1300v250H0z" ]
                     []
-                , text "    "
                 ]
             , g [ fill "#d21034" ]
                 [ path [ d "M475 0h100v850H475z" ]
                     []
-                , text "      "
                 , path [ d "M0 375h1300v100H0z" ]
                     []
-                , text "    "
                 ]
             ]
         ]

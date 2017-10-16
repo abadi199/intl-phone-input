@@ -15,9 +15,7 @@ flag =
         [ g [ Svg.Attributes.fillRule "evenodd" ]
             [ path [ d "M640 480H0V0h640z", fill "#fff" ]
                 []
-            , text "    "
             , path [ d "M640 480H0V319.997h640zm0-319.875H0V.122h640z", fill "#df0000" ]
                 []
-            , text "  "
             ]
         ]
