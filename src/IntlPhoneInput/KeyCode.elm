@@ -2,12 +2,12 @@ module IntlPhoneInput.KeyCode
     exposing
         ( ArrowKey(..)
         , KeyCode(..)
+        , KeyData
         , alphabetKey
         , alphabetKeyCodes
         , arrowKey
         , enterKey
         , escKey
-          -- , keyCodes
         , toArrowKey
         , toKeyCode
         )
@@ -31,14 +31,12 @@ type ArrowKey
     | Right
 
 
-type KeyModifier
-    = Shift
-    | Ctrl
-    | Alt
-
-
 type alias KeyData =
-    { keyCode : Int, modified : KeyModifier }
+    { keyCode : Int
+    , shiftKey : Bool
+    , ctrlKey : Bool
+    , altKey : Bool
+    }
 
 
 alphabetKeyCodes : List Int
@@ -46,9 +44,9 @@ alphabetKeyCodes =
     List.range 65 90
 
 
-toArrowKey : Int -> Result String ArrowKey
-toArrowKey keyCode =
-    case keyCode of
+toArrowKey : KeyData -> Result String ArrowKey
+toArrowKey keyData =
+    case keyData.keyCode of
         37 ->
             Result.Ok Left
 
@@ -65,9 +63,9 @@ toArrowKey keyCode =
             Result.Err "not arrow key"
 
 
-toKeyCode : Int -> Result String KeyCode
-toKeyCode keyCode =
-    case keyCode of
+toKeyCode : KeyData -> Result String KeyCode
+toKeyCode keyData =
+    case keyData.keyCode of
         27 ->
             Result.Ok Esc
 
@@ -78,15 +76,22 @@ toKeyCode keyCode =
             Result.Ok Backspace
 
         _ ->
-            if List.member keyCode alphabetKeyCodes then
-                Result.Ok <| Alphabet (Char.fromCode keyCode)
+            if List.member keyData.keyCode alphabetKeyCodes then
+                Char.fromCode keyData.keyCode
+                    |> (if keyData.shiftKey then
+                            Char.toUpper
+                        else
+                            Char.toLower
+                       )
+                    |> Alphabet
+                    |> Result.Ok
             else
-                Result.Err (toString keyCode ++ "is ignored")
+                Result.Err (toString keyData.keyCode ++ "is ignored")
 
 
-arrowKey : Int -> Json.Decode.Decoder KeyCode
-arrowKey keyCode =
-    case toArrowKey keyCode of
+arrowKey : KeyData -> Json.Decode.Decoder KeyCode
+arrowKey keyData =
+    case toArrowKey keyData of
         Result.Ok arrowKey ->
             Json.Decode.succeed (Arrow arrowKey)
 
@@ -94,9 +99,9 @@ arrowKey keyCode =
             Json.Decode.fail err
 
 
-enterKey : Int -> Json.Decode.Decoder KeyCode
-enterKey keyCode =
-    case toKeyCode keyCode of
+enterKey : KeyData -> Json.Decode.Decoder KeyCode
+enterKey keyData =
+    case toKeyCode keyData of
         Result.Ok Enter ->
             Json.Decode.succeed Enter
 
@@ -104,9 +109,9 @@ enterKey keyCode =
             Json.Decode.fail "not an enter"
 
 
-escKey : Int -> Json.Decode.Decoder KeyCode
-escKey keyCode =
-    case toKeyCode keyCode of
+escKey : KeyData -> Json.Decode.Decoder KeyCode
+escKey keyData =
+    case toKeyCode keyData of
         Result.Ok Esc ->
             Json.Decode.succeed Esc
 
@@ -114,9 +119,9 @@ escKey keyCode =
             Json.Decode.fail "not an escape"
 
 
-alphabetKey : Int -> Json.Decode.Decoder KeyCode
-alphabetKey keyCode =
-    case toKeyCode keyCode of
+alphabetKey : KeyData -> Json.Decode.Decoder KeyCode
+alphabetKey keyData =
+    case toKeyCode keyData of
         Result.Ok (Alphabet char) ->
             Json.Decode.succeed (Alphabet char)
 

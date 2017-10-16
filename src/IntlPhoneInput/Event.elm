@@ -5,33 +5,49 @@ module IntlPhoneInput.Event
 
 import Html
 import Html.Attributes
-import Html.Events exposing (keyCode, on, onWithOptions)
+import Html.Events exposing (on, onWithOptions)
 import IntlPhoneInput.Action as Action exposing (Action)
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Internal exposing (State(..))
-import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
+import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..), KeyData)
 import IntlPhoneInput.Type exposing (PhoneNumber)
 import Json.Decode
 
 
-batchKeyDown : List ( Int -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
+batchKeyDown : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
 batchKeyDown =
     batch "keydown"
 
 
-batchKeyPress : List ( Int -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
+batchKeyPress : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
 batchKeyPress =
     batch "keypress"
 
 
-batch : String -> List ( Int -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
+keyDataDecoder : Json.Decode.Decoder KeyData
+keyDataDecoder =
+    Json.Decode.map4
+        (\keyCode altKey shiftKey ctrlKey ->
+            { keyCode = keyCode
+            , altKey = altKey
+            , shiftKey = shiftKey
+            , ctrlKey = ctrlKey
+            }
+        )
+        (Json.Decode.field "keyCode" Json.Decode.int)
+        (Json.Decode.field "altKey" Json.Decode.bool)
+        (Json.Decode.field "shiftKey" Json.Decode.bool)
+        (Json.Decode.field "ctrlKey" Json.Decode.bool)
+
+
+batch : String -> List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
 batch event actions config (State state) phoneNumber =
     let
         oneOf =
             Json.Decode.oneOf (List.map toDecoderAction actions)
 
         toDecoderAction ( decoder, action ) =
-            keyCode
+            keyDataDecoder
                 |> Json.Decode.andThen decoder
                 |> Json.Decode.map action
     in

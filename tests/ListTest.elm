@@ -35,29 +35,26 @@ nextSuite =
 prevSuite : Test
 prevSuite =
     describe "prev"
-        [ skip <|
-            test "prev of 888 is 887" <|
-                \_ ->
-                    List.range 0 999
-                        |> IntlPhoneInput.List.prev 888
-                        |> Expect.equal 887
-        , skip <|
-            test "prev of first item is the item" <|
-                \_ ->
-                    List.range 0 999
-                        |> IntlPhoneInput.List.prev 0
-                        |> Expect.equal 0
-        , skip <|
-            fuzz currentMaxFuzzer "prev of a is (a - 1)" <|
-                \( current, max ) ->
-                    List.range 0 max
-                        |> IntlPhoneInput.List.prev current
-                        |> Expect.equal
-                            (if current == 0 then
-                                current
-                             else
-                                current - 1
-                            )
+        [ test "prev of 888 is 887" <|
+            \_ ->
+                List.range 0 999
+                    |> IntlPhoneInput.List.prev 888
+                    |> Expect.equal 887
+        , test "prev of first item is the item" <|
+            \_ ->
+                List.range 0 999
+                    |> IntlPhoneInput.List.prev 0
+                    |> Expect.equal 0
+        , fuzz currentMaxFuzzer "prev of a is (a - 1)" <|
+            \( current, max ) ->
+                List.range 0 max
+                    |> IntlPhoneInput.List.prev current
+                    |> Expect.equal
+                        (if current == 0 then
+                            current
+                         else
+                            current - 1
+                        )
         ]
 
 

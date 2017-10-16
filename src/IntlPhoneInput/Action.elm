@@ -174,7 +174,7 @@ appendKeyword keyCode config (State state) phoneNumber cmd =
         Alphabet char ->
             Action
                 config
-                (State { state | keyword = state.keyword ++ (char |> String.fromChar |> String.toLower) })
+                (State { state | keyword = state.keyword ++ (char |> String.fromChar) })
                 phoneNumber
                 cmd
                 |> andThen filterCountries
@@ -261,7 +261,7 @@ ignoreTaskError config state phoneNumber result =
         _ =
             case result of
                 Result.Err err ->
-                    Debug.log "Task error" err |> toString
+                    err |> toString
 
                 Result.Ok _ ->
                     ""
