@@ -4,6 +4,7 @@ module IntlPhoneInput.Action
         , andThen
         , appendKeyword
         , closeCountryDropdown
+        , doNothing
         , done
         , focus
         , highlightCountry
@@ -32,6 +33,11 @@ import Task
 
 type Action msg
     = Action (Config msg) State PhoneNumber (Cmd msg)
+
+
+doNothing : Config msg -> State -> PhoneNumber -> msg
+doNothing config state phoneNumber =
+    config.onChange state phoneNumber Cmd.none
 
 
 done : Action msg -> msg

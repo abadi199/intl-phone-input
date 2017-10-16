@@ -4,11 +4,10 @@ module IntlPhoneInput.Country
         , countryView
         )
 
-import Dict
 import Html exposing (Html, button, div, li, span, text, ul)
 import Html.Attributes exposing (type_)
 import Html.CssHelpers
-import Html.Events exposing (onClick, onFocus, onMouseOver)
+import Html.Events exposing (onBlur, onClick, onFocus, onMouseOver)
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css as Css

@@ -8,7 +8,7 @@ module IntlPhoneInput
 import Html exposing (Html, button, div, input, label, span, text)
 import Html.Attributes exposing (id, placeholder, type_, value)
 import Html.CssHelpers
-import Html.Events exposing (on, onClick, onInput)
+import Html.Events exposing (on, onBlur, onClick, onFocus, onInput)
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Country as Country
@@ -99,7 +99,9 @@ countryDropdownView config (State state) phoneNumber =
             Html.text ""
 
         CountryPickerOpened ->
-            div [ class [ Css.CountryDropdown ] ]
+            div
+                [ class [ Css.CountryDropdown ]
+                ]
                 [ searchInput config (State state) phoneNumber
                 , Country.countriesView config (State state) phoneNumber
                 ]
@@ -130,6 +132,7 @@ searchInput config (State state) phoneNumber =
                 Action.updateKeyword value config (State state) phoneNumber Cmd.none
                     |> Action.done
             )
+        , Event.onClickStopPropagation (Action.doNothing config (State state) phoneNumber)
         ]
         []
 

@@ -7,8 +7,6 @@ module IntlPhoneInput.Internal
         , toggleCountryPickerState
         )
 
-import Dict exposing (Dict)
-import IntlPhoneInput.Type exposing (CountryData)
 import Set exposing (Set)
 
 

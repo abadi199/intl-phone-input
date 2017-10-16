@@ -1,6 +1,7 @@
 module IntlPhoneInput.Event
     exposing
         ( batchKeyDown
+        , onClickStopPropagation
         )
 
 import Html
@@ -12,6 +13,14 @@ import IntlPhoneInput.Internal exposing (State(..))
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..), KeyData)
 import IntlPhoneInput.Type exposing (PhoneNumber)
 import Json.Decode
+
+
+onClickStopPropagation : msg -> Html.Attribute msg
+onClickStopPropagation tagger =
+    onWithOptions
+        "click"
+        { stopPropagation = True, preventDefault = False }
+        (Json.Decode.succeed tagger)
 
 
 batchKeyDown : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
