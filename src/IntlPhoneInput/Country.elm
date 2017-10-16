@@ -15,6 +15,7 @@ import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (State(State))
+import IntlPhoneInput.KeyCode as KeyCode
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
 
 
@@ -56,11 +57,17 @@ countryView config isoCode countryData (State state) phoneNumber =
         , onClick (Action.selectCountry isoCode config (State state) phoneNumber Cmd.none |> Action.done)
         , onMouseOver
             (Action.highlightCountry isoCode config (State state) phoneNumber Cmd.none
-                |> Action.andThen (Action.focus (Just isoCode))
                 |> Action.done
             )
         , onFocus (Action.highlightCountry isoCode config (State state) phoneNumber Cmd.none |> Action.done)
-        , Event.onKeyDown (\keyCode -> Action.processKeyboardOnCountry keyCode config (State state) phoneNumber Cmd.none |> Action.done)
+        , Event.batchKeyDown
+            [ ( KeyCode.arrowKey, Action.navigateCountry )
+            , ( KeyCode.escKey, always Action.closeCountryDropdown )
+            , ( KeyCode.alphabetKey, Action.appendKeyword )
+            ]
+            config
+            (State state)
+            phoneNumber
         ]
         [ Flag.flagWrapper config countryData.flag
         , span [ class [ Css.CountryName ] ] [ text countryData.name ]

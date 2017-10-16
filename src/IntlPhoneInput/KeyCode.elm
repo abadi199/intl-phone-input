@@ -2,10 +2,12 @@ module IntlPhoneInput.KeyCode
     exposing
         ( ArrowKey(..)
         , KeyCode(..)
+        , alphabetKey
         , alphabetKeyCodes
         , arrowKey
         , enterKey
-        , keyCodes
+        , escKey
+          -- , keyCodes
         , toArrowKey
         , toKeyCode
         )
@@ -19,7 +21,6 @@ type KeyCode
     | Enter
     | Backspace
     | Alphabet Char
-    | Ignore
     | Arrow ArrowKey
 
 
@@ -30,9 +31,14 @@ type ArrowKey
     | Right
 
 
-keyCodes : List Int
-keyCodes =
-    [ 27, 37, 38, 39, 40, 13, 8 ] ++ alphabetKeyCodes
+type KeyModifier
+    = Shift
+    | Ctrl
+    | Alt
+
+
+type alias KeyData =
+    { keyCode : Int, modified : KeyModifier }
 
 
 alphabetKeyCodes : List Int
@@ -59,23 +65,23 @@ toArrowKey keyCode =
             Result.Err "not arrow key"
 
 
-toKeyCode : Int -> KeyCode
+toKeyCode : Int -> Result String KeyCode
 toKeyCode keyCode =
     case keyCode of
         27 ->
-            Esc
+            Result.Ok Esc
 
         13 ->
-            Enter
+            Result.Ok Enter
 
         8 ->
-            Backspace
+            Result.Ok Backspace
 
         _ ->
             if List.member keyCode alphabetKeyCodes then
-                Alphabet (Char.fromCode keyCode)
+                Result.Ok <| Alphabet (Char.fromCode keyCode)
             else
-                Ignore
+                Result.Err (toString keyCode ++ "is ignored")
 
 
 arrowKey : Int -> Json.Decode.Decoder KeyCode
@@ -91,8 +97,28 @@ arrowKey keyCode =
 enterKey : Int -> Json.Decode.Decoder KeyCode
 enterKey keyCode =
     case toKeyCode keyCode of
-        Enter ->
+        Result.Ok Enter ->
             Json.Decode.succeed Enter
 
         _ ->
             Json.Decode.fail "not an enter"
+
+
+escKey : Int -> Json.Decode.Decoder KeyCode
+escKey keyCode =
+    case toKeyCode keyCode of
+        Result.Ok Esc ->
+            Json.Decode.succeed Esc
+
+        _ ->
+            Json.Decode.fail "not an escape"
+
+
+alphabetKey : Int -> Json.Decode.Decoder KeyCode
+alphabetKey keyCode =
+    case toKeyCode keyCode of
+        Result.Ok (Alphabet char) ->
+            Json.Decode.succeed (Alphabet char)
+
+        _ ->
+            Json.Decode.fail "not alphabet"

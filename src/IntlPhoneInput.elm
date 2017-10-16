@@ -57,7 +57,13 @@ countryPickerView config (State state) phoneNumber =
         [ class [ Css.CountryPicker ]
         , type_ "button"
         , onClick (Action.toggleCountryDropdown config (State state) phoneNumber Cmd.none |> Action.done)
-        , Event.onKeyDown (\keyCode -> Action.processKeyboardOnPicker keyCode config (State state) phoneNumber Cmd.none |> Action.done)
+        , Event.batchKeyDown
+            [ ( KeyCode.arrowKey, always Action.openCountryDropdown )
+            , ( KeyCode.escKey, always Action.closeCountryDropdown )
+            ]
+            config
+            (State state)
+            phoneNumber
         ]
         [ Flag.flag config phoneNumber
         , arrowView config (State state)
@@ -102,16 +108,14 @@ searchInput config (State state) phoneNumber =
         , class [ Css.SearchInput ]
         , value state.keyword
         , placeholder "Search"
-        , Event.batch
+        , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
             , ( KeyCode.enterKey, always Action.selectHighlightedCountry )
+            , ( KeyCode.escKey, always Action.closeCountryDropdown )
             ]
             config
             (State state)
             phoneNumber
-
-        -- , Event.onArrowKey (\arrowKey -> Action.processArrowKey arrowKey config (State state) phoneNumber Cmd.none |> Action.done)
-        -- , Event.onEnterKey (Action.selectHighlightedCountry config (State state) phoneNumber Cmd.none |> Action.done)
         , onInput
             (\value ->
                 Action.updateKeyword value config (State state) phoneNumber Cmd.none

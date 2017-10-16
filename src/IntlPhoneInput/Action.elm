@@ -2,12 +2,13 @@ module IntlPhoneInput.Action
     exposing
         ( Action
         , andThen
+        , appendKeyword
+        , closeCountryDropdown
         , done
         , focus
         , highlightCountry
         , navigateCountry
-        , processKeyboardOnCountry
-        , processKeyboardOnPicker
+        , openCountryDropdown
         , removeHighlightedCountry
         , selectCountry
         , selectHighlightedCountry
@@ -64,32 +65,6 @@ toggleCountryDropdown config (State state) phoneNumber cmd =
 
         CountryPickerClosed ->
             openCountryDropdown config (State state) phoneNumber cmd
-
-
-processKeyboardOnPicker : Int -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-processKeyboardOnPicker keyCode config state phoneNumber cmd =
-    let
-        doNothing =
-            Action config state phoneNumber cmd
-    in
-    case KeyCode.toKeyCode keyCode of
-        Esc ->
-            closeCountryDropdown config state phoneNumber cmd
-
-        Enter ->
-            toggleCountryDropdown config state phoneNumber cmd
-
-        Alphabet char ->
-            openCountryDropdown config state phoneNumber cmd
-
-        Backspace ->
-            doNothing
-
-        Ignore ->
-            doNothing
-
-        Arrow _ ->
-            doNothing
 
 
 closeCountryDropdown : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -182,33 +157,6 @@ removeHighlightedCountry config (State state) phoneNumber cmd =
         cmd
 
 
-processKeyboardOnCountry : Int -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-processKeyboardOnCountry keyCode config (State state) phoneNumber cmd =
-    let
-        doNothing =
-            Action config (State state) phoneNumber cmd
-    in
-    case KeyCode.toKeyCode keyCode of
-        Esc ->
-            closeCountryDropdown config (State state) phoneNumber cmd
-
-        Alphabet char ->
-            appendKeyword char config (State state) phoneNumber cmd
-
-        Enter ->
-            selectHighlightedCountry config (State state) phoneNumber cmd
-                |> andThen closeCountryDropdown
-
-        Backspace ->
-            deleteKeyword config (State state) phoneNumber cmd
-
-        Ignore ->
-            doNothing
-
-        Arrow _ ->
-            doNothing
-
-
 selectHighlightedCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectHighlightedCountry config (State state) phoneNumber cmd =
     state.highlightedCountryByIsoCode
@@ -216,14 +164,23 @@ selectHighlightedCountry config (State state) phoneNumber cmd =
         |> Maybe.withDefault (Action config (State state) phoneNumber cmd)
 
 
-appendKeyword : Char -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-appendKeyword char config (State state) phoneNumber cmd =
-    Action
-        config
-        (State { state | keyword = state.keyword ++ (char |> String.fromChar |> String.toLower) })
-        phoneNumber
-        cmd
-        |> andThen filterCountries
+appendKeyword : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+appendKeyword keyCode config (State state) phoneNumber cmd =
+    let
+        doNothing =
+            Action config (State state) phoneNumber cmd
+    in
+    case keyCode of
+        Alphabet char ->
+            Action
+                config
+                (State { state | keyword = state.keyword ++ (char |> String.fromChar |> String.toLower) })
+                phoneNumber
+                cmd
+                |> andThen filterCountries
+
+        _ ->
+            doNothing
 
 
 deleteKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
