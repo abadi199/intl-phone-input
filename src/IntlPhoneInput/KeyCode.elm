@@ -76,7 +76,9 @@ toKeyCode keyData =
             Result.Ok Backspace
 
         _ ->
-            if List.member keyData.keyCode alphabetKeyCodes then
+            if keyData.ctrlKey || keyData.altKey then
+                Result.Err "alt or ctrl key is pressed"
+            else if List.member keyData.keyCode alphabetKeyCodes then
                 Char.fromCode keyData.keyCode
                     |> (if keyData.shiftKey then
                             Char.toUpper
