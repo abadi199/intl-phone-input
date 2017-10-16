@@ -90,10 +90,13 @@ openCountryDropdown config (State state) phoneNumber cmd =
         (State { state | countryPickerState = CountryPickerOpened })
         phoneNumber
         cmd
+        |> andThen (highlightCountry phoneNumber.isoCode)
         |> andThen clearKeyword
         |> andThen filterCountries
-        |> andThen (highlightCountry phoneNumber.isoCode)
-        |> andThen (focus (Just phoneNumber.isoCode))
+
+
+
+-- |> andThen (focus (Just phoneNumber.isoCode))
 
 
 clearKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
