@@ -1,6 +1,7 @@
 module IntlPhoneInput.Internal
     exposing
         ( CountryPickerState(..)
+        , FocusEvent
         , State(..)
         , StateData
         , initialState
@@ -45,3 +46,8 @@ toggleCountryPickerState state =
 
         CountryPickerOpened ->
             { state | countryPickerState = CountryPickerClosed }
+
+
+type alias FocusEvent =
+    { relatedTargetId : Maybe String
+    }

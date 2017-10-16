@@ -7,13 +7,14 @@ module IntlPhoneInput.Config
         , getCountryElementId
         , getPhoneNumberInputId
         , getSearchInputId
+        , isDropdownElement
         , isoCodes
         , toCountryData
         , toCountryDataList
         )
 
 import Dict exposing (Dict)
-import IntlPhoneInput.Internal exposing (State, initialState)
+import IntlPhoneInput.Internal exposing (State(..), initialState)
 import IntlPhoneInput.Svg as Svg
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber, emptyPhoneNumber)
 import Murmur3
@@ -68,6 +69,20 @@ getSearchInputId config =
 getCountryElementId : Config msg -> String -> String
 getCountryElementId config isoCode =
     config.namespace ++ "_Country_" ++ isoCode ++ "_" ++ config.hash
+
+
+isDropdownElement : String -> Config msg -> State -> Bool
+isDropdownElement domId config (State state) =
+    let
+        isCountryElement =
+            state.filteredCountries
+                |> Set.map (getCountryElementId config)
+                |> Set.member domId
+
+        isSearchElement =
+            domId == getSearchInputId config
+    in
+    isCountryElement || isSearchElement
 
 
 countries : Dict String (CountryData msg)

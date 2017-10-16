@@ -3,6 +3,7 @@ module IntlPhoneInput.Action
         ( Action
         , andThen
         , appendKeyword
+        , autocloseCountryDropdown
         , closeCountryDropdown
         , doNothing
         , done
@@ -22,7 +23,7 @@ import Dict
 import Dom
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Filter as Filter
-import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State))
+import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), FocusEvent, State(State))
 import IntlPhoneInput.KeyCode as KeyCode exposing (ArrowKey(..), KeyCode(..))
 import IntlPhoneInput.List as List
 import IntlPhoneInput.Type as Type exposing (PhoneNumber)
@@ -343,3 +344,15 @@ navigateCountry arrowKey config (State state) phoneNumber cmd =
 
         _ ->
             doNothing
+
+
+autocloseCountryDropdown : FocusEvent -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+autocloseCountryDropdown focusEvent config (State state) phoneNumber cmd =
+    let
+        doNothing =
+            Action config (State state) phoneNumber cmd
+    in
+    if Config.isDropdownElement (focusEvent.relatedTargetId |> Maybe.withDefault "") config (State state) then
+        doNothing
+    else
+        Action config (State { state | countryPickerState = CountryPickerClosed }) phoneNumber Cmd.none

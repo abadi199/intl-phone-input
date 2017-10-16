@@ -19,6 +19,7 @@ import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), Sta
 import IntlPhoneInput.KeyCode as KeyCode
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
+import String
 
 
 type alias State =
@@ -119,6 +120,8 @@ searchInput config (State state) phoneNumber =
         , class [ Css.SearchInput ]
         , value state.keyword
         , placeholder "Search"
+        , Event.onBlur
+            (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
             , ( KeyCode.enterKey, always Action.selectHighlightedCountry )

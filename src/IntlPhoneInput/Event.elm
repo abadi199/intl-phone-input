@@ -1,6 +1,7 @@
 module IntlPhoneInput.Event
     exposing
         ( batchKeyDown
+        , onBlur
         , onClickStopPropagation
         )
 
@@ -9,7 +10,7 @@ import Html.Attributes
 import Html.Events exposing (on, onWithOptions)
 import IntlPhoneInput.Action as Action exposing (Action)
 import IntlPhoneInput.Config exposing (Config)
-import IntlPhoneInput.Internal exposing (State(..))
+import IntlPhoneInput.Internal exposing (FocusEvent, State(..))
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..), KeyData)
 import IntlPhoneInput.Type exposing (PhoneNumber)
 import Json.Decode
@@ -21,6 +22,24 @@ onClickStopPropagation tagger =
         "click"
         { stopPropagation = True, preventDefault = False }
         (Json.Decode.succeed tagger)
+
+
+onBlur : (FocusEvent -> msg) -> Html.Attribute msg
+onBlur msg =
+    let
+        relatedTargetDecoder =
+            Json.Decode.oneOf
+                [ Json.Decode.at [ "relatedTarget", "id" ] (Json.Decode.nullable Json.Decode.string)
+                , Json.Decode.field "relatedTarget" (Json.Decode.null Nothing)
+                ]
+    in
+    on
+        "blur"
+        (Json.Decode.map
+            (\targetId -> { relatedTargetId = targetId })
+            relatedTargetDecoder
+            |> Json.Decode.map msg
+        )
 
 
 batchKeyDown : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
