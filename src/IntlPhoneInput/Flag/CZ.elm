@@ -6,5 +6,19 @@ import Svg.Attributes exposing (..)
 
 flag : Svg msg
 flag =
-    svg [ width "100%", height "100%", viewBox "0 0 640 480" ]
-        [ rect [ fill "#aaa", x "0", y "0", width "640", height "480" ] [] ]
+    svg [ height "100%", width "100%", viewBox "0 0 640 480" ]
+        [ defs []
+            [ Svg.clipPath [ id "a" ]
+                [ Svg.path [ fillOpacity ".67", d "M-74 0h682.67v512H-74z" ]
+                    []
+                ]
+            ]
+        , g [ fillRule "evenodd", Svg.Attributes.clipPath "url(#a)", transform "translate(69.38) scale(.94)", strokeWidth "1pt" ]
+            [ Svg.path [ fill "#e80000", d "M-74 0h768v512H-74z" ]
+                []
+            , Svg.path [ fill "#fff", d "M-74 0h768v256H-74z" ]
+                []
+            , Svg.path [ d "M-74 0l382.73 255.67L-74 511.01V0z", fill "#00006f" ]
+                []
+            ]
+        ]
