@@ -266,6 +266,9 @@ arrow =
 flag : String -> Svg msg
 flag isoCode =
     case String.toUpper isoCode of
+        "AD" ->
+            AD.flag
+
         "AE" ->
             AE.flag
 
