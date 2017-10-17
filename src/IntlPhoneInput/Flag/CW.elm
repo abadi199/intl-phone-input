@@ -8,10 +8,10 @@ flag : Svg msg
 flag =
     svg [ height "100%", width "100%", viewBox "0 0 640 480" ]
         [ defs []
-            [ Svg.path [ id "b", d "M0-1l.225.69H.95L.364.12l.225.69L0 .383-.588.81l.225-.692L-.95-.31h.725z" ]
+            [ Svg.path [ id "b", d "M0-1v1h1-1l1 1-1-1-1 1 1-1h-1 1z" ]
                 []
             , Svg.clipPath [ id "a" ]
-                [ Svg.path [ fillOpacity ".67", d "M0 0h682.67v512H0z" ]
+                [ Svg.path [ d "M0 0h683v512H0z" ]
                     []
                 ]
             ]

@@ -11,7 +11,7 @@ flag =
             [ g [ id "d", transform "translate(0 -36)" ]
                 [ g [ id "c" ]
                     [ g [ id "b" ]
-                        [ Svg.path [ d "M0-5L-1.545-.245l2.853.927z", id "a", fill "#fff" ]
+                        [ Svg.path [ d "M0-5l-2 5 3 1z", id "a", fill "#fff" ]
                             []
                         , use [ xlinkHref "#a", transform "scale(-1 1)", width "180", height "120" ]
                             []

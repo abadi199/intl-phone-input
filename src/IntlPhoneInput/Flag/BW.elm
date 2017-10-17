@@ -12,7 +12,7 @@ flag =
                 []
             , Svg.path [ fill "#fff", d "M0 160h640v160H0z" ]
                 []
-            , Svg.path [ fill "#000", d "M0 185.97h640v108.05H0z" ]
+            , Svg.path [ d "M0 186h640v108H0z" ]
                 []
             ]
         ]

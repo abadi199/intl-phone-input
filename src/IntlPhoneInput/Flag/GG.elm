@@ -13,7 +13,7 @@ flag =
             []
         , Svg.path [ d "M0 176h640v128H0z", fill "#e8112d" ]
             []
-        , Svg.path [ id "a", d "M109.991 286.667l23.342-23.343h210.01v-46.666h-210.01l-23.342-23.325z", fill "#f9dd16" ]
+        , Svg.path [ id "a", d "M110 287l23-24h210v-46H133l-23-24z", fill "#f9dd16" ]
             []
         , use [ xlinkHref "#a", transform "rotate(90 320 240)", height "24", width "36" ]
             []
