@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   id="svg4136"
+   viewBox="0 0 640 480"
+   width="640"
+   height="480">
+  <metadata
+     id="metadata4898">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4138">
+    <linearGradient
+       id="a">
+      <stop
+         id="stop4141"
+         stop-color="#fff"
+         offset="0" />
+      <stop
+         id="stop4143"
+         stop-color="#f15770"
+         offset="1" />
+    </linearGradient>
+    <radialGradient
+       id="b"
+       xlink:href="#a"
+       gradientUnits="userSpaceOnUse"
+       cx="842.31"
+       cy="103.66"
+       r="25.859"
+       gradientTransform="matrix(.14152 .03595 -.03453 .14198 213.144 162.444)" />
+    <radialGradient
+       id="c"
+       xlink:href="#a"
+       gradientUnits="userSpaceOnUse"
+       cx="651.52"
+       cy="550.46"
+       r="25.859"
+       gradientTransform="matrix(-.13441 -.05384 .04964 -.12489 397.879 -24.245)" />
+    <radialGradient
+       id="d"
+       xlink:href="#a"
+       gradientUnits="userSpaceOnUse"
+       cx="380.84"
+       cy="740.37"
+       r="25.859"
+       gradientTransform="matrix(.07536 .00282 -.00343 .14804 412.4 -203.629)" />
+  </defs>
+  <path
+     id="path4148"
+     d="M426.667 0H640v480H426.667z"
+     fill="#ce1126" />
+  <path
+     id="path4150"
+     d="M213.333 0h213.333v480H213.333z"
+     fill="#fff" />
+  <path
+     id="path4152"
+     d="M0 0h213.333v480H0z"
+     fill="#006847" />
+</svg>

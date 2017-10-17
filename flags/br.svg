@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="480"
+   width="640"
+   viewBox="0 0 640 480"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="br.svg">
+  <metadata
+     id="metadata76">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs74" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="2560"
+     inkscape:window-height="1027"
+     id="namedview72"
+     showgrid="false"
+     inkscape:zoom="1.8"
+     inkscape:cx="312.73661"
+     inkscape:cy="267.10678"
+     inkscape:window-x="1358"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4" />
+  <g
+     stroke-width="1pt"
+     id="g4">
+    <path
+       fill-rule="evenodd"
+       fill="#229e45"
+       d="M0 0h640v480H0z"
+       id="path6" />
+    <path
+       d="M321.406 435.935l301.483-195.67-303.308-196.2L17.11 240.734l304.296 195.2z"
+       fill-rule="evenodd"
+       fill="#f8e509"
+       id="path8" />
+    <path
+       d="M452.77 240.005c0 70.328-57.103 127.34-127.544 127.34-70.442 0-127.544-57.012-127.544-127.34s57.104-127.34 127.544-127.34c70.442 0 127.545 57.012 127.545 127.34z"
+       fill-rule="evenodd"
+       fill="#2b49a3"
+       id="path10" />
+    <path
+       d="M444.368 285.817c1.944-5.083 4.45-12.75 5.783-19.786-67.742-59.508-143.26-89.993-238.68-83.72-3.422 6.558-6.16 13.423-8.47 20.853 113.063-10.786 195.936 39.27 241.37 82.654z"
+       fill-rule="evenodd"
+       fill="#fff"
+       id="path18" />
+  </g>
+</svg>
