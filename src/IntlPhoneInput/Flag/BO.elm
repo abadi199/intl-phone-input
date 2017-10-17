@@ -6,5 +6,11 @@ import Svg.Attributes exposing (..)
 
 flag : Svg msg
 flag =
-    svg [ width "100%", height "100%", viewBox "0 0 640 480" ]
-        [ rect [ fill "#aaa", x "0", y "0", width "640", height "480" ] [] ]
+    svg [ width "100%", height "100%", viewBox "0 0 1100 750" ]
+        [ rect [ fill "#007934", width "1100", height "750" ]
+            []
+        , rect [ fill "#D52B1E", width "1100", height "500" ]
+            []
+        , rect [ fill "#F9E300", width "1100", height "250" ]
+            []
+        ]
