@@ -18,7 +18,6 @@ module IntlPhoneInput.Config
 
 import Dict exposing (Dict)
 import IntlPhoneInput.Internal exposing (State(..), initialState)
-import IntlPhoneInput.Svg as Svg
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber, emptyPhoneNumber)
 import Murmur3
 import Set exposing (Set)

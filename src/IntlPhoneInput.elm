@@ -1,11 +1,12 @@
 module IntlPhoneInput
     exposing
         ( State
+        , customIntlPhoneInput
         , initialState
         , intlPhoneInput
         )
 
-import Html exposing (Html, button, div, input, label, span, text)
+import Html exposing (Attribute, Html, button, div, input, label, span, text)
 import Html.Attributes exposing (id, placeholder, type_, value)
 import Html.CssHelpers
 import Html.Events exposing (on, onBlur, onClick, onFocus, onInput)
@@ -35,7 +36,12 @@ initialState =
 
 
 intlPhoneInput : Config msg -> State -> PhoneNumber -> Html msg
-intlPhoneInput config (State state) phoneNumber =
+intlPhoneInput =
+    customIntlPhoneInput []
+
+
+customIntlPhoneInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
+customIntlPhoneInput attributes config (State state) phoneNumber =
     let
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
@@ -43,7 +49,7 @@ intlPhoneInput config (State state) phoneNumber =
     div [ class [ Css.IntlPhoneInput ] ]
         [ countryPickerView config (State state) phoneNumber
         , countryDropdownView config (State state) phoneNumber
-        , phoneInputView config (State state) phoneNumber
+        , phoneInputView attributes config (State state) phoneNumber
         ]
 
 
@@ -142,21 +148,23 @@ searchInput config (State state) phoneNumber =
         []
 
 
-phoneInputView : Config msg -> State -> PhoneNumber -> Html msg
-phoneInputView config (State state) phoneNumber =
+phoneInputView : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
+phoneInputView attributes config (State state) phoneNumber =
     let
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
     input
-        [ type_ "tel"
-        , id <| Config.getPhoneNumberInputId config
-        , class [ Css.PhoneInput ]
-        , value phoneNumber.phoneNumber
-        , onInput
+        ([ type_ "tel"
+         , id <| Config.getPhoneNumberInputId config
+         , class [ Css.PhoneInput ]
+         , value phoneNumber.phoneNumber
+         , onInput
             (\value ->
                 Action.updatePhoneNumber value config (State state) phoneNumber Cmd.none
                     |> Action.done
             )
-        ]
+         ]
+            ++ attributes
+        )
         []

@@ -133,6 +133,11 @@ flag =
          , backgroundImage (url flagImage)
          ]
             ++ (isoCodes |> List.map flagIso)
+            ++ [ withClass (FlagIso "")
+                    [ property "background-image" "none"
+                    , backgroundColor (hex "#aaa")
+                    ]
+               ]
         )
 
 
