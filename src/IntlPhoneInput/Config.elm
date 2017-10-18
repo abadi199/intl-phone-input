@@ -1,6 +1,7 @@
 module IntlPhoneInput.Config
     exposing
         ( Config
+        , configWithId
         , countries
         , countryList
         , defaultConfig
@@ -45,6 +46,16 @@ defaultConfig =
 configWithSeed : Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
 configWithSeed hashSeed onChange =
     { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString
+    , onChange = onChange
+    , namespace = "IntlPhoneInput"
+    , countries = countries
+    , countriesSorter = defaultCountriesSorter
+    }
+
+
+configWithId : String -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+configWithId id onChange =
+    { hash = id ++ (Murmur3.hashString defaultHashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString)
     , onChange = onChange
     , namespace = "IntlPhoneInput"
     , countries = countries
