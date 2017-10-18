@@ -8,6 +8,7 @@ import Html exposing (Html, button, div, li, span, text, ul)
 import Html.Attributes exposing (type_)
 import Html.CssHelpers
 import Html.Events exposing (onBlur, onClick, onFocus, onMouseOver)
+import Html.Keyed
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css as Css
@@ -25,11 +26,13 @@ countriesView config (State state) phoneNumber =
             Html.CssHelpers.withNamespace config.namespace
     in
     div [ class [ Css.CountryListScroll ] ]
-        [ ul [ class [ Css.CountryList ] ]
+        [ Html.Keyed.ul [ class [ Css.CountryList ] ]
             (List.map
                 (\( isoCode, countryData ) ->
-                    li [ class [ Css.CountryListItem ] ]
+                    ( isoCode
+                    , li [ class [ Css.CountryListItem ] ]
                         [ countryView config isoCode countryData (State state) phoneNumber ]
+                    )
                 )
                 (state.filteredCountries |> Config.toCountryDataList config)
             )
@@ -53,7 +56,11 @@ countryView config isoCode countryData (State state) phoneNumber =
             )
         , id (Config.getCountryElementId config isoCode)
         , Html.Attributes.tabindex 0
-        , Event.onClickStopPropagation (Action.selectCountry isoCode config (State state) phoneNumber Cmd.none |> Action.done)
+        , Event.onClickStopPropagation
+            (Action.closeCountryDropdown "Country:onClick" config (State state) phoneNumber Cmd.none
+                |> Action.andThen (Action.delay 0 (Action.selectCountry "Country:onClick:delay" isoCode))
+                |> Action.done
+            )
         , Event.onBlur (State state)
             (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         , onMouseOver
@@ -64,10 +71,14 @@ countryView config isoCode countryData (State state) phoneNumber =
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
             , ( KeyCode.alphabetKey, Action.appendKeyword )
-            , ( KeyCode.key Esc, always Action.closeCountryDropdown )
+            , ( KeyCode.key Esc, always <| Action.closeCountryDropdown "Country:Esc" )
             , ( KeyCode.key Backspace, always Action.deleteKeyword )
-            , ( KeyCode.key Enter, always (Action.selectCountry isoCode) )
-            , ( KeyCode.key Spacebar, \_ -> Action.appendKeyword (KeyCode.Alphabet ' ') )
+            , ( KeyCode.key Enter
+              , \_ config state phoneNumber cmd ->
+                    Action.closeCountryDropdown "Country:Enter" config state phoneNumber cmd
+                        |> Action.andThen (Action.delay 0 (Action.selectCountry "Country:Enter" isoCode))
+              )
+            , ( KeyCode.key Spacebar, always <| Action.appendKeyword (KeyCode.Alphabet ' ') )
             ]
             config
             (State state)

@@ -30,7 +30,7 @@ onBlur (State state) msg =
         relatedTargetDecoder =
             case state.countryPickerState of
                 Internal.CountryPickerClosed ->
-                    Json.Decode.fail <| Debug.log "onBlur" "country picker is closed"
+                    Json.Decode.fail <| "country picker is closed"
 
                 Internal.CountryPickerOpened ->
                     Json.Decode.oneOf

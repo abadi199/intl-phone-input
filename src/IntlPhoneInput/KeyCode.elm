@@ -6,9 +6,6 @@ module IntlPhoneInput.KeyCode
         , alphabetKey
         , alphabetKeyCodes
         , arrowKey
-          -- , backspaceKey
-          -- , enterKey
-          -- , escKey
         , key
         , toArrowKey
         , toKeyCode

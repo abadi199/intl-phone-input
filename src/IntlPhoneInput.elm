@@ -70,7 +70,7 @@ countryPickerView config (State state) phoneNumber =
         , onClick (Action.toggleCountryDropdown config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, always Action.openCountryDropdown )
-            , ( KeyCode.key Esc, always Action.closeCountryDropdown )
+            , ( KeyCode.key Esc, always <| Action.closeCountryDropdown "CountryPicker:Esc" )
             ]
             config
             (State state)
@@ -128,7 +128,7 @@ searchInput config (State state) phoneNumber =
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
             , ( KeyCode.key Enter, always Action.selectHighlightedCountry )
-            , ( KeyCode.key Esc, always Action.closeCountryDropdown )
+            , ( KeyCode.key Esc, always <| Action.closeCountryDropdown "searchInput:Esc" )
             ]
             config
             (State state)

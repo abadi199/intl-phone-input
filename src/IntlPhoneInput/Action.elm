@@ -5,10 +5,12 @@ module IntlPhoneInput.Action
         , appendKeyword
         , autocloseCountryDropdown
         , closeCountryDropdown
+        , delay
         , deleteKeyword
         , doNothing
         , done
         , focus
+        , focusInput
         , highlightCountry
         , navigateCountry
         , openCountryDropdown
@@ -28,6 +30,7 @@ import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), Foc
 import IntlPhoneInput.KeyCode as KeyCode exposing (ArrowKey(..), KeyCode(..))
 import IntlPhoneInput.List as List
 import IntlPhoneInput.Type as Type exposing (PhoneNumber)
+import Process
 import Set
 import String
 import Task
@@ -35,6 +38,16 @@ import Task
 
 type Action msg
     = Action (Config msg) State PhoneNumber (Cmd msg)
+
+
+delay : Float -> (Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg) -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+delay ms action config state phoneNumber cmd =
+    let
+        delayedCmd =
+            Process.sleep ms
+                |> Task.attempt (\_ -> action config state phoneNumber cmd |> done)
+    in
+    Action config state phoneNumber (Cmd.batch [ cmd, delayedCmd ])
 
 
 doNothing : Config msg -> State -> PhoneNumber -> msg
@@ -57,10 +70,10 @@ updatePhoneNumber newPhoneNumber config (State state) phoneNumber cmd =
     Action config (State state) { phoneNumber | phoneNumber = newPhoneNumber } cmd
 
 
-selectCountry : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-selectCountry isoCode config (State state) phoneNumber cmd =
+selectCountry : String -> String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+selectCountry eventName isoCode config (State state) phoneNumber cmd =
     Action config
-        (State (Internal.toggleCountryPickerState { state | action = "selectCountry" }))
+        (State { state | action = eventName ++ ":selectCountry", countryPickerState = CountryPickerClosed })
         { phoneNumber | isoCode = isoCode }
         cmd
 
@@ -69,20 +82,27 @@ toggleCountryDropdown : Config msg -> State -> PhoneNumber -> Cmd msg -> Action 
 toggleCountryDropdown config (State state) phoneNumber cmd =
     case state.countryPickerState of
         CountryPickerOpened ->
-            closeCountryDropdown config (State state) phoneNumber cmd
+            Action
+                config
+                (State { state | countryPickerState = CountryPickerClosed, action = "toggleCountryDropdown" })
+                phoneNumber
+                cmd
 
         CountryPickerClosed ->
             openCountryDropdown config (State state) phoneNumber cmd
 
 
-closeCountryDropdown : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-closeCountryDropdown config (State state) phoneNumber cmd =
+closeCountryDropdown : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+closeCountryDropdown eventName config (State state) phoneNumber cmd =
     Action
         config
-        (State { state | countryPickerState = CountryPickerClosed })
+        (State { state | countryPickerState = CountryPickerClosed, action = eventName ++ ":closeCountryDropdown" })
         phoneNumber
         cmd
-        |> andThen focusInput
+
+
+
+-- |> andThen focusInput
 
 
 openCountryDropdown : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -176,8 +196,8 @@ selectHighlightedCountry config (State state) phoneNumber cmd =
     in
     case state.highlightedCountryByIsoCode of
         Just isoCode ->
-            selectCountry isoCode config (State state) phoneNumber cmd
-                |> andThen closeCountryDropdown
+            selectCountry "selectHighlightedCountry" isoCode config (State state) phoneNumber cmd
+                |> andThen (closeCountryDropdown "selectHighlightedCountry")
 
         Nothing ->
             doNothing
@@ -274,7 +294,7 @@ prevCountry config (State state) =
             Nothing
 
 
-ignoreTaskError : Config msg -> State -> PhoneNumber -> Result.Result Dom.Error () -> msg
+ignoreTaskError : Config msg -> State -> PhoneNumber -> Result.Result Dom.Error a -> msg
 ignoreTaskError config state phoneNumber result =
     let
         _ =
