@@ -19,7 +19,6 @@ import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), Sta
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
-import String
 
 
 type alias State =
