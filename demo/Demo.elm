@@ -26,8 +26,8 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "", phoneNumber = "5551234" } )
-    , officePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "", phoneNumber = "5559876" } )
+    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "uss", phoneNumber = "5551234" } )
+    , officePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "us", phoneNumber = "5559876" } )
     }
 
 

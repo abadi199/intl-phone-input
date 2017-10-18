@@ -117,10 +117,6 @@ openCountryDropdown config (State state) phoneNumber cmd =
         |> andThen filterCountries
 
 
-
--- |> andThen (focus (Just phoneNumber.isoCode))
-
-
 clearKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 clearKeyword config (State state) phoneNumber cmd =
     Action
@@ -174,7 +170,7 @@ filterCountries config (State state) phoneNumber cmd =
 highlightCountry : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 highlightCountry isoCode config (State state) phoneNumber cmd =
     Action config
-        (State { state | highlightedCountryByIsoCode = Just isoCode })
+        (State { state | highlightedCountryByIsoCode = Just <| String.toUpper isoCode })
         phoneNumber
         cmd
 

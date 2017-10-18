@@ -80,7 +80,7 @@ getSearchInputId config =
 
 getCountryElementId : Config msg -> String -> String
 getCountryElementId config isoCode =
-    config.namespace ++ "Country" ++ isoCode ++ config.hash
+    config.namespace ++ "Country" ++ String.toUpper isoCode ++ config.hash
 
 
 getCountryPickerId : Config msg -> String
@@ -129,7 +129,11 @@ toCountryDataList config set =
 
 
 toCountryData : String -> ( String, CountryData )
-toCountryData isoCode =
+toCountryData originalIsoCode =
+    let
+        isoCode =
+            String.toUpper originalIsoCode
+    in
     case isoCode of
         "AF" ->
             ( isoCode, { name = "Afghanistan (\x202Bافغانستان\x202C\x200E)", dialCode = "93" } )
