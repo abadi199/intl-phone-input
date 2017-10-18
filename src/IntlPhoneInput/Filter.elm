@@ -8,7 +8,7 @@ import IntlPhoneInput.Type exposing (CountryData)
 import String
 
 
-filterList : String -> List ( String, CountryData msg ) -> List ( String, CountryData msg )
+filterList : String -> List ( String, CountryData ) -> List ( String, CountryData )
 filterList keyword list =
     if String.isEmpty keyword then
         list
@@ -17,6 +17,6 @@ filterList keyword list =
             |> List.filter (contains keyword)
 
 
-contains : String -> ( String, CountryData msg ) -> Bool
+contains : String -> ( String, CountryData ) -> Bool
 contains keyword ( _, { name } ) =
     String.contains (String.toLower keyword) (String.toLower name)

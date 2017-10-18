@@ -78,7 +78,7 @@ countryPickerView config (State state) phoneNumber =
         , Event.onBlur (State state)
             (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         ]
-        [ Flag.flag config phoneNumber
+        [ Flag.flag config phoneNumber.isoCode
         , arrowView config (State state)
         ]
 

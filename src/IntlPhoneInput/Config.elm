@@ -27,8 +27,8 @@ type alias Config msg =
     { hash : String
     , onChange : State -> PhoneNumber -> Cmd msg -> msg
     , namespace : String
-    , countries : Dict String (CountryData msg)
-    , countriesSorter : List ( String, CountryData msg ) -> List ( String, CountryData msg )
+    , countries : Dict String CountryData
+    , countriesSorter : List ( String, CountryData ) -> List ( String, CountryData )
     }
 
 
@@ -52,7 +52,7 @@ configWithSeed hashSeed onChange =
     }
 
 
-defaultCountriesSorter : List ( String, CountryData msg ) -> List ( String, CountryData msg )
+defaultCountriesSorter : List ( String, CountryData ) -> List ( String, CountryData )
 defaultCountriesSorter countries =
     countries
         |> List.sortBy (Tuple.second >> .name)
@@ -97,20 +97,20 @@ isDropdownElement domId config (State state) =
     isCountryElement || isSearchElement
 
 
-countries : Dict String (CountryData msg)
+countries : Dict String CountryData
 countries =
     isoCodes
         |> List.map toCountryData
         |> Dict.fromList
 
 
-countryList : List ( String, CountryData msg )
+countryList : List ( String, CountryData )
 countryList =
     isoCodes
         |> List.map toCountryData
 
 
-toCountryDataList : Config msg -> Set String -> List ( String, CountryData msg )
+toCountryDataList : Config msg -> Set String -> List ( String, CountryData )
 toCountryDataList config set =
     set
         |> Set.toList
@@ -118,740 +118,740 @@ toCountryDataList config set =
         |> config.countriesSorter
 
 
-toCountryData : String -> ( String, CountryData msg )
+toCountryData : String -> ( String, CountryData )
 toCountryData isoCode =
     case isoCode of
         "AF" ->
-            ( isoCode, { name = "Afghanistan (\x202Bافغانستان\x202C\x200E)", dialCode = "93", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Afghanistan (\x202Bافغانستان\x202C\x200E)", dialCode = "93" } )
 
         "AL" ->
-            ( isoCode, { name = "Albania (Shqipëri)", dialCode = "355", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Albania (Shqipëri)", dialCode = "355" } )
 
         "DZ" ->
-            ( isoCode, { name = "Algeria (\x202Bالجزائر\x202C\x200E)", dialCode = "213", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Algeria (\x202Bالجزائر\x202C\x200E)", dialCode = "213" } )
 
         "AS" ->
-            ( isoCode, { name = "American Samoa", dialCode = "1684", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "American Samoa", dialCode = "1684" } )
 
         "AD" ->
-            ( isoCode, { name = "Andorra", dialCode = "376", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Andorra", dialCode = "376" } )
 
         "AO" ->
-            ( isoCode, { name = "Angola", dialCode = "244", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Angola", dialCode = "244" } )
 
         "AI" ->
-            ( isoCode, { name = "Anguilla", dialCode = "1264", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Anguilla", dialCode = "1264" } )
 
         "AG" ->
-            ( isoCode, { name = "Antigua and Barbuda", dialCode = "1268", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Antigua and Barbuda", dialCode = "1268" } )
 
         "AR" ->
-            ( isoCode, { name = "Argentina", dialCode = "54", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Argentina", dialCode = "54" } )
 
         "AM" ->
-            ( isoCode, { name = "Armenia (Հայաստան)", dialCode = "374", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Armenia (Հայաստան)", dialCode = "374" } )
 
         "AW" ->
-            ( isoCode, { name = "Aruba", dialCode = "297", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Aruba", dialCode = "297" } )
 
         "AU" ->
-            ( isoCode, { name = "Australia", dialCode = "61", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Australia", dialCode = "61" } )
 
         "AT" ->
-            ( isoCode, { name = "Austria (Österreich)", dialCode = "43", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Austria (Österreich)", dialCode = "43" } )
 
         "AZ" ->
-            ( isoCode, { name = "Azerbaijan (Azərbaycan)", dialCode = "994", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Azerbaijan (Azərbaycan)", dialCode = "994" } )
 
         "BS" ->
-            ( isoCode, { name = "Bahamas", dialCode = "1242", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bahamas", dialCode = "1242" } )
 
         "BH" ->
-            ( isoCode, { name = "Bahrain (\x202Bالبحرين\x202C\x200E)", dialCode = "973", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bahrain (\x202Bالبحرين\x202C\x200E)", dialCode = "973" } )
 
         "BD" ->
-            ( isoCode, { name = "Bangladesh (বাংলাদেশ)", dialCode = "880", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bangladesh (বাংলাদেশ)", dialCode = "880" } )
 
         "BB" ->
-            ( isoCode, { name = "Barbados", dialCode = "1246", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Barbados", dialCode = "1246" } )
 
         "BY" ->
-            ( isoCode, { name = "Belarus (Беларусь)", dialCode = "375", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Belarus (Беларусь)", dialCode = "375" } )
 
         "BE" ->
-            ( isoCode, { name = "Belgium (België)", dialCode = "32", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Belgium (België)", dialCode = "32" } )
 
         "BZ" ->
-            ( isoCode, { name = "Belize", dialCode = "501", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Belize", dialCode = "501" } )
 
         "BJ" ->
-            ( isoCode, { name = "Benin (Bénin)", dialCode = "229", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Benin (Bénin)", dialCode = "229" } )
 
         "BM" ->
-            ( isoCode, { name = "Bermuda", dialCode = "1441", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bermuda", dialCode = "1441" } )
 
         "BT" ->
-            ( isoCode, { name = "Bhutan (འབྲུག)", dialCode = "975", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bhutan (འབྲུག)", dialCode = "975" } )
 
         "BO" ->
-            ( isoCode, { name = "Bolivia", dialCode = "591", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bolivia", dialCode = "591" } )
 
         "BA" ->
-            ( isoCode, { name = "Bosnia and Herzegovina (Босна и Херцеговина)", dialCode = "387", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bosnia and Herzegovina (Босна и Херцеговина)", dialCode = "387" } )
 
         "BW" ->
-            ( isoCode, { name = "Botswana", dialCode = "267", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Botswana", dialCode = "267" } )
 
         "BR" ->
-            ( isoCode, { name = "Brazil (Brasil)", dialCode = "55", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Brazil (Brasil)", dialCode = "55" } )
 
         "IO" ->
-            ( isoCode, { name = "British Indian Ocean Territory", dialCode = "246", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "British Indian Ocean Territory", dialCode = "246" } )
 
         "VG" ->
-            ( isoCode, { name = "British Virgin Islands", dialCode = "1284", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "British Virgin Islands", dialCode = "1284" } )
 
         "BN" ->
-            ( isoCode, { name = "Brunei", dialCode = "673", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Brunei", dialCode = "673" } )
 
         "BG" ->
-            ( isoCode, { name = "Bulgaria (България)", dialCode = "359", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Bulgaria (България)", dialCode = "359" } )
 
         "BF" ->
-            ( isoCode, { name = "Burkina Faso", dialCode = "226", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Burkina Faso", dialCode = "226" } )
 
         "BI" ->
-            ( isoCode, { name = "Burundi (Uburundi)", dialCode = "257", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Burundi (Uburundi)", dialCode = "257" } )
 
         "KH" ->
-            ( isoCode, { name = "Cambodia (កម្ពុជា)", dialCode = "855", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cambodia (កម្ពុជា)", dialCode = "855" } )
 
         "CM" ->
-            ( isoCode, { name = "Cameroon (Cameroun)", dialCode = "237", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cameroon (Cameroun)", dialCode = "237" } )
 
         "CA" ->
-            ( isoCode, { name = "Canada", dialCode = "1", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Canada", dialCode = "1" } )
 
         "CV" ->
-            ( isoCode, { name = "Cape Verde (Kabu Verdi)", dialCode = "238", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cape Verde (Kabu Verdi)", dialCode = "238" } )
 
         "BQ" ->
-            ( isoCode, { name = "Caribbean Netherlands", dialCode = "599", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Caribbean Netherlands", dialCode = "599" } )
 
         "KY" ->
-            ( isoCode, { name = "Cayman Islands", dialCode = "1345", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cayman Islands", dialCode = "1345" } )
 
         "CF" ->
-            ( isoCode, { name = "Central African Republic (République centrafricaine)", dialCode = "236", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Central African Republic (République centrafricaine)", dialCode = "236" } )
 
         "TD" ->
-            ( isoCode, { name = "Chad (Tchad)", dialCode = "235", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Chad (Tchad)", dialCode = "235" } )
 
         "CL" ->
-            ( isoCode, { name = "Chile", dialCode = "56", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Chile", dialCode = "56" } )
 
         "CN" ->
-            ( isoCode, { name = "China (中国)", dialCode = "86", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "China (中国)", dialCode = "86" } )
 
         "CX" ->
-            ( isoCode, { name = "Christmas Island", dialCode = "61", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Christmas Island", dialCode = "61" } )
 
         "CC" ->
-            ( isoCode, { name = "Cocos (Keeling) Islands", dialCode = "61", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cocos (Keeling) Islands", dialCode = "61" } )
 
         "CO" ->
-            ( isoCode, { name = "Colombia", dialCode = "57", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Colombia", dialCode = "57" } )
 
         "KM" ->
-            ( isoCode, { name = "Comoros (\x202Bجزر القمر\x202C\x200E)", dialCode = "269", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Comoros (\x202Bجزر القمر\x202C\x200E)", dialCode = "269" } )
 
         "CD" ->
-            ( isoCode, { name = "Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)", dialCode = "243", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)", dialCode = "243" } )
 
         "CG" ->
-            ( isoCode, { name = "Congo (Republic) (Congo-Brazzaville)", dialCode = "242", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Congo (Republic) (Congo-Brazzaville)", dialCode = "242" } )
 
         "CK" ->
-            ( isoCode, { name = "Cook Islands", dialCode = "682", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cook Islands", dialCode = "682" } )
 
         "CR" ->
-            ( isoCode, { name = "Costa Rica", dialCode = "506", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Costa Rica", dialCode = "506" } )
 
         "CI" ->
-            ( isoCode, { name = "Côte d’Ivoire", dialCode = "225", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Côte d’Ivoire", dialCode = "225" } )
 
         "HR" ->
-            ( isoCode, { name = "Croatia (Hrvatska)", dialCode = "385", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Croatia (Hrvatska)", dialCode = "385" } )
 
         "CU" ->
-            ( isoCode, { name = "Cuba", dialCode = "53", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cuba", dialCode = "53" } )
 
         "CW" ->
-            ( isoCode, { name = "Curaçao", dialCode = "599", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Curaçao", dialCode = "599" } )
 
         "CY" ->
-            ( isoCode, { name = "Cyprus (Κύπρος)", dialCode = "357", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Cyprus (Κύπρος)", dialCode = "357" } )
 
         "CZ" ->
-            ( isoCode, { name = "Czech Republic (Česká republika)", dialCode = "420", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Czech Republic (Česká republika)", dialCode = "420" } )
 
         "DK" ->
-            ( isoCode, { name = "Denmark (Danmark)", dialCode = "45", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Denmark (Danmark)", dialCode = "45" } )
 
         "DJ" ->
-            ( isoCode, { name = "Djibouti", dialCode = "253", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Djibouti", dialCode = "253" } )
 
         "DM" ->
-            ( isoCode, { name = "Dominica", dialCode = "1767", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Dominica", dialCode = "1767" } )
 
         "DO" ->
-            ( isoCode, { name = "Dominican Republic (República Dominicana)", dialCode = "1", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Dominican Republic (República Dominicana)", dialCode = "1" } )
 
         "EC" ->
-            ( isoCode, { name = "Ecuador", dialCode = "593", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Ecuador", dialCode = "593" } )
 
         "EG" ->
-            ( isoCode, { name = "Egypt (\x202Bمصر\x202C\x200E)", dialCode = "20", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Egypt (\x202Bمصر\x202C\x200E)", dialCode = "20" } )
 
         "SV" ->
-            ( isoCode, { name = "El Salvador", dialCode = "503", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "El Salvador", dialCode = "503" } )
 
         "GQ" ->
-            ( isoCode, { name = "Equatorial Guinea (Guinea Ecuatorial)", dialCode = "240", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Equatorial Guinea (Guinea Ecuatorial)", dialCode = "240" } )
 
         "ER" ->
-            ( isoCode, { name = "Eritrea", dialCode = "291", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Eritrea", dialCode = "291" } )
 
         "EE" ->
-            ( isoCode, { name = "Estonia (Eesti)", dialCode = "372", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Estonia (Eesti)", dialCode = "372" } )
 
         "ET" ->
-            ( isoCode, { name = "Ethiopia", dialCode = "251", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Ethiopia", dialCode = "251" } )
 
         "FK" ->
-            ( isoCode, { name = "Falkland Islands (Islas Malvinas)", dialCode = "500", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Falkland Islands (Islas Malvinas)", dialCode = "500" } )
 
         "FO" ->
-            ( isoCode, { name = "Faroe Islands (Føroyar)", dialCode = "298", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Faroe Islands (Føroyar)", dialCode = "298" } )
 
         "FJ" ->
-            ( isoCode, { name = "Fiji", dialCode = "679", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Fiji", dialCode = "679" } )
 
         "FI" ->
-            ( isoCode, { name = "Finland (Suomi)", dialCode = "358", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Finland (Suomi)", dialCode = "358" } )
 
         "FR" ->
-            ( isoCode, { name = "France", dialCode = "33", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "France", dialCode = "33" } )
 
         "GF" ->
-            ( isoCode, { name = "French Guiana (Guyane française)", dialCode = "594", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "French Guiana (Guyane française)", dialCode = "594" } )
 
         "PF" ->
-            ( isoCode, { name = "French Polynesia (Polynésie française)", dialCode = "689", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "French Polynesia (Polynésie française)", dialCode = "689" } )
 
         "GA" ->
-            ( isoCode, { name = "Gabon", dialCode = "241", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Gabon", dialCode = "241" } )
 
         "GM" ->
-            ( isoCode, { name = "Gambia", dialCode = "220", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Gambia", dialCode = "220" } )
 
         "GE" ->
-            ( isoCode, { name = "Georgia (საქართველო)", dialCode = "995", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Georgia (საქართველო)", dialCode = "995" } )
 
         "DE" ->
-            ( isoCode, { name = "Germany (Deutschland)", dialCode = "49", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Germany (Deutschland)", dialCode = "49" } )
 
         "GH" ->
-            ( isoCode, { name = "Ghana (Gaana)", dialCode = "233", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Ghana (Gaana)", dialCode = "233" } )
 
         "GI" ->
-            ( isoCode, { name = "Gibraltar", dialCode = "350", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Gibraltar", dialCode = "350" } )
 
         "GR" ->
-            ( isoCode, { name = "Greece (Ελλάδα)", dialCode = "30", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Greece (Ελλάδα)", dialCode = "30" } )
 
         "GL" ->
-            ( isoCode, { name = "Greenland (Kalaallit Nunaat)", dialCode = "299", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Greenland (Kalaallit Nunaat)", dialCode = "299" } )
 
         "GD" ->
-            ( isoCode, { name = "Grenada", dialCode = "1473", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Grenada", dialCode = "1473" } )
 
         "GP" ->
-            ( isoCode, { name = "Guadeloupe", dialCode = "590", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guadeloupe", dialCode = "590" } )
 
         "GU" ->
-            ( isoCode, { name = "Guam", dialCode = "1671", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guam", dialCode = "1671" } )
 
         "GT" ->
-            ( isoCode, { name = "Guatemala", dialCode = "502", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guatemala", dialCode = "502" } )
 
         "GG" ->
-            ( isoCode, { name = "Guernsey", dialCode = "44", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guernsey", dialCode = "44" } )
 
         "GN" ->
-            ( isoCode, { name = "Guinea (Guinée)", dialCode = "224", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guinea (Guinée)", dialCode = "224" } )
 
         "GW" ->
-            ( isoCode, { name = "Guinea-Bissau (Guiné Bissau)", dialCode = "245", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guinea-Bissau (Guiné Bissau)", dialCode = "245" } )
 
         "GY" ->
-            ( isoCode, { name = "Guyana", dialCode = "592", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Guyana", dialCode = "592" } )
 
         "HT" ->
-            ( isoCode, { name = "Haiti", dialCode = "509", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Haiti", dialCode = "509" } )
 
         "HN" ->
-            ( isoCode, { name = "Honduras", dialCode = "504", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Honduras", dialCode = "504" } )
 
         "HK" ->
-            ( isoCode, { name = "Hong Kong (香港)", dialCode = "852", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Hong Kong (香港)", dialCode = "852" } )
 
         "HU" ->
-            ( isoCode, { name = "Hungary (Magyarország)", dialCode = "36", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Hungary (Magyarország)", dialCode = "36" } )
 
         "IS" ->
-            ( isoCode, { name = "Iceland (Ísland)", dialCode = "354", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Iceland (Ísland)", dialCode = "354" } )
 
         "IN" ->
-            ( isoCode, { name = "India (भारत)", dialCode = "91", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "India (भारत)", dialCode = "91" } )
 
         "ID" ->
-            ( isoCode, { name = "Indonesia", dialCode = "62", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Indonesia", dialCode = "62" } )
 
         "IR" ->
-            ( isoCode, { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98" } )
 
         "IQ" ->
-            ( isoCode, { name = "Iraq (\x202Bالعراق\x202C\x200E)", dialCode = "964", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Iraq (\x202Bالعراق\x202C\x200E)", dialCode = "964" } )
 
         "IE" ->
-            ( isoCode, { name = "Ireland", dialCode = "353", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Ireland", dialCode = "353" } )
 
         "IM" ->
-            ( isoCode, { name = "Isle of Man", dialCode = "44", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Isle of Man", dialCode = "44" } )
 
         "IL" ->
-            ( isoCode, { name = "Israel (\x202Bישראל\x202C\x200E)", dialCode = "972", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Israel (\x202Bישראל\x202C\x200E)", dialCode = "972" } )
 
         "IT" ->
-            ( isoCode, { name = "Italy (Italia)", dialCode = "39", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Italy (Italia)", dialCode = "39" } )
 
         "JM" ->
-            ( isoCode, { name = "Jamaica", dialCode = "1876", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Jamaica", dialCode = "1876" } )
 
         "JP" ->
-            ( isoCode, { name = "Japan (日本)", dialCode = "81", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Japan (日本)", dialCode = "81" } )
 
         "JE" ->
-            ( isoCode, { name = "Jersey", dialCode = "44", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Jersey", dialCode = "44" } )
 
         "JO" ->
-            ( isoCode, { name = "Jordan (\x202Bالأردن\x202C\x200E)", dialCode = "962", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Jordan (\x202Bالأردن\x202C\x200E)", dialCode = "962" } )
 
         "KZ" ->
-            ( isoCode, { name = "Kazakhstan (Казахстан)", dialCode = "7", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Kazakhstan (Казахстан)", dialCode = "7" } )
 
         "KE" ->
-            ( isoCode, { name = "Kenya", dialCode = "254", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Kenya", dialCode = "254" } )
 
         "KI" ->
-            ( isoCode, { name = "Kiribati", dialCode = "686", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Kiribati", dialCode = "686" } )
 
         "XK" ->
-            ( isoCode, { name = "Kosovo", dialCode = "383", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Kosovo", dialCode = "383" } )
 
         "KW" ->
-            ( isoCode, { name = "Kuwait (\x202Bالكويت\x202C\x200E)", dialCode = "965", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Kuwait (\x202Bالكويت\x202C\x200E)", dialCode = "965" } )
 
         "KG" ->
-            ( isoCode, { name = "Kyrgyzstan (Кыргызстан)", dialCode = "996", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Kyrgyzstan (Кыргызстан)", dialCode = "996" } )
 
         "LA" ->
-            ( isoCode, { name = "Laos (ລາວ)", dialCode = "856", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Laos (ລາວ)", dialCode = "856" } )
 
         "LV" ->
-            ( isoCode, { name = "Latvia (Latvija)", dialCode = "371", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Latvia (Latvija)", dialCode = "371" } )
 
         "LB" ->
-            ( isoCode, { name = "Lebanon (\x202Bلبنان\x202C\x200E)", dialCode = "961", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Lebanon (\x202Bلبنان\x202C\x200E)", dialCode = "961" } )
 
         "LS" ->
-            ( isoCode, { name = "Lesotho", dialCode = "266", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Lesotho", dialCode = "266" } )
 
         "LR" ->
-            ( isoCode, { name = "Liberia", dialCode = "231", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Liberia", dialCode = "231" } )
 
         "LY" ->
-            ( isoCode, { name = "Libya (\x202Bليبيا\x202C\x200E)", dialCode = "218", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Libya (\x202Bليبيا\x202C\x200E)", dialCode = "218" } )
 
         "LI" ->
-            ( isoCode, { name = "Liechtenstein", dialCode = "423", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Liechtenstein", dialCode = "423" } )
 
         "LT" ->
-            ( isoCode, { name = "Lithuania (Lietuva)", dialCode = "370", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Lithuania (Lietuva)", dialCode = "370" } )
 
         "LU" ->
-            ( isoCode, { name = "Luxembourg", dialCode = "352", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Luxembourg", dialCode = "352" } )
 
         "MO" ->
-            ( isoCode, { name = "Macau (澳門)", dialCode = "853", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Macau (澳門)", dialCode = "853" } )
 
         "MK" ->
-            ( isoCode, { name = "Macedonia (FYROM) (Македонија)", dialCode = "389", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Macedonia (FYROM) (Македонија)", dialCode = "389" } )
 
         "MG" ->
-            ( isoCode, { name = "Madagascar (Madagasikara)", dialCode = "261", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Madagascar (Madagasikara)", dialCode = "261" } )
 
         "MW" ->
-            ( isoCode, { name = "Malawi", dialCode = "265", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Malawi", dialCode = "265" } )
 
         "MY" ->
-            ( isoCode, { name = "Malaysia", dialCode = "60", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Malaysia", dialCode = "60" } )
 
         "MV" ->
-            ( isoCode, { name = "Maldives", dialCode = "960", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Maldives", dialCode = "960" } )
 
         "ML" ->
-            ( isoCode, { name = "Mali", dialCode = "223", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mali", dialCode = "223" } )
 
         "MT" ->
-            ( isoCode, { name = "Malta", dialCode = "356", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Malta", dialCode = "356" } )
 
         "MH" ->
-            ( isoCode, { name = "Marshall Islands", dialCode = "692", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Marshall Islands", dialCode = "692" } )
 
         "MQ" ->
-            ( isoCode, { name = "Martinique", dialCode = "596", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Martinique", dialCode = "596" } )
 
         "MR" ->
-            ( isoCode, { name = "Mauritania (\x202Bموريتانيا\x202C\x200E)", dialCode = "222", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mauritania (\x202Bموريتانيا\x202C\x200E)", dialCode = "222" } )
 
         "MU" ->
-            ( isoCode, { name = "Mauritius (Moris)", dialCode = "230", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mauritius (Moris)", dialCode = "230" } )
 
         "YT" ->
-            ( isoCode, { name = "Mayotte", dialCode = "262", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mayotte", dialCode = "262" } )
 
         "MX" ->
-            ( isoCode, { name = "Mexico (México)", dialCode = "52", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mexico (México)", dialCode = "52" } )
 
         "FM" ->
-            ( isoCode, { name = "Micronesia", dialCode = "691", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Micronesia", dialCode = "691" } )
 
         "MD" ->
-            ( isoCode, { name = "Moldova (Republica Moldova)", dialCode = "373", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Moldova (Republica Moldova)", dialCode = "373" } )
 
         "MC" ->
-            ( isoCode, { name = "Monaco", dialCode = "377", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Monaco", dialCode = "377" } )
 
         "MN" ->
-            ( isoCode, { name = "Mongolia (Монгол)", dialCode = "976", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mongolia (Монгол)", dialCode = "976" } )
 
         "ME" ->
-            ( isoCode, { name = "Montenegro (Crna Gora)", dialCode = "382", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Montenegro (Crna Gora)", dialCode = "382" } )
 
         "MS" ->
-            ( isoCode, { name = "Montserrat", dialCode = "1664", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Montserrat", dialCode = "1664" } )
 
         "MA" ->
-            ( isoCode, { name = "Morocco (\x202Bالمغرب\x202C\x200E)", dialCode = "212", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Morocco (\x202Bالمغرب\x202C\x200E)", dialCode = "212" } )
 
         "MZ" ->
-            ( isoCode, { name = "Mozambique (Moçambique)", dialCode = "258", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Mozambique (Moçambique)", dialCode = "258" } )
 
         "MM" ->
-            ( isoCode, { name = "Myanmar (Burma) (မြန်မာ)", dialCode = "95", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Myanmar (Burma) (မြန်မာ)", dialCode = "95" } )
 
         "NA" ->
-            ( isoCode, { name = "Namibia (Namibië)", dialCode = "264", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Namibia (Namibië)", dialCode = "264" } )
 
         "NR" ->
-            ( isoCode, { name = "Nauru", dialCode = "674", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Nauru", dialCode = "674" } )
 
         "NP" ->
-            ( isoCode, { name = "Nepal (नेपाल)", dialCode = "977", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Nepal (नेपाल)", dialCode = "977" } )
 
         "NL" ->
-            ( isoCode, { name = "Netherlands (Nederland)", dialCode = "31", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Netherlands (Nederland)", dialCode = "31" } )
 
         "NC" ->
-            ( isoCode, { name = "New Caledonia (Nouvelle-Calédonie)", dialCode = "687", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "New Caledonia (Nouvelle-Calédonie)", dialCode = "687" } )
 
         "NZ" ->
-            ( isoCode, { name = "New Zealand", dialCode = "64", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "New Zealand", dialCode = "64" } )
 
         "NI" ->
-            ( isoCode, { name = "Nicaragua", dialCode = "505", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Nicaragua", dialCode = "505" } )
 
         "NE" ->
-            ( isoCode, { name = "Niger (Nijar)", dialCode = "227", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Niger (Nijar)", dialCode = "227" } )
 
         "NG" ->
-            ( isoCode, { name = "Nigeria", dialCode = "234", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Nigeria", dialCode = "234" } )
 
         "NU" ->
-            ( isoCode, { name = "Niue", dialCode = "683", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Niue", dialCode = "683" } )
 
         "NF" ->
-            ( isoCode, { name = "Norfolk Island", dialCode = "672", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Norfolk Island", dialCode = "672" } )
 
         "KP" ->
-            ( isoCode, { name = "North Korea (조선 민주주의 인민 공화국)", dialCode = "850", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "North Korea (조선 민주주의 인민 공화국)", dialCode = "850" } )
 
         "MP" ->
-            ( isoCode, { name = "Northern Mariana Islands", dialCode = "1670", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Northern Mariana Islands", dialCode = "1670" } )
 
         "NO" ->
-            ( isoCode, { name = "Norway (Norge)", dialCode = "47", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Norway (Norge)", dialCode = "47" } )
 
         "OM" ->
-            ( isoCode, { name = "Oman (\x202Bعُمان\x202C\x200E)", dialCode = "968", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Oman (\x202Bعُمان\x202C\x200E)", dialCode = "968" } )
 
         "PK" ->
-            ( isoCode, { name = "Pakistan (\x202Bپاکستان\x202C\x200E)", dialCode = "92", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Pakistan (\x202Bپاکستان\x202C\x200E)", dialCode = "92" } )
 
         "PW" ->
-            ( isoCode, { name = "Palau", dialCode = "680", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Palau", dialCode = "680" } )
 
         "PS" ->
-            ( isoCode, { name = "Palestine (\x202Bفلسطين\x202C\x200E)", dialCode = "970", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Palestine (\x202Bفلسطين\x202C\x200E)", dialCode = "970" } )
 
         "PA" ->
-            ( isoCode, { name = "Panama (Panamá)", dialCode = "507", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Panama (Panamá)", dialCode = "507" } )
 
         "PG" ->
-            ( isoCode, { name = "Papua New Guinea", dialCode = "675", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Papua New Guinea", dialCode = "675" } )
 
         "PY" ->
-            ( isoCode, { name = "Paraguay", dialCode = "595", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Paraguay", dialCode = "595" } )
 
         "PE" ->
-            ( isoCode, { name = "Peru (Perú)", dialCode = "51", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Peru (Perú)", dialCode = "51" } )
 
         "PH" ->
-            ( isoCode, { name = "Philippines", dialCode = "63", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Philippines", dialCode = "63" } )
 
         "PL" ->
-            ( isoCode, { name = "Poland (Polska)", dialCode = "48", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Poland (Polska)", dialCode = "48" } )
 
         "PT" ->
-            ( isoCode, { name = "Portugal", dialCode = "351", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Portugal", dialCode = "351" } )
 
         "PR" ->
-            ( isoCode, { name = "Puerto Rico", dialCode = "1", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Puerto Rico", dialCode = "1" } )
 
         "QA" ->
-            ( isoCode, { name = "Qatar (\x202Bقطر\x202C\x200E)", dialCode = "974", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Qatar (\x202Bقطر\x202C\x200E)", dialCode = "974" } )
 
         "RE" ->
-            ( isoCode, { name = "Réunion (La Réunion)", dialCode = "262", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Réunion (La Réunion)", dialCode = "262" } )
 
         "RO" ->
-            ( isoCode, { name = "Romania (România)", dialCode = "40", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Romania (România)", dialCode = "40" } )
 
         "RU" ->
-            ( isoCode, { name = "Russia (Россия)", dialCode = "7", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Russia (Россия)", dialCode = "7" } )
 
         "RW" ->
-            ( isoCode, { name = "Rwanda", dialCode = "250", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Rwanda", dialCode = "250" } )
 
         "BL" ->
-            ( isoCode, { name = "Saint Barthélemy", dialCode = "590", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Barthélemy", dialCode = "590" } )
 
         "SH" ->
-            ( isoCode, { name = "Saint Helena", dialCode = "290", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Helena", dialCode = "290" } )
 
         "KN" ->
-            ( isoCode, { name = "Saint Kitts and Nevis", dialCode = "1869", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Kitts and Nevis", dialCode = "1869" } )
 
         "LC" ->
-            ( isoCode, { name = "Saint Lucia", dialCode = "1758", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Lucia", dialCode = "1758" } )
 
         "MF" ->
-            ( isoCode, { name = "Saint Martin (Saint-Martin (partie française))", dialCode = "590", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Martin (Saint-Martin (partie française))", dialCode = "590" } )
 
         "PM" ->
-            ( isoCode, { name = "Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)", dialCode = "508", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)", dialCode = "508" } )
 
         "VC" ->
-            ( isoCode, { name = "Saint Vincent and the Grenadines", dialCode = "1784", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saint Vincent and the Grenadines", dialCode = "1784" } )
 
         "WS" ->
-            ( isoCode, { name = "Samoa", dialCode = "685", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Samoa", dialCode = "685" } )
 
         "SM" ->
-            ( isoCode, { name = "San Marino", dialCode = "378", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "San Marino", dialCode = "378" } )
 
         "ST" ->
-            ( isoCode, { name = "São Tomé and Príncipe (São Tomé e Príncipe)", dialCode = "239", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "São Tomé and Príncipe (São Tomé e Príncipe)", dialCode = "239" } )
 
         "SA" ->
-            ( isoCode, { name = "Saudi Arabia (\x202Bالمملكة العربية السعودية\x202C\x200E)", dialCode = "966", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Saudi Arabia (\x202Bالمملكة العربية السعودية\x202C\x200E)", dialCode = "966" } )
 
         "SN" ->
-            ( isoCode, { name = "Senegal (Sénégal)", dialCode = "221", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Senegal (Sénégal)", dialCode = "221" } )
 
         "RS" ->
-            ( isoCode, { name = "Serbia (Србија)", dialCode = "381", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Serbia (Србија)", dialCode = "381" } )
 
         "SC" ->
-            ( isoCode, { name = "Seychelles", dialCode = "248", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Seychelles", dialCode = "248" } )
 
         "SL" ->
-            ( isoCode, { name = "Sierra Leone", dialCode = "232", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Sierra Leone", dialCode = "232" } )
 
         "SG" ->
-            ( isoCode, { name = "Singapore", dialCode = "65", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Singapore", dialCode = "65" } )
 
         "SX" ->
-            ( isoCode, { name = "Sint Maarten", dialCode = "1721", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Sint Maarten", dialCode = "1721" } )
 
         "SK" ->
-            ( isoCode, { name = "Slovakia (Slovensko)", dialCode = "421", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Slovakia (Slovensko)", dialCode = "421" } )
 
         "SI" ->
-            ( isoCode, { name = "Slovenia (Slovenija)", dialCode = "386", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Slovenia (Slovenija)", dialCode = "386" } )
 
         "SB" ->
-            ( isoCode, { name = "Solomon Islands", dialCode = "677", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Solomon Islands", dialCode = "677" } )
 
         "SO" ->
-            ( isoCode, { name = "Somalia (Soomaaliya)", dialCode = "252", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Somalia (Soomaaliya)", dialCode = "252" } )
 
         "ZA" ->
-            ( isoCode, { name = "South Africa", dialCode = "27", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "South Africa", dialCode = "27" } )
 
         "KR" ->
-            ( isoCode, { name = "South Korea (대한민국)", dialCode = "82", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "South Korea (대한민국)", dialCode = "82" } )
 
         "SS" ->
-            ( isoCode, { name = "South Sudan (\x202Bجنوب السودان\x202C\x200E)", dialCode = "211", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "South Sudan (\x202Bجنوب السودان\x202C\x200E)", dialCode = "211" } )
 
         "ES" ->
-            ( isoCode, { name = "Spain (España)", dialCode = "34", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Spain (España)", dialCode = "34" } )
 
         "LK" ->
-            ( isoCode, { name = "Sri Lanka (ශ්\x200Dරී ලංකාව)", dialCode = "94", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Sri Lanka (ශ්\x200Dරී ලංකාව)", dialCode = "94" } )
 
         "SD" ->
-            ( isoCode, { name = "Sudan (\x202Bالسودان\x202C\x200E)", dialCode = "249", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Sudan (\x202Bالسودان\x202C\x200E)", dialCode = "249" } )
 
         "SR" ->
-            ( isoCode, { name = "Suriname", dialCode = "597", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Suriname", dialCode = "597" } )
 
         "SJ" ->
-            ( isoCode, { name = "Svalbard and Jan Mayen", dialCode = "47", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Svalbard and Jan Mayen", dialCode = "47" } )
 
         "SZ" ->
-            ( isoCode, { name = "Swaziland", dialCode = "268", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Swaziland", dialCode = "268" } )
 
         "SE" ->
-            ( isoCode, { name = "Sweden (Sverige)", dialCode = "46", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Sweden (Sverige)", dialCode = "46" } )
 
         "CH" ->
-            ( isoCode, { name = "Switzerland (Schweiz)", dialCode = "41", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Switzerland (Schweiz)", dialCode = "41" } )
 
         "SY" ->
-            ( isoCode, { name = "Syria (\x202Bسوريا\x202C\x200E)", dialCode = "963", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Syria (\x202Bسوريا\x202C\x200E)", dialCode = "963" } )
 
         "TW" ->
-            ( isoCode, { name = "Taiwan (台灣)", dialCode = "886", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Taiwan (台灣)", dialCode = "886" } )
 
         "TJ" ->
-            ( isoCode, { name = "Tajikistan", dialCode = "992", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Tajikistan", dialCode = "992" } )
 
         "TZ" ->
-            ( isoCode, { name = "Tanzania", dialCode = "255", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Tanzania", dialCode = "255" } )
 
         "TH" ->
-            ( isoCode, { name = "Thailand (ไทย)", dialCode = "66", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Thailand (ไทย)", dialCode = "66" } )
 
         "TL" ->
-            ( isoCode, { name = "Timor-Leste", dialCode = "670", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Timor-Leste", dialCode = "670" } )
 
         "TG" ->
-            ( isoCode, { name = "Togo", dialCode = "228", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Togo", dialCode = "228" } )
 
         "TK" ->
-            ( isoCode, { name = "Tokelau", dialCode = "690", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Tokelau", dialCode = "690" } )
 
         "TO" ->
-            ( isoCode, { name = "Tonga", dialCode = "676", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Tonga", dialCode = "676" } )
 
         "TT" ->
-            ( isoCode, { name = "Trinidad and Tobago", dialCode = "1868", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Trinidad and Tobago", dialCode = "1868" } )
 
         "TN" ->
-            ( isoCode, { name = "Tunisia (\x202Bتونس\x202C\x200E)", dialCode = "216", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Tunisia (\x202Bتونس\x202C\x200E)", dialCode = "216" } )
 
         "TR" ->
-            ( isoCode, { name = "Turkey (Türkiye)", dialCode = "90", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Turkey (Türkiye)", dialCode = "90" } )
 
         "TM" ->
-            ( isoCode, { name = "Turkmenistan", dialCode = "993", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Turkmenistan", dialCode = "993" } )
 
         "TC" ->
-            ( isoCode, { name = "Turks and Caicos Islands", dialCode = "1649", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Turks and Caicos Islands", dialCode = "1649" } )
 
         "TV" ->
-            ( isoCode, { name = "Tuvalu", dialCode = "688", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Tuvalu", dialCode = "688" } )
 
         "VI" ->
-            ( isoCode, { name = "U.S. Virgin Islands", dialCode = "1340", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "U.S. Virgin Islands", dialCode = "1340" } )
 
         "UG" ->
-            ( isoCode, { name = "Uganda", dialCode = "256", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Uganda", dialCode = "256" } )
 
         "UA" ->
-            ( isoCode, { name = "Ukraine (Україна)", dialCode = "380", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Ukraine (Україна)", dialCode = "380" } )
 
         "AE" ->
-            ( isoCode, { name = "United Arab Emirates (\x202Bالإمارات العربية المتحدة\x202C\x200E)", dialCode = "971", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "United Arab Emirates (\x202Bالإمارات العربية المتحدة\x202C\x200E)", dialCode = "971" } )
 
         "GB" ->
-            ( isoCode, { name = "United Kingdom", dialCode = "44", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "United Kingdom", dialCode = "44" } )
 
         "US" ->
-            ( isoCode, { name = "United States", dialCode = "1", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "United States", dialCode = "1" } )
 
         "UY" ->
-            ( isoCode, { name = "Uruguay", dialCode = "598", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Uruguay", dialCode = "598" } )
 
         "UZ" ->
-            ( isoCode, { name = "Uzbekistan (Oʻzbekiston)", dialCode = "998", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Uzbekistan (Oʻzbekiston)", dialCode = "998" } )
 
         "VU" ->
-            ( isoCode, { name = "Vanuatu", dialCode = "678", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Vanuatu", dialCode = "678" } )
 
         "VA" ->
-            ( isoCode, { name = "Vatican City (Città del Vaticano)", dialCode = "39", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Vatican City (Città del Vaticano)", dialCode = "39" } )
 
         "VE" ->
-            ( isoCode, { name = "Venezuela", dialCode = "58", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Venezuela", dialCode = "58" } )
 
         "VN" ->
-            ( isoCode, { name = "Vietnam (Việt Nam)", dialCode = "84", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Vietnam (Việt Nam)", dialCode = "84" } )
 
         "WF" ->
-            ( isoCode, { name = "Wallis and Futuna (Wallis-et-Futuna)", dialCode = "681", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Wallis and Futuna (Wallis-et-Futuna)", dialCode = "681" } )
 
         "EH" ->
-            ( isoCode, { name = "Western Sahara (\x202Bالصحراء الغربية\x202C\x200E)", dialCode = "212", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Western Sahara (\x202Bالصحراء الغربية\x202C\x200E)", dialCode = "212" } )
 
         "YE" ->
-            ( isoCode, { name = "Yemen (\x202Bاليمن\x202C\x200E)", dialCode = "967", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Yemen (\x202Bاليمن\x202C\x200E)", dialCode = "967" } )
 
         "ZM" ->
-            ( isoCode, { name = "Zambia", dialCode = "260", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Zambia", dialCode = "260" } )
 
         "ZW" ->
-            ( isoCode, { name = "Zimbabwe", dialCode = "263", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Zimbabwe", dialCode = "263" } )
 
         "AX" ->
-            ( isoCode, { name = "Åland Islands", dialCode = "358", flag = Svg.flag isoCode } )
+            ( isoCode, { name = "Åland Islands", dialCode = "358" } )
 
         _ ->
-            ( "", { name = "Unknown", dialCode = "", flag = Svg.flag "" } )
+            ( "", { name = "Unknown", dialCode = "" } )
 
 
 isoCodes : List String

@@ -5,8 +5,6 @@ module IntlPhoneInput.Type
         , emptyPhoneNumber
         )
 
-import Svg exposing (Svg)
-
 
 type alias PhoneNumber =
     { isoCode : String
@@ -19,8 +17,7 @@ emptyPhoneNumber =
     { isoCode = "", phoneNumber = "" }
 
 
-type alias CountryData msg =
+type alias CountryData =
     { name : String
     , dialCode : String
-    , flag : Svg msg
     }

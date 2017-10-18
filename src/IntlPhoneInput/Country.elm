@@ -39,7 +39,7 @@ countriesView config (State state) phoneNumber =
         ]
 
 
-countryView : Config msg -> String -> CountryData msg -> State -> PhoneNumber -> Html msg
+countryView : Config msg -> String -> CountryData -> State -> PhoneNumber -> Html msg
 countryView config isoCode countryData (State state) phoneNumber =
     let
         { id, class, classList } =
@@ -84,6 +84,6 @@ countryView config isoCode countryData (State state) phoneNumber =
             (State state)
             phoneNumber
         ]
-        [ Flag.flagWrapper config countryData.flag
+        [ Flag.flag config isoCode
         , span [ class [ Css.CountryName ] ] [ text countryData.name ]
         ]
