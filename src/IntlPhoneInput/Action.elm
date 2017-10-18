@@ -5,6 +5,7 @@ module IntlPhoneInput.Action
         , appendKeyword
         , autocloseCountryDropdown
         , closeCountryDropdown
+        , deleteKeyword
         , doNothing
         , done
         , focus
@@ -59,7 +60,7 @@ updatePhoneNumber newPhoneNumber config (State state) phoneNumber cmd =
 selectCountry : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectCountry isoCode config (State state) phoneNumber cmd =
     Action config
-        (State (Internal.toggleCountryPickerState state))
+        (State (Internal.toggleCountryPickerState { state | action = "selectCountry" }))
         { phoneNumber | isoCode = isoCode }
         cmd
 
@@ -292,12 +293,15 @@ focus maybeIsoCode config state phoneNumber cmd =
     let
         focusCmd isoCode =
             Dom.focus (Config.getCountryElementId config isoCode)
-                |> Task.andThen (\_ -> Dom.focus (Config.getSearchInputId config))
+                |> Task.attempt (ignoreTaskError config state phoneNumber)
+
+        focusSearchCmd =
+            Dom.focus (Config.getSearchInputId config)
                 |> Task.attempt (ignoreTaskError config state phoneNumber)
     in
     maybeIsoCode
         |> Maybe.map focusCmd
-        |> Maybe.withDefault Cmd.none
+        |> Maybe.withDefault focusSearchCmd
         |> appendCmd config state phoneNumber cmd
 
 
@@ -349,13 +353,16 @@ navigateCountry arrowKey config (State state) phoneNumber cmd =
 autocloseCountryDropdown : FocusEvent -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 autocloseCountryDropdown focusEvent config (State state) phoneNumber cmd =
     let
+        updatedState =
+            { state | action = "autocloseCountryDropdown" }
+
         doNothing =
-            Action config (State state) phoneNumber cmd
+            Action config (State { state | action = "autocloseCountryDropdown.doNothing" }) phoneNumber cmd
 
         domId =
             focusEvent.relatedTargetId |> Maybe.withDefault ""
     in
-    if Config.isDropdownElement domId config (State state) || Config.isCountryPicker domId config then
+    if Config.isDropdownElement domId config (State updatedState) || Config.isCountryPicker domId config then
         doNothing
     else
-        Action config (State { state | countryPickerState = CountryPickerClosed }) phoneNumber Cmd.none
+        Action config (State { updatedState | countryPickerState = CountryPickerClosed }) phoneNumber Cmd.none

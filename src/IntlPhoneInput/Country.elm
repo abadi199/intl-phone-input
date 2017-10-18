@@ -14,7 +14,7 @@ import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (State(State))
-import IntlPhoneInput.KeyCode as KeyCode
+import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
 
 
@@ -42,9 +42,8 @@ countryView config isoCode countryData (State state) phoneNumber =
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
-    button
-        [ type_ "button"
-        , class
+    div
+        [ class
             (Css.Country
                 :: (if state.highlightedCountryByIsoCode == Just isoCode then
                         [ Css.Highlighted ]
@@ -53,7 +52,10 @@ countryView config isoCode countryData (State state) phoneNumber =
                    )
             )
         , id (Config.getCountryElementId config isoCode)
-        , onClick (Action.selectCountry isoCode config (State state) phoneNumber Cmd.none |> Action.done)
+        , Html.Attributes.tabindex 0
+        , Event.onClickStopPropagation (Action.selectCountry isoCode config (State state) phoneNumber Cmd.none |> Action.done)
+        , Event.onBlur (State state)
+            (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         , onMouseOver
             (Action.highlightCountry isoCode config (State state) phoneNumber Cmd.none
                 |> Action.done
@@ -61,8 +63,11 @@ countryView config isoCode countryData (State state) phoneNumber =
         , onFocus (Action.highlightCountry isoCode config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
-            , ( KeyCode.escKey, always Action.closeCountryDropdown )
             , ( KeyCode.alphabetKey, Action.appendKeyword )
+            , ( KeyCode.key Esc, always Action.closeCountryDropdown )
+            , ( KeyCode.key Backspace, always Action.deleteKeyword )
+            , ( KeyCode.key Enter, always (Action.selectCountry isoCode) )
+            , ( KeyCode.key Spacebar, \_ -> Action.appendKeyword (KeyCode.Alphabet ' ') )
             ]
             config
             (State state)

@@ -6,8 +6,10 @@ module IntlPhoneInput.KeyCode
         , alphabetKey
         , alphabetKeyCodes
         , arrowKey
-        , enterKey
-        , escKey
+          -- , backspaceKey
+          -- , enterKey
+          -- , escKey
+        , key
         , toArrowKey
         , toKeyCode
         )
@@ -20,6 +22,7 @@ type KeyCode
     = Esc
     | Enter
     | Backspace
+    | Spacebar
     | Alphabet Char
     | Arrow ArrowKey
 
@@ -75,6 +78,9 @@ toKeyCode keyData =
         8 ->
             Result.Ok Backspace
 
+        32 ->
+            Result.Ok Spacebar
+
         _ ->
             if keyData.ctrlKey || keyData.altKey then
                 Result.Err "alt or ctrl key is pressed"
@@ -101,24 +107,12 @@ arrowKey keyData =
             Json.Decode.fail err
 
 
-enterKey : KeyData -> Json.Decode.Decoder KeyCode
-enterKey keyData =
-    case toKeyCode keyData of
-        Result.Ok Enter ->
-            Json.Decode.succeed Enter
-
-        _ ->
-            Json.Decode.fail "not an enter"
-
-
-escKey : KeyData -> Json.Decode.Decoder KeyCode
-escKey keyData =
-    case toKeyCode keyData of
-        Result.Ok Esc ->
-            Json.Decode.succeed Esc
-
-        _ ->
-            Json.Decode.fail "not an escape"
+key : KeyCode -> KeyData -> Json.Decode.Decoder KeyCode
+key keyCode keyData =
+    if toKeyCode keyData == Result.Ok keyCode then
+        Json.Decode.succeed keyCode
+    else
+        Json.Decode.fail "ignore"
 
 
 alphabetKey : KeyData -> Json.Decode.Decoder KeyCode

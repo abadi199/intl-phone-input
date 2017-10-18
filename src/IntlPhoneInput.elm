@@ -16,7 +16,7 @@ import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State), StateData)
-import IntlPhoneInput.KeyCode as KeyCode
+import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
 import String
@@ -70,12 +70,12 @@ countryPickerView config (State state) phoneNumber =
         , onClick (Action.toggleCountryDropdown config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, always Action.openCountryDropdown )
-            , ( KeyCode.escKey, always Action.closeCountryDropdown )
+            , ( KeyCode.key Esc, always Action.closeCountryDropdown )
             ]
             config
             (State state)
             phoneNumber
-        , Event.onBlur
+        , Event.onBlur (State state)
             (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         ]
         [ Flag.flag config phoneNumber
@@ -123,12 +123,12 @@ searchInput config (State state) phoneNumber =
         , class [ Css.SearchInput ]
         , value state.keyword
         , placeholder "Search"
-        , Event.onBlur
+        , Event.onBlur (State state)
             (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
-            , ( KeyCode.enterKey, always Action.selectHighlightedCountry )
-            , ( KeyCode.escKey, always Action.closeCountryDropdown )
+            , ( KeyCode.key Enter, always Action.selectHighlightedCountry )
+            , ( KeyCode.key Esc, always Action.closeCountryDropdown )
             ]
             config
             (State state)

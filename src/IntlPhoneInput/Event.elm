@@ -10,7 +10,7 @@ import Html.Attributes
 import Html.Events exposing (on, onWithOptions)
 import IntlPhoneInput.Action as Action exposing (Action)
 import IntlPhoneInput.Config exposing (Config)
-import IntlPhoneInput.Internal exposing (FocusEvent, State(..))
+import IntlPhoneInput.Internal as Internal exposing (FocusEvent, State(..))
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..), KeyData)
 import IntlPhoneInput.Type exposing (PhoneNumber)
 import Json.Decode
@@ -20,18 +20,23 @@ onClickStopPropagation : msg -> Html.Attribute msg
 onClickStopPropagation tagger =
     onWithOptions
         "click"
-        { stopPropagation = True, preventDefault = False }
+        { stopPropagation = True, preventDefault = True }
         (Json.Decode.succeed tagger)
 
 
-onBlur : (FocusEvent -> msg) -> Html.Attribute msg
-onBlur msg =
+onBlur : State -> (FocusEvent -> msg) -> Html.Attribute msg
+onBlur (State state) msg =
     let
         relatedTargetDecoder =
-            Json.Decode.oneOf
-                [ Json.Decode.at [ "relatedTarget", "id" ] (Json.Decode.nullable Json.Decode.string)
-                , Json.Decode.field "relatedTarget" (Json.Decode.null Nothing)
-                ]
+            case state.countryPickerState of
+                Internal.CountryPickerClosed ->
+                    Json.Decode.fail <| Debug.log "onBlur" "country picker is closed"
+
+                Internal.CountryPickerOpened ->
+                    Json.Decode.oneOf
+                        [ Json.Decode.at [ "relatedTarget", "id" ] (Json.Decode.nullable Json.Decode.string)
+                        , Json.Decode.field "relatedTarget" (Json.Decode.null Nothing)
+                        ]
     in
     on
         "blur"

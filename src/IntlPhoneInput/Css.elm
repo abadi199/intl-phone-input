@@ -39,6 +39,7 @@ type Class
     | CountryName
     | Highlighted
     | SearchInput
+    | Placeholder
 
 
 css : String -> Css.Stylesheet
@@ -69,6 +70,7 @@ intlPhoneInput =
             , country
             , countryName
             , searchInput
+            , placeholder
             ]
         ]
 
@@ -196,6 +198,12 @@ searchInput =
         , boxShadow5 (px 0) (px 5) (px 10) (px -5) (rgba 0 0 0 0.15)
         , focus [ focusMixin ]
         ]
+
+
+placeholder : Snippet
+placeholder =
+    class Placeholder
+        [ color (rgba 0 0 0 0.15) ]
 
 
 

@@ -20,6 +20,7 @@ type alias StateData =
     , highlightedCountryByIsoCode : Maybe String
     , filteredCountries : Set String
     , keyword : String
+    , action : String
     }
 
 
@@ -35,6 +36,7 @@ initialState =
         , highlightedCountryByIsoCode = Nothing
         , filteredCountries = Set.empty
         , keyword = ""
+        , action = ""
         }
 
 
