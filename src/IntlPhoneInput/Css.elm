@@ -128,7 +128,7 @@ flag =
     class Flag
         ([ boxSizingMixin
          , width (px 20)
-         , height (px 11)
+         , height (px 14)
          , display inlineBlock
          , backgroundImage (url flagImage)
          ]
@@ -163,7 +163,7 @@ phoneInput =
     class PhoneInput
         [ boxSizingMixin
         , marginLeft (px -countryPickerWidth)
-        , paddingLeft (px (countryPickerWidth + 10))
+        , paddingLeft (px (countryPickerWidth + 5))
         ]
 
 
@@ -519,7 +519,7 @@ flagPositions =
 
 countryPickerWidth : Float
 countryPickerWidth =
-    54
+    55
 
 
 countryDropdownWidth : Float
