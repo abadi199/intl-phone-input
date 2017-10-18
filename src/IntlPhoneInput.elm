@@ -66,6 +66,7 @@ countryPickerView config (State state) phoneNumber =
                    )
             )
         , type_ "button"
+        , id (Config.getCountryPickerId config)
         , onClick (Action.toggleCountryDropdown config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, always Action.openCountryDropdown )
@@ -74,6 +75,8 @@ countryPickerView config (State state) phoneNumber =
             config
             (State state)
             phoneNumber
+        , Event.onBlur
+            (\focusEvent -> Action.autocloseCountryDropdown focusEvent config (State state) phoneNumber Cmd.none |> Action.done)
         ]
         [ Flag.flag config phoneNumber
         , arrowView config (State state)

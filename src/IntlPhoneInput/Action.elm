@@ -351,8 +351,11 @@ autocloseCountryDropdown focusEvent config (State state) phoneNumber cmd =
     let
         doNothing =
             Action config (State state) phoneNumber cmd
+
+        domId =
+            focusEvent.relatedTargetId |> Maybe.withDefault ""
     in
-    if Config.isDropdownElement (focusEvent.relatedTargetId |> Maybe.withDefault "") config (State state) then
+    if Config.isDropdownElement domId config (State state) || Config.isCountryPicker domId config then
         doNothing
     else
         Action config (State { state | countryPickerState = CountryPickerClosed }) phoneNumber Cmd.none

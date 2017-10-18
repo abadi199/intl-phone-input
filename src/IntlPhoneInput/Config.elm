@@ -5,8 +5,10 @@ module IntlPhoneInput.Config
         , countryList
         , defaultConfig
         , getCountryElementId
+        , getCountryPickerId
         , getPhoneNumberInputId
         , getSearchInputId
+        , isCountryPicker
         , isDropdownElement
         , isoCodes
         , toCountryData
@@ -58,17 +60,27 @@ defaultCountriesSorter countries =
 
 getPhoneNumberInputId : Config msg -> String
 getPhoneNumberInputId config =
-    config.namespace ++ "_PhoneNumberInput_" ++ config.hash
+    config.namespace ++ "PhoneNumberInput" ++ config.hash
 
 
 getSearchInputId : Config msg -> String
 getSearchInputId config =
-    config.namespace ++ "_SearchInput_" ++ config.hash
+    config.namespace ++ "SearchInput" ++ config.hash
 
 
 getCountryElementId : Config msg -> String -> String
 getCountryElementId config isoCode =
-    config.namespace ++ "_Country_" ++ isoCode ++ "_" ++ config.hash
+    config.namespace ++ "Country" ++ isoCode ++ config.hash
+
+
+getCountryPickerId : Config msg -> String
+getCountryPickerId config =
+    config.namespace ++ "CountryPicker" ++ config.hash
+
+
+isCountryPicker : String -> Config msg -> Bool
+isCountryPicker domId config =
+    getCountryPickerId config == domId
 
 
 isDropdownElement : String -> Config msg -> State -> Bool
