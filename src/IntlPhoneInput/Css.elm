@@ -74,7 +74,7 @@ countryPicker =
         , displayFlex
         , alignItems center
         , justifyContent center
-        , zIndex (int 1)
+        , zIndex (int 0)
         , hover [ hoverMixin ]
         , focus [ focusMixin, hoverMixin ]
         , withClass Highlighted [ hoverMixin ]
@@ -174,7 +174,7 @@ countryDropdown =
         , position absolute
         , backgroundColor (rgba 255 255 255 1)
         , top (pct 100)
-        , zIndex (int 2)
+        , zIndex (int 1)
         , left zero
         , border3 (px 1) solid (hex "#ccc")
         , maxHeight (px 250)
