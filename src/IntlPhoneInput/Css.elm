@@ -22,6 +22,7 @@ type Class
     | FlagIso String
     | Arrow
     | CountryDropdown
+    | CountryDropdownHidden
     | CountryListScroll
     | CountryList
     | CountryListItem
@@ -30,6 +31,7 @@ type Class
     | Highlighted
     | SearchInput
     | Placeholder
+    | DialCode
 
 
 css : String -> Css.Stylesheet
@@ -61,6 +63,7 @@ intlPhoneInput =
             , countryName
             , searchInput
             , placeholder
+            , dialCode
             ]
         ]
 
@@ -110,8 +113,9 @@ country =
         , alignItems center
         , justifyContent left
         , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
-        , withClass Highlighted [ hoverMixin ]
-        , focus [ focusMixin, hoverMixin ]
+        , withClass Highlighted [ highlightedMixin, hover [ highlightedMixin ] ]
+        , focus [ focusMixin, highlightedMixin ]
+        , hover [ hoverMixin ]
         ]
 
 
@@ -177,10 +181,18 @@ countryDropdown =
         , zIndex (int 1)
         , left zero
         , border3 (px 1) solid (hex "#ccc")
-        , maxHeight (px 250)
         , minWidth (px countryDropdownWidth)
         , displayFlex
         , flexDirection column
+        , maxHeight (px 250)
+        , opacity (num 1)
+        , transform (scale2 1 1)
+        , property "transform-origin" "top"
+        , property "transition" "transform 0.2s"
+        , withClass CountryDropdownHidden
+            [ opacity zero
+            , transform (scale2 1 0)
+            ]
         ]
 
 
@@ -211,6 +223,12 @@ placeholder =
         [ color (rgba 0 0 0 0.15) ]
 
 
+dialCode : Snippet
+dialCode =
+    class DialCode
+        [ color (rgba 0 0 0 0.35), marginLeft (em 0.5) ]
+
+
 
 -- MIXIN
 
@@ -226,6 +244,11 @@ hoverMixin =
         [ backgroundColor (rgba 0 0 0 0.075)
         , cursor pointer
         ]
+
+
+highlightedMixin : Mixin
+highlightedMixin =
+    mixin [ backgroundColor (rgba 0 0 0 0.25) ]
 
 
 buttonMixin : Mixin

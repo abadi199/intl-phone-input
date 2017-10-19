@@ -10,13 +10,11 @@ module IntlPhoneInput.Action
         , doNothing
         , done
         , focus
-        , focusInput
-        , highlightCountry
+        , focusPhoneNumberInput
+        , focusSearchInput
         , navigateCountry
         , openCountryDropdown
-        , removeHighlightedCountry
         , selectCountry
-        , selectHighlightedCountry
         , toggleCountryDropdown
         , updateKeyword
         , updatePhoneNumber
@@ -24,6 +22,7 @@ module IntlPhoneInput.Action
 
 import Dict
 import Dom
+import Dom.Scroll
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Filter as Filter
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), FocusEvent, State(State))
@@ -73,7 +72,7 @@ updatePhoneNumber newPhoneNumber config (State state) phoneNumber cmd =
 selectCountry : String -> String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectCountry eventName isoCode config (State state) phoneNumber cmd =
     Action config
-        (State { state | action = eventName ++ ":selectCountry", countryPickerState = CountryPickerClosed })
+        (State { state | action = eventName ++ ":selectCountry:" ++ isoCode })
         { phoneNumber | isoCode = isoCode }
         cmd
 
@@ -99,10 +98,7 @@ closeCountryDropdown eventName config (State state) phoneNumber cmd =
         (State { state | countryPickerState = CountryPickerClosed, action = eventName ++ ":closeCountryDropdown" })
         phoneNumber
         cmd
-
-
-
--- |> andThen focusInput
+        |> andThen focusPhoneNumberInput
 
 
 openCountryDropdown : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -112,9 +108,12 @@ openCountryDropdown config (State state) phoneNumber cmd =
         (State { state | countryPickerState = CountryPickerOpened })
         phoneNumber
         cmd
-        |> andThen (highlightCountry phoneNumber.isoCode)
         |> andThen clearKeyword
         |> andThen filterCountries
+
+
+
+-- |> andThen (focus <| Just phoneNumber.isoCode)
 
 
 clearKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -128,13 +127,17 @@ clearKeyword config (State state) phoneNumber cmd =
 
 filterCountries : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 filterCountries config (State state) phoneNumber cmd =
+    --
     let
         filteredCountries =
-            config.countries
-                |> Dict.toList
-                |> Filter.filterList state.keyword
-                |> List.map Tuple.first
-                |> Set.fromList
+            if String.isEmpty state.keyword then
+                config.countries |> Dict.keys |> Set.fromList
+            else
+                config.countries
+                    |> Dict.toList
+                    |> Filter.filterList state.keyword
+                    |> List.map Tuple.first
+                    |> Set.fromList
 
         firstCountry =
             filteredCountries
@@ -142,61 +145,21 @@ filterCountries config (State state) phoneNumber cmd =
                 |> config.countriesSorter
                 |> List.head
                 |> Maybe.map Tuple.first
-
-        highlightedCountry =
-            case state.highlightedCountryByIsoCode of
-                Just isoCode ->
-                    if Set.member isoCode filteredCountries then
-                        state.highlightedCountryByIsoCode
-                    else
-                        firstCountry
-
-                Nothing ->
-                    firstCountry
     in
     Action
         config
         (State
             { state
                 | filteredCountries = filteredCountries
-                , highlightedCountryByIsoCode = highlightedCountry
             }
         )
         phoneNumber
         cmd
-        |> andThen (focus highlightedCountry)
+--}
 
 
-highlightCountry : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-highlightCountry isoCode config (State state) phoneNumber cmd =
-    Action config
-        (State { state | highlightedCountryByIsoCode = Just <| String.toUpper isoCode })
-        phoneNumber
-        cmd
 
-
-removeHighlightedCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-removeHighlightedCountry config (State state) phoneNumber cmd =
-    Action
-        config
-        (State { state | highlightedCountryByIsoCode = Nothing })
-        phoneNumber
-        cmd
-
-
-selectHighlightedCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-selectHighlightedCountry config (State state) phoneNumber cmd =
-    let
-        doNothing =
-            Action config (State state) phoneNumber cmd
-    in
-    case state.highlightedCountryByIsoCode of
-        Just isoCode ->
-            selectCountry "selectHighlightedCountry" isoCode config (State state) phoneNumber cmd
-                |> andThen (closeCountryDropdown "selectHighlightedCountry")
-
-        Nothing ->
-            doNothing
+-- |> andThen (focus highlightedCountry)
 
 
 appendKeyword : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -228,66 +191,91 @@ deleteKeyword config (State state) phoneNumber cmd =
         |> andThen filterCountries
 
 
-highlightNextCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-highlightNextCountry config (State state) phoneNumber cmd =
+selectNextCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+selectNextCountry config (State state) phoneNumber cmd =
     let
-        nextIsoCode =
-            nextCountry config (State state)
+        doNothing =
+            Action config (State state) phoneNumber cmd
 
-        updatedState =
-            State { state | highlightedCountryByIsoCode = nextIsoCode }
+        maybeNextIsoCode =
+            nextCountry config (State state) phoneNumber
     in
-    Action
-        config
-        updatedState
-        phoneNumber
-        cmd
-        |> andThen (focus nextIsoCode)
-
-
-nextCountry : Config msg -> State -> Maybe String
-nextCountry config (State state) =
-    case state.highlightedCountryByIsoCode of
-        Just currentIsoCode ->
-            state.filteredCountries
-                |> Config.toCountryDataList config
-                |> List.map Tuple.first
-                |> List.next currentIsoCode
-                |> Just
+    case maybeNextIsoCode of
+        Just nextIsoCode ->
+            Action
+                config
+                (State state)
+                { phoneNumber | isoCode = nextIsoCode }
+                cmd
+                |> andThen focusSearchInput
+                |> andThen (focus nextIsoCode)
 
         Nothing ->
-            Nothing
+            doNothing
 
 
-highlightPrevCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-highlightPrevCountry config (State state) phoneNumber cmd =
+nextCountry : Config msg -> State -> PhoneNumber -> Maybe String
+nextCountry config (State state) phoneNumber =
     let
-        prevIsoCode =
-            prevCountry config (State state)
-
-        updatedState =
-            State { state | highlightedCountryByIsoCode = prevIsoCode }
+        isoCode =
+            String.toUpper phoneNumber.isoCode
     in
-    Action
-        config
-        updatedState
-        phoneNumber
-        cmd
-        |> andThen (focus prevIsoCode)
+    if Set.member isoCode state.filteredCountries then
+        state.filteredCountries
+            |> Config.toCountryDataList config
+            |> config.countriesSorter
+            |> List.map Tuple.first
+            |> List.next isoCode
+            |> Just
+    else
+        state.filteredCountries
+            |> Config.toCountryDataList config
+            |> config.countriesSorter
+            |> List.head
+            |> Maybe.map Tuple.first
 
 
-prevCountry : Config msg -> State -> Maybe String
-prevCountry config (State state) =
-    case state.highlightedCountryByIsoCode of
-        Just currentIsoCode ->
-            state.filteredCountries
-                |> Config.toCountryDataList config
-                |> List.map Tuple.first
-                |> List.prev currentIsoCode
-                |> Just
+selectPrevCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+selectPrevCountry config (State state) phoneNumber cmd =
+    let
+        doNothing =
+            Action config (State state) phoneNumber cmd
+
+        maybePrevIsoCode =
+            prevCountry config (State state) phoneNumber
+    in
+    case maybePrevIsoCode of
+        Just prevIsoCode ->
+            Action
+                config
+                (State state)
+                { phoneNumber | isoCode = prevIsoCode }
+                cmd
+                |> andThen focusSearchInput
+                |> andThen (focus prevIsoCode)
 
         Nothing ->
-            Nothing
+            doNothing
+
+
+prevCountry : Config msg -> State -> PhoneNumber -> Maybe String
+prevCountry config (State state) phoneNumber =
+    let
+        isoCode =
+            String.toUpper phoneNumber.isoCode
+    in
+    if Set.member isoCode state.filteredCountries then
+        state.filteredCountries
+            |> Config.toCountryDataList config
+            |> List.map Tuple.first
+            |> List.prev isoCode
+            |> Just
+    else
+        state.filteredCountries
+            |> Config.toCountryDataList config
+            |> config.countriesSorter
+            |> List.head
+            |> Maybe.map Tuple.first
 
 
 ignoreTaskError : Config msg -> State -> PhoneNumber -> Result.Result Dom.Error a -> msg
@@ -298,31 +286,31 @@ ignoreTaskError config state phoneNumber result =
                 Result.Err err ->
                     err |> toString
 
-                Result.Ok _ ->
-                    ""
+                Result.Ok a ->
+                    a |> toString
     in
     config.onChange state phoneNumber Cmd.none
 
 
-focus : Maybe String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-focus maybeIsoCode config state phoneNumber cmd =
-    let
-        focusCmd isoCode =
-            Dom.focus (Config.getCountryElementId config isoCode)
-                |> Task.attempt (ignoreTaskError config state phoneNumber)
-
-        focusSearchCmd =
-            Dom.focus (Config.getSearchInputId config)
-                |> Task.attempt (ignoreTaskError config state phoneNumber)
-    in
-    maybeIsoCode
-        |> Maybe.map focusCmd
-        |> Maybe.withDefault focusSearchCmd
+focus : String -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+focus isoCode config state phoneNumber cmd =
+    isoCode
+        |> String.toUpper
+        |> Config.getCountryElementId config
+        |> Dom.focus
+        |> Task.attempt (ignoreTaskError config state phoneNumber)
         |> appendCmd config state phoneNumber cmd
 
 
-focusInput : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
-focusInput config state phoneNumber cmd =
+focusSearchInput : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+focusSearchInput config state phoneNumber cmd =
+    Dom.focus (Config.getSearchInputId config)
+        |> Task.attempt (ignoreTaskError config state phoneNumber)
+        |> appendCmd config state phoneNumber cmd
+
+
+focusPhoneNumberInput : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
+focusPhoneNumberInput config state phoneNumber cmd =
     Dom.focus (Config.getPhoneNumberInputId config)
         |> Task.attempt (ignoreTaskError config state phoneNumber)
         |> appendCmd config state phoneNumber cmd
@@ -351,16 +339,16 @@ navigateCountry arrowKey config (State state) phoneNumber cmd =
     in
     case arrowKey of
         Arrow Left ->
-            highlightPrevCountry config (State state) phoneNumber cmd
+            selectPrevCountry config (State state) phoneNumber cmd
 
         Arrow Up ->
-            highlightPrevCountry config (State state) phoneNumber cmd
+            selectPrevCountry config (State state) phoneNumber cmd
 
         Arrow Right ->
-            highlightNextCountry config (State state) phoneNumber cmd
+            selectNextCountry config (State state) phoneNumber cmd
 
         Arrow Down ->
-            highlightNextCountry config (State state) phoneNumber cmd
+            selectNextCountry config (State state) phoneNumber cmd
 
         _ ->
             doNothing

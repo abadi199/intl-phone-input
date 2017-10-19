@@ -6,6 +6,7 @@ module IntlPhoneInput.Config
         , countryList
         , defaultConfig
         , getCountryElementId
+        , getCountryListScrollId
         , getCountryPickerId
         , getPhoneNumberInputId
         , getSearchInputId
@@ -81,6 +82,11 @@ getSearchInputId config =
 getCountryElementId : Config msg -> String -> String
 getCountryElementId config isoCode =
     config.namespace ++ "Country" ++ String.toUpper isoCode ++ config.hash
+
+
+getCountryListScrollId : Config msg -> String
+getCountryListScrollId config =
+    config.namespace ++ "CountryListScroll" ++ config.hash
 
 
 getCountryPickerId : Config msg -> String
