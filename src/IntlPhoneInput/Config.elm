@@ -28,6 +28,7 @@ import String
 
 type alias Config msg =
     { hash : String
+    , flagUrl : String
     , onChange : State -> PhoneNumber -> Cmd msg -> msg
     , namespace : String
     , countries : Dict String CountryData
@@ -53,14 +54,15 @@ defaultHashSeed =
     118999881999119
 
 
-defaultConfig : (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
-defaultConfig =
-    configWithSeed defaultHashSeed
+defaultConfig : String -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+defaultConfig flagUrl =
+    configWithSeed flagUrl defaultHashSeed
 
 
-configWithSeed : Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
-configWithSeed hashSeed onChange =
+configWithSeed : String -> Int -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+configWithSeed flagUrl hashSeed onChange =
     { hash = Murmur3.hashString hashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString
+    , flagUrl = flagUrl
     , onChange = onChange
     , namespace = "IntlPhoneInput"
     , countries = countries
@@ -69,9 +71,10 @@ configWithSeed hashSeed onChange =
     }
 
 
-configWithId : String -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
-configWithId id onChange =
+configWithId : String -> String -> (State -> PhoneNumber -> Cmd msg -> msg) -> Config msg
+configWithId flagUrl id onChange =
     { hash = id ++ (Murmur3.hashString defaultHashSeed (onChange initialState emptyPhoneNumber Cmd.none |> toString) |> toString)
+    , flagUrl = flagUrl
     , onChange = onChange
     , namespace = "IntlPhoneInput"
     , countries = countries

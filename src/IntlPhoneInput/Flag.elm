@@ -5,6 +5,7 @@ module IntlPhoneInput.Flag
 
 import Dict
 import Html exposing (Html, span)
+import Html.Attributes exposing (style)
 import Html.CssHelpers
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Css as Css
@@ -26,4 +27,4 @@ flag config originalIsoCode =
             else
                 ""
     in
-    span [ class [ Css.Flag, Css.FlagIso isoCode ] ] []
+    span [ class [ Css.Flag, Css.FlagIso isoCode ], style [ ( "backgroundImage", "url(" ++ config.flagUrl ++ ")" ) ] ] []
