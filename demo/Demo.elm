@@ -60,7 +60,10 @@ view : Model -> Html Msg
 view model =
     let
         { css } =
-            Css.compile [ IntlPhoneInput.Css.css homePhoneConfig.namespace, Css.css homePhoneConfig.namespace ]
+            Css.compile
+                [ IntlPhoneInput.Css.css homePhoneConfig.namespace
+                , Css.css homePhoneConfig.namespace
+                ]
 
         { id, class, classList } =
             Html.CssHelpers.withNamespace homePhoneConfig.namespace

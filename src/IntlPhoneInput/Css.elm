@@ -73,11 +73,13 @@ countryPicker =
     class CountryPicker
         [ boxSizingMixin
         , buttonMixin
-        , width (px countryPickerWidth)
         , displayFlex
         , alignItems center
+        , padding2 zero (em 0.5)
         , justifyContent center
         , zIndex (int 0)
+        , border3 (px 1) solid (rgba 0 0 0 0.15)
+        , backgroundColor (rgba 0 0 0 0.015)
         , hover [ hoverMixin ]
         , focus [ focusMixin, hoverMixin ]
         , withClass Highlighted [ hoverMixin ]
@@ -166,8 +168,9 @@ phoneInput : Snippet
 phoneInput =
     class PhoneInput
         [ boxSizingMixin
-        , marginLeft (px -countryPickerWidth)
-        , paddingLeft (px (countryPickerWidth + 5))
+
+        -- , marginLeft (px -countryPickerWidth)
+        -- , paddingLeft (px (countryPickerWidth + 5))
         ]
 
 
@@ -226,7 +229,7 @@ placeholder =
 dialCode : Snippet
 dialCode =
     class DialCode
-        [ color (rgba 0 0 0 0.35), marginLeft (em 0.5) ]
+        [ color (rgba 0 0 0 0.5), marginLeft (em 0.5) ]
 
 
 
@@ -262,10 +265,7 @@ buttonMixin =
 focusMixin : Mixin
 focusMixin =
     mixin
-        [ outline none
-        , pseudoClass "-moz-focus-inner"
-            [ border zero ]
-        ]
+        []
 
 
 

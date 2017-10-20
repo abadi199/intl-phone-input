@@ -5,6 +5,7 @@ module IntlPhoneInput.Config
         , countries
         , countryList
         , defaultConfig
+        , dialCode
         , getCountryElementId
         , getCountryListScrollId
         , getCountryPickerId
@@ -22,6 +23,7 @@ import IntlPhoneInput.Internal exposing (State(..), initialState)
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber, emptyPhoneNumber)
 import Murmur3
 import Set exposing (Set)
+import String
 
 
 type alias Config msg =
@@ -30,7 +32,20 @@ type alias Config msg =
     , namespace : String
     , countries : Dict String CountryData
     , countriesSorter : List ( String, CountryData ) -> List ( String, CountryData )
+    , dialCodeFormatter : String -> String
     }
+
+
+defaultDialCodeFormatter : String -> String
+defaultDialCodeFormatter dialCode =
+    "+" ++ dialCode
+
+
+dialCode : Config msg -> String -> Maybe String
+dialCode config isoCode =
+    Dict.get (String.toUpper isoCode) config.countries
+        |> Maybe.map .dialCode
+        |> Maybe.map config.dialCodeFormatter
 
 
 defaultHashSeed : Int
@@ -50,6 +65,7 @@ configWithSeed hashSeed onChange =
     , namespace = "IntlPhoneInput"
     , countries = countries
     , countriesSorter = defaultCountriesSorter
+    , dialCodeFormatter = defaultDialCodeFormatter
     }
 
 
@@ -60,6 +76,7 @@ configWithId id onChange =
     , namespace = "IntlPhoneInput"
     , countries = countries
     , countriesSorter = defaultCountriesSorter
+    , dialCodeFormatter = defaultDialCodeFormatter
     }
 
 

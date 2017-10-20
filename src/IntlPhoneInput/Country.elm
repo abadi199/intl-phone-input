@@ -89,5 +89,8 @@ countryView config isoCode countryData (State state) phoneNumber =
             phoneNumber
         ]
         [ Flag.flag config isoCode
-        , span [ class [ Css.CountryName ] ] [ span [] [ text countryData.name ], span [ class [ Css.DialCode ] ] [ text <| "+" ++ countryData.dialCode ] ]
+        , span [ class [ Css.CountryName ] ]
+            [ span [] [ text countryData.name ]
+            , span [ class [ Css.DialCode ] ] [ text <| config.dialCodeFormatter countryData.dialCode ]
+            ]
         ]

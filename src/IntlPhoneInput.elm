@@ -92,6 +92,9 @@ countryPickerView config (State state) phoneNumber =
             phoneNumber
         ]
         [ Flag.flag config phoneNumber.isoCode
+        , Config.dialCode config phoneNumber.isoCode
+            |> Maybe.map (\dialCode -> span [ class [ Css.DialCode ] ] [ text dialCode ])
+            |> Maybe.withDefault (text "")
         , arrowView config (State state)
         ]
 
