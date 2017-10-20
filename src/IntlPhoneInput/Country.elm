@@ -64,8 +64,8 @@ countryView config isoCode countryData (State state) phoneNumber =
         , id (Config.getCountryElementId config isoCode)
         , Html.Attributes.tabindex -1
         , Event.onClickStopPropagation
-            (Action.closeCountryDropdown "countryView:onClick" config (State state) phoneNumber Cmd.none
-                |> Action.andThen (Action.selectCountry "countryView:onClick:delay" isoCode)
+            (Action.selectCountry "countryView:onClick:delay" isoCode config (State state) phoneNumber Cmd.none
+                |> Action.andThen (Action.closeCountryDropdown "countryView:onClick")
                 --|> Action.andThen Action.focus
                 |> Action.done
             )
