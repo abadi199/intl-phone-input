@@ -141,6 +141,7 @@ flag =
             ++ [ withClass (FlagIso "")
                     [ property "background-image" "none"
                     , backgroundColor (hex "#aaa")
+                    , height (px 12)
                     ]
                ]
         )
