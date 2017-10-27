@@ -26,6 +26,7 @@ import Html.CssHelpers
 import Html.Events exposing (on, onBlur, onClick, onFocus, onInput)
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
+import IntlPhoneInput.Config.Helper as Config
 import IntlPhoneInput.Country as Country
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event

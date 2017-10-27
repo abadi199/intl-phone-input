@@ -4,15 +4,23 @@ module IntlPhoneInput.Css
         , css
         )
 
+{-| Contains all CSS related code for IntlPhoneInput.
+
+@docs Class, css
+
+-}
+
 import Css exposing (..)
 import Css.Namespace
 import Dict exposing (Dict)
-import IntlPhoneInput.Config exposing (isoCodes)
+import IntlPhoneInput.Config.Default exposing (isoCodes)
 
 
 -- CLASS
 
 
+{-| CSS Classes used in IntlPhoneInput. You can use this classes in your application's elm-css module to override some style.
+-}
 type Class
     = IntlPhoneInput
     | CountryPicker
@@ -33,6 +41,14 @@ type Class
     | DialCode
 
 
+{-| Generate the CSS code for IntlPhoneInput by passing the namespace. Include this function to compile the css alongside your application's css.
+
+    Css.compile
+        [ IntlPhoneInput.Css.css "MyApplicationNamespace"
+        , YourApplication.Css.css "MyApplicationNamespace"
+        ]
+
+-}
 css : String -> Css.Stylesheet
 css namespace =
     (Css.stylesheet << Css.Namespace.namespace namespace)

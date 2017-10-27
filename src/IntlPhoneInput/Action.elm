@@ -24,6 +24,7 @@ import Dict
 import Dom
 import Dom.Scroll
 import IntlPhoneInput.Config as Config exposing (Config)
+import IntlPhoneInput.Config.Helper as Config
 import IntlPhoneInput.Filter as Filter
 import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), FocusEvent, State(State))
 import IntlPhoneInput.KeyCode as KeyCode exposing (ArrowKey(..), KeyCode(..))

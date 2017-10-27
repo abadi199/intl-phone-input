@@ -13,9 +13,9 @@ filterListSuite =
         [ test "filter Ind" <|
             \_ ->
                 -- Config.isoCodes
-                [ ( "IN", { name = "Indonesia", dialCode = "62", flag = Html.text "" } )
-                , ( "US", { name = "United States", dialCode = "62", flag = Html.text "" } )
-                , ( "IR", { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98", flag = Html.text "" } )
+                [ ( "IN", { name = "Indonesia", dialCode = "62" } )
+                , ( "US", { name = "United States", dialCode = "62" } )
+                , ( "IR", { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98" } )
                 ]
                     |> Filter.filterList "Ind"
                     |> List.map Tuple.first
@@ -23,9 +23,9 @@ filterListSuite =
         , test "filter is case insensitive" <|
             \_ ->
                 -- Config.isoCodes
-                [ ( "IN", { name = "Indonesia", dialCode = "62", flag = Html.text "" } )
-                , ( "US", { name = "United States", dialCode = "62", flag = Html.text "" } )
-                , ( "IR", { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98", flag = Html.text "" } )
+                [ ( "IN", { name = "Indonesia", dialCode = "62" } )
+                , ( "US", { name = "United States", dialCode = "62" } )
+                , ( "IR", { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98" } )
                 ]
                     |> Filter.filterList "ind"
                     |> List.map Tuple.first

@@ -48,12 +48,12 @@ subscriptions model =
 
 homePhoneConfig : Config Msg
 homePhoneConfig =
-    Config.defaultConfig "flags.png" HomePhoneChanged
+    Config.defaultConfig HomePhoneChanged
 
 
 officePhoneConfig : Config Msg
 officePhoneConfig =
-    Config.defaultConfig "flags.png" OfficePhoneChanged
+    Config.defaultConfig OfficePhoneChanged
 
 
 view : Model -> Html Msg

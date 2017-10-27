@@ -12,6 +12,7 @@ import Html.Events exposing (onBlur, onClick, onFocus, onMouseOver)
 import Html.Keyed
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
+import IntlPhoneInput.Config.Helper as Config
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Filter as Filter
