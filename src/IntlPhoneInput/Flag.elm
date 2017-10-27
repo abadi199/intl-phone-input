@@ -29,9 +29,5 @@ flag config originalIsoCode =
     in
     span
         [ class [ Css.Flag, Css.FlagIso isoCode ]
-        , if String.isEmpty isoCode then
-            style []
-          else
-            style [ ( "backgroundImage", "url(" ++ config.flagUrl ++ ")" ) ]
         ]
         []

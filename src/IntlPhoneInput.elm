@@ -6,6 +6,20 @@ module IntlPhoneInput
         , intlPhoneInput
         )
 
+{-| Phone number input with built in international dial code selector.
+
+
+# Internal
+
+@docs State, initialState
+
+
+# View
+
+@docs intlPhoneInput, customIntlPhoneInput
+
+-}
+
 import Html exposing (Attribute, Html, button, div, input, label, span, text)
 import Html.Attributes exposing (id, placeholder, type_, value)
 import Html.CssHelpers
@@ -22,10 +36,14 @@ import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
 
 
+{-| Internal state of the Intl Phone Input element.
+-}
 type alias State =
     Internal.State
 
 
+{-| The initial state of the Intl Phone Input element
+-}
 initialState : State
 initialState =
     Internal.initialState
@@ -35,11 +53,15 @@ initialState =
 -- VIEW
 
 
+{-| Render the Intl Phone Input element as part of your `view` function.
+-}
 intlPhoneInput : Config msg -> State -> PhoneNumber -> Html msg
 intlPhoneInput =
     customIntlPhoneInput []
 
 
+{-| Render the Intl Phone Input element as part of your `view` function with some custom attributes to the phone number field.
+-}
 customIntlPhoneInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
 customIntlPhoneInput attributes config (State state) phoneNumber =
     let

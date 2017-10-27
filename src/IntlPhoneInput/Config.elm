@@ -18,6 +18,25 @@ module IntlPhoneInput.Config
         , toCountryDataList
         )
 
+{-| Contains types and helper functions for working with configuration of IntlPhoneInput
+
+
+# Config
+
+@docs Config, defaultConfig, configWithId
+
+
+# Constants
+
+@docs countryList, countries
+
+
+# Helper Functions
+
+@docs dialCode, getCountryElementId, getCOuntryListScrollId, getCountryPickerId, getPhoneNumberInputId, getSearchInputId, isCountryPicker, isDropdownElement, toCountryData, toCountryDataList
+
+-}
+
 import Dict exposing (Dict)
 import IntlPhoneInput.Internal exposing (State(..), initialState)
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber, emptyPhoneNumber)
