@@ -3,7 +3,6 @@ module Demo exposing (main)
 import Css
 import Demo.Css as Css exposing (Class(..))
 import Dict
-import Dom
 import Html exposing (Html, div, label, span, text)
 import Html.Attributes exposing (for)
 import Html.CssHelpers
@@ -11,7 +10,6 @@ import IntlPhoneInput
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css
 import IntlPhoneInput.Type exposing (PhoneNumber)
-import Task exposing (Task)
 
 
 type Msg
@@ -28,8 +26,8 @@ type alias Model =
 
 initialModel : Model
 initialModel =
-    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "US", phoneNumber = "5551234" } )
-    , officePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "US", phoneNumber = "5559876" } )
+    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "", phoneNumber = "5551234" } )
+    , officePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "us", phoneNumber = "5559876" } )
     }
 
 
@@ -62,7 +60,10 @@ view : Model -> Html Msg
 view model =
     let
         { css } =
-            Css.compile [ IntlPhoneInput.Css.css homePhoneConfig.namespace, Css.css homePhoneConfig.namespace ]
+            Css.compile
+                [ IntlPhoneInput.Css.css homePhoneConfig.namespace
+                , Css.css homePhoneConfig.namespace
+                ]
 
         { id, class, classList } =
             Html.CssHelpers.withNamespace homePhoneConfig.namespace

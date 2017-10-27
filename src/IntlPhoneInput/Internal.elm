@@ -17,7 +17,6 @@ type State
 
 type alias StateData =
     { countryPickerState : CountryPickerState
-    , highlightedCountryByIsoCode : Maybe String
     , filteredCountries : Set String
     , keyword : String
     , action : String
@@ -33,7 +32,6 @@ initialState : State
 initialState =
     State
         { countryPickerState = CountryPickerClosed
-        , highlightedCountryByIsoCode = Nothing
         , filteredCountries = Set.empty
         , keyword = ""
         , action = ""
