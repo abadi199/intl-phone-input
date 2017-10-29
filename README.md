@@ -3,7 +3,7 @@ A phone number input with built in country dial code drop down for Elm written e
 
 Inspired by [intl-tel-input](https://intl-tel-input.com/) jQuery plugin.
 
-## [Live Demo]()
+## [Live Demo](https://abadi199.github.io/intl-phone-input/index.html)
 
 ![alt text](https://raw.githubusercontent.com/abadi199/intl-phone-input/master/images/demo.gif "Sample of IntlPhoneInput form")
 
@@ -70,7 +70,7 @@ Here's a list of configurable properties:
 ```elm
 type Msg = PhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
 
-config : IntlPhoneInput.Config.Config Msg 
+config : IntlPhoneInput.Config.Config Msg
 config =
     let
         baseConfig =
