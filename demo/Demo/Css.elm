@@ -12,6 +12,7 @@ import IntlPhoneInput.Css exposing (Class(..))
 
 type Class
     = Demo
+    | Label
     | PhoneNumber
     | FormField
 
@@ -22,10 +23,13 @@ css namespace =
         [ class Demo
             [ displayFlex
             , flexDirection column
+            , margin (em 2)
             , alignItems flexStart
             , fontFamilies [ .value sansSerif ]
             , descendants
-                [ class IntlPhoneInput
+                [ class Label
+                    [ marginBottom (em 0.5) ]
+                , class IntlPhoneInput
                     [ descendants
                         [ class CountryPicker []
                         , class PhoneInput
@@ -36,7 +40,8 @@ css namespace =
                     [ fontSize (em 0.875)
                     , border zero
                     , padding2 (em 0.75) (em 0.5)
-                    , backgroundColor (rgba 0 0 0 0.05)
+
+                    -- , backgroundColor (rgba 0 0 0 0.05)
                     , borderRadius (px 2)
                     , boxShadow6 inset zero (px 1) (px 3) zero (rgba 0 0 0 0.15)
                     ]
@@ -47,7 +52,8 @@ css namespace =
                 , class FormField
                     [ marginBottom (em 1)
                     , displayFlex
-                    , alignItems flexEnd
+                    , flexDirection column
+                    , alignItems flexStart
                     ]
                 ]
             ]

@@ -13,21 +13,17 @@ import IntlPhoneInput.Type exposing (PhoneNumber)
 
 
 type Msg
-    = NoOp
-    | HomePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
-    | OfficePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
+    = HomePhoneChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
 
 
 type alias Model =
     { homePhoneNumber : ( IntlPhoneInput.State, PhoneNumber )
-    , officePhoneNumber : ( IntlPhoneInput.State, PhoneNumber )
     }
 
 
 initialModel : Model
 initialModel =
-    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "", phoneNumber = "5551234" } )
-    , officePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "us", phoneNumber = "5559876" } )
+    { homePhoneNumber = ( IntlPhoneInput.initialState, { isoCode = "", phoneNumber = "" } )
     }
 
 
@@ -51,11 +47,6 @@ homePhoneConfig =
     Config.defaultConfig HomePhoneChanged
 
 
-officePhoneConfig : Config Msg
-officePhoneConfig =
-    Config.defaultConfig OfficePhoneChanged
-
-
 view : Model -> Html Msg
 view model =
     let
@@ -71,47 +62,18 @@ view model =
     div [ class [ Demo ] ]
         [ Html.node "style" [] [ Html.text css ]
         , div [ class [ FormField ] ]
-            [ label [ for (Config.getPhoneNumberInputId homePhoneConfig) ]
-                [ text "Home Phone"
-                , IntlPhoneInput.intlPhoneInput homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
-                ]
-            , phoneNumberView homePhoneConfig (Tuple.second model.homePhoneNumber)
-            ]
-        , div [ class [ FormField ] ]
             [ label
-                [ for (Config.getPhoneNumberInputId officePhoneConfig) ]
-                [ text "Office Phone"
-
-                -- , IntlPhoneInput.intlPhoneInput officePhoneConfig (Tuple.first model.officePhoneNumber) (Tuple.second model.officePhoneNumber)
+                [ for (Config.getPhoneNumberInputId homePhoneConfig)
+                , class [ Label ]
                 ]
-            , phoneNumberView officePhoneConfig (Tuple.second model.officePhoneNumber)
+                [ text "Home Phone" ]
+            , IntlPhoneInput.intlPhoneInput homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
             ]
-        ]
-
-
-phoneNumberView : Config msg -> IntlPhoneInput.Type.PhoneNumber -> Html msg
-phoneNumberView config phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
-    span [ class [ Css.PhoneNumber ] ]
-        [ Html.text <|
-            "+"
-                ++ (Dict.get phoneNumber.isoCode config.countries |> Maybe.map .dialCode |> Maybe.withDefault "XX")
-                ++ " "
-                ++ phoneNumber.phoneNumber
         ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        NoOp ->
-            ( model, Cmd.none )
-
         HomePhoneChanged state phoneNumber cmd ->
             ( { model | homePhoneNumber = ( state, phoneNumber ) }, cmd )
-
-        OfficePhoneChanged state phoneNumber cmd ->
-            ( { model | officePhoneNumber = ( state, phoneNumber ) }, cmd )

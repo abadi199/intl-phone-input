@@ -17,7 +17,8 @@
     "svgo": "^0.7.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "elm test",
+    "demo": "cd demo && elm make Demo.elm --output ../docs/index.html"
   },
   "repository": {
     "type": "git",
