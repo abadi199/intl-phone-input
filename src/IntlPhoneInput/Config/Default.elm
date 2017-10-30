@@ -3,6 +3,7 @@ module IntlPhoneInput.Config.Default
         ( countries
         , countryList
         , isoCodes
+        , namespace
         , toCountryData
         )
 
@@ -31,6 +32,11 @@ countryList : List ( String, CountryData )
 countryList =
     isoCodes
         |> List.map toCountryData
+
+
+namespace : String
+namespace =
+    "IntlPhoneInput"
 
 
 isoCodes : List String
