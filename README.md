@@ -42,7 +42,7 @@ view model =
                 , class [ Label ]
                 ]
                 [ text "Home Phone" ]
-            , IntlPhoneInput.intlPhoneInput homePhoneConfig
+            , IntlPhoneInput.input homePhoneConfig
                 (Tuple.first model.homePhoneNumber)
                 (Tuple.second model.homePhoneNumber)
             ]
@@ -60,7 +60,7 @@ See full code at [https://github.com/abadi199/intl-phone-input/blob/master/demo/
 
 ## Configuration
 
-You can do some customization to this IntlPhoneInput passing a custom `Config` value to the  `IntlPhoneInput.intlPhoneInput` view function.
+You can do some customization to this IntlPhoneInput passing a custom `Config` value to the  `IntlPhoneInput.input` view function.
 
 Here's a list of configurable properties:
 - `namespace`: namespace for `elm-css`

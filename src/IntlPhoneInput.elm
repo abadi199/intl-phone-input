@@ -1,22 +1,22 @@
 module IntlPhoneInput
     exposing
         ( State
-        , customIntlPhoneInput
+        , customInput
         , initialState
-        , intlPhoneInput
+        , input
         )
 
 {-| Phone number input with built in international dial code selector.
 
 
+# View
+
+@docs input, customInput
+
+
 # Internal
 
 @docs State, initialState
-
-
-# View
-
-@docs intlPhoneInput, customIntlPhoneInput
 
 -}
 
@@ -55,16 +55,49 @@ initialState =
 
 
 {-| Render the Intl Phone Input element as part of your `view` function.
+
+    type alias model =
+        { phoneNumberstate : IntlPhoneInput.State
+        , phoneNumber : IntlPhoneInput.Type.PhoneNumber
+        }
+
+    type Msg
+        = PhoneNumberChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
+
+    view : Model -> Html Msg
+    view model =
+        IntlPhoneInput.input
+            (IntlPhoneInput.Config.defaultConfig PhoneNumberChanged)
+            model.phoneNumberstate
+            model.phoneNumber
+
 -}
-intlPhoneInput : Config msg -> State -> PhoneNumber -> Html msg
-intlPhoneInput =
-    customIntlPhoneInput []
+input : Config msg -> State -> PhoneNumber -> Html msg
+input =
+    customInput []
 
 
 {-| Render the Intl Phone Input element as part of your `view` function with some custom attributes to the phone number field.
+
+    type alias model =
+        { phoneNumberstate : IntlPhoneInput.State
+        , phoneNumber : IntlPhoneInput.Type.PhoneNumber
+        }
+
+    type Msg
+        = PhoneNumberChanged IntlPhoneInput.State PhoneNumber (Cmd Msg)
+
+    view : Model -> Html Msg
+    view model =
+        IntlPhoneInput.input
+            [ Html.Attributes.class "MyPhoneInput" ]
+            (IntlPhoneInput.Config.defaultConfig PhoneNumberChanged)
+            model.phoneNumberstate
+            model.phoneNumber
+
 -}
-customIntlPhoneInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
-customIntlPhoneInput attributes config (State state) phoneNumber =
+customInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
+customInput attributes config (State state) phoneNumber =
     let
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
@@ -156,7 +189,7 @@ searchInput config (State state) phoneNumber =
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
-    input
+    Html.input
         [ type_ "text"
         , id <| Config.getSearchInputId config
         , case state.countryPickerState of
@@ -194,7 +227,7 @@ phoneInputView attributes config (State state) phoneNumber =
         { id, class, classList } =
             Html.CssHelpers.withNamespace config.namespace
     in
-    input
+    Html.input
         ([ type_ "tel"
          , id <| Config.getPhoneNumberInputId config
          , class [ Css.PhoneInput ]

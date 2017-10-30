@@ -67,7 +67,7 @@ view model =
                 , class [ Label ]
                 ]
                 [ text "Home Phone" ]
-            , IntlPhoneInput.intlPhoneInput homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
+            , IntlPhoneInput.input homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
             ]
         ]
 

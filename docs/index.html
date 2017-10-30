@@ -11933,6 +11933,7 @@ var _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$isoCodes = {
 		}
 	}
 };
+var _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$namespace = 'IntlPhoneInput';
 var _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$countryList = A2(_elm_lang$core$List$map, _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$toCountryData, _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$isoCodes);
 var _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$countries = _elm_lang$core$Dict$fromList(
 	A2(_elm_lang$core$List$map, _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$toCountryData, _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$isoCodes));
@@ -19560,7 +19561,7 @@ var _abadi199$intl_phone_input$IntlPhoneInput_Config$configWithSeed = F2(
 					_elm_lang$core$Basics$toString(
 						A3(onChange, _abadi199$intl_phone_input$IntlPhoneInput_Internal$initialState, _abadi199$intl_phone_input$IntlPhoneInput_Type$emptyPhoneNumber, _elm_lang$core$Platform_Cmd$none)))),
 			onChange: onChange,
-			namespace: 'IntlPhoneInput',
+			namespace: _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$namespace,
 			countries: _abadi199$intl_phone_input$IntlPhoneInput_Config_Default$countries,
 			countriesSorter: _abadi199$intl_phone_input$IntlPhoneInput_Config$defaultCountriesSorter,
 			dialCodeFormatter: _abadi199$intl_phone_input$IntlPhoneInput_Config$defaultDialCodeFormatter
@@ -21707,7 +21708,7 @@ var _abadi199$intl_phone_input$IntlPhoneInput$countryPickerView = F3(
 				}
 			});
 	});
-var _abadi199$intl_phone_input$IntlPhoneInput$customIntlPhoneInput = F4(
+var _abadi199$intl_phone_input$IntlPhoneInput$customInput = F4(
 	function (attributes, config, _p22, phoneNumber) {
 		var _p23 = _p22;
 		var _p25 = _p23._0;
@@ -21754,7 +21755,7 @@ var _abadi199$intl_phone_input$IntlPhoneInput$customIntlPhoneInput = F4(
 				}
 			});
 	});
-var _abadi199$intl_phone_input$IntlPhoneInput$intlPhoneInput = _abadi199$intl_phone_input$IntlPhoneInput$customIntlPhoneInput(
+var _abadi199$intl_phone_input$IntlPhoneInput$input = _abadi199$intl_phone_input$IntlPhoneInput$customInput(
 	{ctor: '[]'});
 var _abadi199$intl_phone_input$IntlPhoneInput$initialState = _abadi199$intl_phone_input$IntlPhoneInput_Internal$initialState;
 var _abadi199$intl_phone_input$Demo$update = F2(
@@ -21869,7 +21870,7 @@ var _abadi199$intl_phone_input$Demo$view = function (model) {
 						_1: {
 							ctor: '::',
 							_0: A3(
-								_abadi199$intl_phone_input$IntlPhoneInput$intlPhoneInput,
+								_abadi199$intl_phone_input$IntlPhoneInput$input,
 								_abadi199$intl_phone_input$Demo$homePhoneConfig,
 								_elm_lang$core$Tuple$first(model.homePhoneNumber),
 								_elm_lang$core$Tuple$second(model.homePhoneNumber)),
