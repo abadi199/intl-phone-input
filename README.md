@@ -81,6 +81,7 @@ config =
         { baseConfig | dialCodeFormatter = \dialCode -> "(+" ++ dialCode ++ ")" }
 ```
 ## Styling
+`IntlPhoneInput` comes with minimal amount of styles. It doesn't even come with any styles for the phone number input field because everybody usually have their own styles for the input field. You can always override the styles in your own css or inject the class name into the input field by passing the custom `Html` attributes to the `customIntlPhoneInput` function.
 
 ### With Elm-Css
 If you use [`elm-css`](http://package.elm-lang.org/packages/rtfeldman/elm-css/latest), all the CSS classes can be found at `IntlPhoneInput.Css.Class` and CSS styles can be found at `IntlPhoneInput.Css.css`. Include the `css` into your `elm-css` compile/style function.
