@@ -5,7 +5,6 @@ import Demo.Css as Css exposing (Class(..))
 import Dict
 import Html exposing (Html, div, label, span, text)
 import Html.Attributes exposing (for)
-import Html.CssHelpers
 import IntlPhoneInput
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css

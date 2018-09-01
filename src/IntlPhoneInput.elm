@@ -1,10 +1,7 @@
-module IntlPhoneInput
-    exposing
-        ( State
-        , customInput
-        , initialState
-        , input
-        )
+module IntlPhoneInput exposing
+    ( input, customInput
+    , State, initialState
+    )
 
 {-| Phone number input with built in international dial code selector.
 
@@ -22,7 +19,6 @@ module IntlPhoneInput
 
 import Html exposing (Attribute, Html, button, div, input, label, span, text)
 import Html.Attributes exposing (id, placeholder, type_, value)
-import Html.CssHelpers
 import Html.Events exposing (on, onBlur, onClick, onFocus, onInput)
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
@@ -31,7 +27,7 @@ import IntlPhoneInput.Country as Country
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
-import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State), StateData)
+import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(..), StateData)
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)

@@ -1,13 +1,10 @@
-module Demo.Css
-    exposing
-        ( Class(..)
-        , css
-        )
+module Demo.Css exposing
+    ( Class(..)
+    , css
+    )
 
 import Css exposing (..)
-import Css.Elements exposing (input)
-import Css.Namespace
-import IntlPhoneInput.Css exposing (Class(..))
+import IntlPhoneInput.Css
 
 
 type Class

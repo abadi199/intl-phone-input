@@ -1,11 +1,7 @@
-module IntlPhoneInput.Config
-    exposing
-        ( Config
-        , configWithId
-        , configWithSeed
-        , defaultConfig
-        , getPhoneNumberInputId
-        )
+module IntlPhoneInput.Config exposing
+    ( Config, defaultConfig, configWithId, configWithSeed
+    , getPhoneNumberInputId
+    )
 
 {-| Contains types and helper functions for working with configuration of IntlPhoneInput
 

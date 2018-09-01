@@ -1,8 +1,30 @@
-module IntlPhoneInput.Css
-    exposing
-        ( Class(..)
-        , css
-        )
+module IntlPhoneInput.Css exposing
+    ( arrow
+    , boxSizingStyle
+    , buttonStyle
+    , country
+    , countryDropdown
+    , countryDropdownHidden
+    , countryDropdownWidth
+    , countryHighlighted
+    , countryList
+    , countryListItem
+    , countryListScroll
+    , countryName
+    , countryPicker
+    , countryPickerHighlighted
+    , defaultFlagIso
+    , dialCode
+    , flag
+    , flagIso
+    , focusStyle
+    , highlightedStyle
+    , hoverStyle
+    , intlPhoneInput
+    , phoneInput
+    , placeholder
+    , searchInput
+    )
 
 {-| Contains all CSS related code for IntlPhoneInput.
 
@@ -11,9 +33,9 @@ module IntlPhoneInput.Css
 -}
 
 import Css exposing (..)
-import Css.Namespace
 import Dict exposing (Dict)
 import IntlPhoneInput.Config.Default exposing (isoCodes)
+
 
 
 -- CLASS
@@ -21,73 +43,26 @@ import IntlPhoneInput.Config.Default exposing (isoCodes)
 
 {-| CSS Classes used in IntlPhoneInput. You can use this classes in your application's elm-css module to override some style.
 -}
-type Class
-    = IntlPhoneInput
-    | CountryPicker
-    | PhoneInput
-    | Flag
-    | FlagIso String
-    | Arrow
-    | CountryDropdown
-    | CountryDropdownHidden
-    | CountryListScroll
-    | CountryList
-    | CountryListItem
-    | Country
-    | CountryName
-    | Highlighted
-    | SearchInput
-    | Placeholder
-    | DialCode
-
-
-{-| Generate the CSS code for IntlPhoneInput by passing the namespace. Include this function to compile the css alongside your application's css.
-
-    Css.compile
-        [ IntlPhoneInput.Css.css "MyApplicationNamespace"
-        , YourApplication.Css.css "MyApplicationNamespace"
-        ]
-
--}
-css : String -> Css.Stylesheet
-css namespace =
-    (Css.stylesheet << Css.Namespace.namespace namespace)
-        [ intlPhoneInput ]
 
 
 
 -- SNIPPET
 
 
-intlPhoneInput : Snippet
+intlPhoneInput : Style
 intlPhoneInput =
-    class IntlPhoneInput
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , position relative
         , displayFlex
-        , descendants
-            [ countryPicker
-            , flag
-            , arrow
-            , phoneInput
-            , countryDropdown
-            , countryListScroll
-            , countryList
-            , countryListItem
-            , country
-            , countryName
-            , searchInput
-            , placeholder
-            , dialCode
-            ]
         ]
 
 
-countryPicker : Snippet
+countryPicker : Style
 countryPicker =
-    class CountryPicker
-        [ boxSizingMixin
-        , buttonMixin
+    Css.batch
+        [ boxSizingStyle
+        , buttonStyle
         , displayFlex
         , alignItems center
         , padding2 zero (em 0.5)
@@ -96,102 +71,111 @@ countryPicker =
         , border3 (px 1) solid (rgba 0 0 0 0.075)
         , backgroundColor (rgba 0 0 0 0)
         , property "transition" "background-color 0.2s"
-        , hover [ hoverMixin ]
-        , focus [ focusMixin, hoverMixin ]
-        , withClass Highlighted [ hoverMixin ]
+        , hover [ hoverStyle ]
+        , focus [ focusStyle, hoverStyle ]
         ]
 
 
-countryList : Snippet
+countryPickerHighlighted : Style
+countryPickerHighlighted =
+    Css.batch [ hoverStyle ]
+
+
+countryList : Style
 countryList =
-    class CountryList
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , padding2 (em 0.5) zero
         , margin zero
         ]
 
 
-countryListItem : Snippet
+countryListItem : Style
 countryListItem =
-    class CountryListItem
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , listStyle none
         , margin zero
         , padding zero
         ]
 
 
-country : Snippet
+country : Style
 country =
-    class Country
-        [ boxSizingMixin
-        , buttonMixin
+    Css.batch
+        [ boxSizingStyle
+        , buttonStyle
         , width (pct 100)
         , displayFlex
         , alignItems center
         , justifyContent left
         , padding4 (em 0.5) (em 1) (em 0.5) (em 0.5)
-        , withClass Highlighted [ highlightedMixin, hover [ highlightedMixin ] ]
-        , focus [ focusMixin, highlightedMixin ]
-        , hover [ hoverMixin ]
+        , focus [ focusStyle, highlightedStyle ]
+        , hover [ hoverStyle ]
         ]
 
 
-countryName : Snippet
+countryHighlighted : Style
+countryHighlighted =
+    Css.batch [ highlightedStyle, hover [ highlightedStyle ] ]
+
+
+countryName : Style
 countryName =
-    class CountryName
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , marginLeft (em 0.5)
         ]
 
 
-flag : Snippet
+flag : Style
 flag =
-    class Flag
-        ([ boxSizingMixin
-         , width (px 16)
-         , height (px 16)
-         , display inlineBlock
-         , backgroundImage (url flagImage)
-         ]
-            ++ (isoCodes |> List.map flagIso)
-            ++ [ withClass (FlagIso "")
-                    [ property "background-image" "none"
-                    , backgroundColor (hex "#aaa")
-                    , height (px 12)
-                    ]
-               ]
-        )
+    Css.batch
+        [ boxSizingStyle
+        , width (px 16)
+        , height (px 16)
+        , display inlineBlock
+        , backgroundImage (url flagImage)
+        ]
 
 
-flagIso : String -> Mixin
+defaultFlagIso : Style
+defaultFlagIso =
+    Css.batch
+        [ property "background-image" "none"
+        , backgroundColor (hex "#aaa")
+        , height (px 12)
+        ]
+
+
+flagIso : String -> Style
 flagIso isoCode =
-    withClass (FlagIso isoCode)
+    Css.batch
         [ Dict.get isoCode flagPositions |> Maybe.map (\( x, y ) -> backgroundPosition2 (px x) (px y)) |> Maybe.withDefault (backgroundPosition2 zero zero)
         ]
 
 
-arrow : Snippet
+arrow : Style
 arrow =
-    class Arrow
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , width (px 5)
         , marginLeft (px 7)
         , marginTop (px -4)
         ]
 
 
-phoneInput : Snippet
+phoneInput : Style
 phoneInput =
-    class PhoneInput
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         ]
 
 
-countryDropdown : Snippet
+countryDropdown : Style
 countryDropdown =
-    class CountryDropdown
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , position absolute
         , backgroundColor (rgba 255 255 255 1)
         , top (pct 100)
@@ -206,43 +190,47 @@ countryDropdown =
         , transform (scale2 1 1)
         , property "transform-origin" "top"
         , property "transition" "transform 0.2s"
-        , withClass CountryDropdownHidden
-            [ opacity zero
-            , transform (scale2 1 0)
-            ]
         ]
 
 
-countryListScroll : Snippet
+countryDropdownHidden : Style
+countryDropdownHidden =
+    Css.batch
+        [ opacity zero
+        , transform (scale2 1 0)
+        ]
+
+
+countryListScroll : Style
 countryListScroll =
-    class CountryListScroll
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , overflowY auto
         ]
 
 
-searchInput : Snippet
+searchInput : Style
 searchInput =
-    class SearchInput
-        [ boxSizingMixin
+    Css.batch
+        [ boxSizingStyle
         , backgroundColor (hex "#fff")
         , border zero
         , padding (px 10)
         , margin zero
         , boxShadow5 (px 0) (px 5) (px 10) (px -5) (rgba 0 0 0 0.15)
-        , focus [ focusMixin ]
+        , focus [ focusStyle ]
         ]
 
 
-placeholder : Snippet
+placeholder : Style
 placeholder =
-    class Placeholder
+    Css.batch
         [ color (rgba 0 0 0 0.15) ]
 
 
-dialCode : Snippet
+dialCode : Style
 dialCode =
-    class DialCode
+    Css.batch
         [ color (rgba 0 0 0 0.5), marginLeft (em 0.5) ]
 
 
@@ -250,35 +238,35 @@ dialCode =
 -- MIXIN
 
 
-boxSizingMixin : Mixin
-boxSizingMixin =
-    mixin [ boxSizing borderBox ]
+boxSizingStyle : Style
+boxSizingStyle =
+    Css.batch [ boxSizing borderBox ]
 
 
-hoverMixin : Mixin
-hoverMixin =
-    mixin
+hoverStyle : Style
+hoverStyle =
+    Css.batch
         [ backgroundColor (rgba 0 0 0 0.075)
         , cursor pointer
         ]
 
 
-highlightedMixin : Mixin
-highlightedMixin =
-    mixin [ backgroundColor (rgba 0 0 0 0.15) ]
+highlightedStyle : Style
+highlightedStyle =
+    Css.batch [ backgroundColor (rgba 0 0 0 0.15) ]
 
 
-buttonMixin : Mixin
-buttonMixin =
-    mixin
+buttonStyle : Style
+buttonStyle =
+    Css.batch
         [ border zero
         , backgroundColor (rgba 0 0 0 0)
         ]
 
 
-focusMixin : Mixin
-focusMixin =
-    mixin
+focusStyle : Style
+focusStyle =
+    Css.batch
         []
 
 

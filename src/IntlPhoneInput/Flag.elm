@@ -1,12 +1,8 @@
-module IntlPhoneInput.Flag
-    exposing
-        ( flag
-        )
+module IntlPhoneInput.Flag exposing (flag)
 
 import Dict
 import Html exposing (Html, span)
 import Html.Attributes exposing (style)
-import Html.CssHelpers
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Css as Css
 import String
@@ -24,6 +20,7 @@ flag config originalIsoCode =
         isoCode =
             if Dict.member upperCasedIsoCode config.countries then
                 upperCasedIsoCode
+
             else
                 ""
     in

@@ -1,9 +1,8 @@
-module IntlPhoneInput.Event
-    exposing
-        ( batchKeyDown
-        , onBlur
-        , onClickStopPropagation
-        )
+module IntlPhoneInput.Event exposing
+    ( batchKeyDown
+    , onBlur
+    , onClickStopPropagation
+    )
 
 import Html
 import Html.Attributes

@@ -1,13 +1,11 @@
-module IntlPhoneInput.Country
-    exposing
-        ( countriesView
-        , countryView
-        )
+module IntlPhoneInput.Country exposing
+    ( countriesView
+    , countryView
+    )
 
 import Dict
 import Html exposing (Html, button, div, li, span, text, ul)
 import Html.Attributes exposing (type_)
-import Html.CssHelpers
 import Html.Events exposing (onBlur, onClick, onFocus, onMouseOver)
 import Html.Keyed
 import IntlPhoneInput.Action as Action
@@ -17,7 +15,7 @@ import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Filter as Filter
 import IntlPhoneInput.Flag as Flag
-import IntlPhoneInput.Internal as Internal exposing (State(State))
+import IntlPhoneInput.Internal as Internal exposing (State(..))
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
 import Set
@@ -40,6 +38,7 @@ countriesView config (State state) phoneNumber =
                 )
                 (if Set.isEmpty state.filteredCountries && String.isEmpty state.keyword then
                     config.countries |> Dict.toList |> config.countriesSorter
+
                  else
                     state.filteredCountries |> Config.toCountryDataList config
                 )
@@ -58,6 +57,7 @@ countryView config isoCode countryData (State state) phoneNumber =
             (Css.Country
                 :: (if String.toUpper phoneNumber.isoCode == isoCode then
                         [ Css.Highlighted ]
+
                     else
                         []
                    )
