@@ -165,7 +165,7 @@ filterCountries config (State state) phoneNumber cmd =
 appendKeyword : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 appendKeyword keyCode config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
     in
     case keyCode of
@@ -178,7 +178,7 @@ appendKeyword keyCode config (State state) phoneNumber cmd =
                 |> andThen filterCountries
 
         _ ->
-            doNothing
+            doNothingAction
 
 
 deleteKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -194,7 +194,7 @@ deleteKeyword config (State state) phoneNumber cmd =
 selectNextCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectNextCountry config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
 
         maybeNextIsoCode =
@@ -211,7 +211,7 @@ selectNextCountry config (State state) phoneNumber cmd =
                 |> andThen (focus nextIsoCode)
 
         Nothing ->
-            doNothing
+            doNothingAction
 
 
 nextCountry : Config msg -> State -> PhoneNumber -> Maybe String
@@ -239,7 +239,7 @@ nextCountry config (State state) phoneNumber =
 selectPrevCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectPrevCountry config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
 
         maybePrevIsoCode =
@@ -256,7 +256,7 @@ selectPrevCountry config (State state) phoneNumber cmd =
                 |> andThen (focus prevIsoCode)
 
         Nothing ->
-            doNothing
+            doNothingAction
 
 
 prevCountry : Config msg -> State -> PhoneNumber -> Maybe String
@@ -282,15 +282,6 @@ prevCountry config (State state) phoneNumber =
 
 ignoreTaskError : Config msg -> State -> PhoneNumber -> Result.Result Dom.Error a -> msg
 ignoreTaskError config state phoneNumber result =
-    let
-        _ =
-            case result of
-                Result.Err err ->
-                    err |> toString
-
-                Result.Ok a ->
-                    a |> toString
-    in
     config.onChange state phoneNumber Cmd.none
 
 
@@ -336,7 +327,7 @@ updateKeyword keyword config (State state) phoneNumber cmd =
 navigateCountry : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 navigateCountry arrowKey config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
     in
     case arrowKey of
@@ -353,7 +344,7 @@ navigateCountry arrowKey config (State state) phoneNumber cmd =
             selectNextCountry config (State state) phoneNumber cmd
 
         _ ->
-            doNothing
+            doNothingAction
 
 
 autocloseCountryDropdown : FocusEvent -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -362,14 +353,14 @@ autocloseCountryDropdown focusEvent config (State state) phoneNumber cmd =
         updatedState =
             { state | action = "autocloseCountryDropdown" }
 
-        doNothing =
+        doNothingAction =
             Action config (State { state | action = "autocloseCountryDropdown.doNothing" }) phoneNumber cmd
 
         domId =
             focusEvent.relatedTargetId |> Maybe.withDefault ""
     in
     if Config.isDropdownElement domId config (State updatedState) || Config.isCountryPicker domId config then
-        doNothing
+        doNothingAction
 
     else
         Action config (State { updatedState | countryPickerState = CountryPickerClosed }) phoneNumber Cmd.none

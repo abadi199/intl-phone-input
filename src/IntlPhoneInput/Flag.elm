@@ -1,8 +1,8 @@
 module IntlPhoneInput.Flag exposing (flag)
 
 import Dict
-import Html exposing (Html, span)
-import Html.Attributes exposing (style)
+import Html.Styled exposing (Html, span)
+import Html.Styled.Attributes exposing (css)
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Css as Css
 import String
@@ -11,9 +11,6 @@ import String
 flag : Config msg -> String -> Html msg
 flag config originalIsoCode =
     let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-
         upperCasedIsoCode =
             String.toUpper originalIsoCode
 
@@ -25,6 +22,6 @@ flag config originalIsoCode =
                 ""
     in
     span
-        [ class [ Css.Flag, Css.FlagIso isoCode ]
+        [ css [ Css.flag, Css.flagIso isoCode ]
         ]
         []

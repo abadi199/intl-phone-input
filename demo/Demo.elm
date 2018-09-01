@@ -1,10 +1,12 @@
 module Demo exposing (main)
 
+import Browser
 import Css
 import Demo.Css as Css exposing (Class(..))
 import Dict
-import Html exposing (Html, div, label, span, text)
-import Html.Attributes exposing (for)
+import Html
+import Html.Styled exposing (Html, div, label, span, text)
+import Html.Styled.Attributes exposing (css, for)
 import IntlPhoneInput
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Css
@@ -26,14 +28,9 @@ initialModel =
     }
 
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    Html.program { init = init, update = update, view = view, subscriptions = subscriptions }
-
-
-init : ( Model, Cmd Msg )
-init =
-    ( initialModel, Cmd.none )
+    Browser.document { init = init, update = update, view = view, subscriptions = subscriptions }
 
 
 subscriptions : Model -> Sub Msg
@@ -41,34 +38,32 @@ subscriptions model =
     Sub.none
 
 
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( initialModel, Cmd.none )
+
+
 homePhoneConfig : Config Msg
 homePhoneConfig =
-    Config.defaultConfig HomePhoneChanged
+    Config.config "HomePhone" HomePhoneChanged
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
-    let
-        { css } =
-            Css.compile
-                [ IntlPhoneInput.Css.css homePhoneConfig.namespace
-                , Css.css homePhoneConfig.namespace
+    { title = ""
+    , body =
+        [ div [ css [] ]
+            [ div []
+                [ label
+                    [ for (Config.getPhoneNumberInputId homePhoneConfig)
+                    ]
+                    [ text "Home Phone" ]
+                , IntlPhoneInput.inputStyled homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
                 ]
-
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace homePhoneConfig.namespace
-    in
-    div [ class [ Demo ] ]
-        [ Html.node "style" [] [ Html.text css ]
-        , div [ class [ FormField ] ]
-            [ label
-                [ for (Config.getPhoneNumberInputId homePhoneConfig)
-                , class [ Label ]
-                ]
-                [ text "Home Phone" ]
-            , IntlPhoneInput.input homePhoneConfig (Tuple.first model.homePhoneNumber) (Tuple.second model.homePhoneNumber)
             ]
+            |> Html.Styled.toUnstyled
         ]
+    }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

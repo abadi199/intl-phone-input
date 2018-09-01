@@ -4,9 +4,9 @@ module IntlPhoneInput.Event exposing
     , onClickStopPropagation
     )
 
-import Html
-import Html.Attributes
-import Html.Events exposing (on, onWithOptions)
+import Html.Styled
+import Html.Styled.Attributes
+import Html.Styled.Events exposing (on)
 import IntlPhoneInput.Action as Action exposing (Action)
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Internal as Internal exposing (FocusEvent, State(..))
@@ -15,15 +15,25 @@ import IntlPhoneInput.Type exposing (PhoneNumber)
 import Json.Decode
 
 
-onClickStopPropagation : msg -> Html.Attribute msg
+stopProgragationAndPreventDefaultOn : String -> Json.Decode.Decoder msg -> Html.Styled.Attribute msg
+stopProgragationAndPreventDefaultOn event decoder =
+    Html.Styled.Events.custom event
+        (decoder
+            |> Json.Decode.map
+                (\tagger ->
+                    { message = tagger, stopPropagation = True, preventDefault = True }
+                )
+        )
+
+
+onClickStopPropagation : msg -> Html.Styled.Attribute msg
 onClickStopPropagation tagger =
-    onWithOptions
+    stopProgragationAndPreventDefaultOn
         "click"
-        { stopPropagation = True, preventDefault = True }
         (Json.Decode.succeed tagger)
 
 
-onBlur : State -> (FocusEvent -> msg) -> Html.Attribute msg
+onBlur : State -> (FocusEvent -> msg) -> Html.Styled.Attribute msg
 onBlur (State state) msg =
     let
         relatedTargetDecoder =
@@ -46,12 +56,12 @@ onBlur (State state) msg =
         )
 
 
-batchKeyDown : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
+batchKeyDown : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Styled.Attribute msg
 batchKeyDown =
     batch "keydown"
 
 
-batchKeyPress : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
+batchKeyPress : List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Styled.Attribute msg
 batchKeyPress =
     batch "keypress"
 
@@ -72,7 +82,7 @@ keyDataDecoder =
         (Json.Decode.field "ctrlKey" Json.Decode.bool)
 
 
-batch : String -> List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Attribute msg
+batch : String -> List ( KeyData -> Json.Decode.Decoder KeyCode, KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg ) -> Config msg -> State -> PhoneNumber -> Html.Styled.Attribute msg
 batch event actions config (State state) phoneNumber =
     let
         oneOf =
@@ -83,8 +93,7 @@ batch event actions config (State state) phoneNumber =
                 |> Json.Decode.andThen decoder
                 |> Json.Decode.map action
     in
-    onWithOptions
+    stopProgragationAndPreventDefaultOn
         event
-        { preventDefault = True, stopPropagation = True }
         oneOf
-        |> Html.Attributes.map (\action -> action config (State state) phoneNumber Cmd.none |> Action.done)
+        |> Html.Styled.Attributes.map (\action -> action config (State state) phoneNumber Cmd.none |> Action.done)
