@@ -2,7 +2,6 @@ module Demo exposing (main)
 
 import Browser
 import Css
-import Demo.Css as Css exposing (Class(..))
 import Dict
 import Html
 import Html.Styled exposing (Html, div, label, span, text)

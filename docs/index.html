@@ -596,11 +596,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.a9.ax === region.bq.ax)
+	if (region.ba.ay === region.br.ay)
 	{
-		return 'on line ' + region.a9.ax;
+		return 'on line ' + region.ba.ay;
 	}
-	return 'on lines ' + region.a9.ax + ' through ' + region.bq.ax;
+	return 'on lines ' + region.ba.ay + ' through ' + region.br.ay;
 }
 
 
@@ -1482,9 +1482,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b8,
-		impl.cu,
-		impl.cs,
+		impl.b9,
+		impl.cv,
+		impl.ct,
 		function() { return function() {} }
 	);
 });
@@ -2596,9 +2596,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		cd: func(record.cd),
-		cr: record.cr,
-		cl: record.cl
+		ce: func(record.ce),
+		cs: record.cs,
+		cm: record.cm
 	}
 });
 
@@ -2866,11 +2866,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.cd;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.cr;
+		var message = !tag ? value : tag < 3 ? value.a : value.ce;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.cs;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.cl) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.cm) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3816,9 +3816,9 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b8,
-		impl.cu,
-		impl.cs,
+		impl.b9,
+		impl.cv,
+		impl.ct,
 		function(sendToApp, initialModel) {
 			var view = impl.cy;
 			/**/
@@ -3852,11 +3852,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b8,
-		impl.cu,
-		impl.cs,
+		impl.b9,
+		impl.cv,
+		impl.ct,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.a8 && impl.a8(sendToApp)
+			var divertHrefToApp = impl.a9 && impl.a9(sendToApp)
 			var view = impl.cy;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
@@ -3865,12 +3865,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bZ);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b_);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.ct) && (_VirtualDom_doc.title = title = doc.ct);
+				(title !== doc.cu) && (_VirtualDom_doc.title = title = doc.cu);
 			});
 		}
 	);
@@ -3922,10 +3922,10 @@ function _Browser_makeAnimator(model, draw)
 function _Browser_application(impl)
 {
 	var key = {};
-	var onUrlChange = impl.cg;
-	var onUrlRequest = impl.ch;
+	var onUrlChange = impl.ch;
+	var onUrlRequest = impl.ci;
 	return _Browser_document({
-		a8: function(sendToApp)
+		a9: function(sendToApp)
 		{
 			function reportChange()
 			{
@@ -3947,9 +3947,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.bH === next.bH
-							&& curr.bu === next.bu
-							&& curr.bE.a === next.bE.a
+							&& curr.bI === next.bI
+							&& curr.bv === next.bv
+							&& curr.bF.a === next.bF.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -3957,13 +3957,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		b8: function(flags)
+		b9: function(flags)
 		{
-			return A3(impl.b8, flags, _Browser_getUrl(), key);
+			return A3(impl.b9, flags, _Browser_getUrl(), key);
 		},
 		cy: impl.cy,
-		cu: impl.cu,
-		cs: impl.cs
+		cv: impl.cv,
+		ct: impl.ct
 	});
 }
 
@@ -4029,17 +4029,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { b5: 'hidden', as: 'visibilitychange' }
+		? { b6: 'hidden', at: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { b5: 'mozHidden', as: 'mozvisibilitychange' }
+		? { b6: 'mozHidden', at: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { b5: 'msHidden', as: 'msvisibilitychange' }
+		? { b6: 'msHidden', at: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { b5: 'webkitHidden', as: 'webkitvisibilitychange' }
-		: { b5: 'hidden', as: 'visibilitychange' };
+		? { b6: 'webkitHidden', at: 'webkitvisibilitychange' }
+		: { b6: 'hidden', at: 'visibilitychange' };
 }
 
 
@@ -4121,15 +4121,15 @@ function _Browser_getViewport()
 {
 	var node = _Browser_doc.documentElement;
 	return {
-		bM: {
-			T: node.scrollWidth,
-			J: node.scrollHeight
+		bN: {
+			U: node.scrollWidth,
+			K: node.scrollHeight
 		},
-		bT: {
-			aW: _Browser_window.pageXOffset,
-			aX: _Browser_window.pageYOffset,
-			T: node.clientWidth,
-			J: node.clientHeight
+		bU: {
+			aX: _Browser_window.pageXOffset,
+			aY: _Browser_window.pageYOffset,
+			U: node.clientWidth,
+			K: node.clientHeight
 		}
 	};
 }
@@ -4154,15 +4154,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bM: {
-				T: node.scrollWidth,
-				J: node.scrollHeight
+			bN: {
+				U: node.scrollWidth,
+				K: node.scrollHeight
 			},
-			bT: {
-				aW: node.scrollLeft,
-				aX: node.scrollTop,
-				T: node.clientWidth,
-				J: node.clientHeight
+			bU: {
+				aX: node.scrollLeft,
+				aY: node.scrollTop,
+				U: node.clientWidth,
+				K: node.clientHeight
 			}
 		};
 	});
@@ -4192,21 +4192,21 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bM: {
-				T: node.scrollWidth,
-				J: node.scrollHeight
+			bN: {
+				U: node.scrollWidth,
+				K: node.scrollHeight
 			},
-			bT: {
-				aW: x,
-				aX: y,
-				T: node.clientWidth,
-				J: node.clientHeight
+			bU: {
+				aX: x,
+				aY: y,
+				U: node.clientWidth,
+				K: node.clientHeight
 			},
-			b2: {
-				aW: x + rect.left,
-				aX: y + rect.top,
-				T: rect.width,
-				J: rect.height
+			b3: {
+				aX: x + rect.left,
+				aY: y + rect.top,
+				U: rect.width,
+				K: rect.height
 			}
 		};
 	});
@@ -4336,7 +4336,7 @@ var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
 var elm$core$Set$Set_elm_builtin = elm$core$Basics$identity;
 var elm$core$Set$empty = elm$core$Dict$empty;
-var author$project$IntlPhoneInput$Internal$initialState = {an: '', aZ: 1, G: elm$core$Set$empty, cc: ''};
+var author$project$IntlPhoneInput$Internal$initialState = {ao: '', a_: 1, H: elm$core$Set$empty, cd: ''};
 var author$project$IntlPhoneInput$initialState = author$project$IntlPhoneInput$Internal$initialState;
 var elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var elm$core$Array$foldr = F3(
@@ -4419,9 +4419,9 @@ var elm$core$Set$toList = function (_n0) {
 	return elm$core$Dict$keys(dict);
 };
 var author$project$Demo$initialModel = {
-	av: _Utils_Tuple2(
+	aw: _Utils_Tuple2(
 		author$project$IntlPhoneInput$initialState,
-		{b9: '', cj: ''})
+		{ca: '', ck: ''})
 };
 var elm$core$Basics$False = 1;
 var elm$core$Basics$True = 0;
@@ -4647,7 +4647,7 @@ var author$project$Demo$update = F2(
 			_Utils_update(
 				model,
 				{
-					av: _Utils_Tuple2(state, phoneNumber)
+					aw: _Utils_Tuple2(state, phoneNumber)
 				}),
 			cmd);
 	});
@@ -4672,7 +4672,7 @@ var author$project$IntlPhoneInput$Config$defaultCountriesSorter = function (coun
 			elm$core$Basics$composeR,
 			elm$core$Tuple$second,
 			function ($) {
-				return $.cf;
+				return $.cg;
 			}),
 		countries);
 };
@@ -4689,979 +4689,979 @@ var author$project$IntlPhoneInput$Config$Default$toCountryData = function (origi
 		case 'AF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '93', cf: 'Afghanistan (\u202bافغانستان\u202c\u200e)'});
+				{a: '93', cg: 'Afghanistan (\u202bافغانستان\u202c\u200e)'});
 		case 'AL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '355', cf: 'Albania (Shqipëri)'});
+				{a: '355', cg: 'Albania (Shqipëri)'});
 		case 'DZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '213', cf: 'Algeria (\u202bالجزائر\u202c\u200e)'});
+				{a: '213', cg: 'Algeria (\u202bالجزائر\u202c\u200e)'});
 		case 'AS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1684', cf: 'American Samoa'});
+				{a: '1684', cg: 'American Samoa'});
 		case 'AD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '376', cf: 'Andorra'});
+				{a: '376', cg: 'Andorra'});
 		case 'AO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '244', cf: 'Angola'});
+				{a: '244', cg: 'Angola'});
 		case 'AI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1264', cf: 'Anguilla'});
+				{a: '1264', cg: 'Anguilla'});
 		case 'AG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1268', cf: 'Antigua and Barbuda'});
+				{a: '1268', cg: 'Antigua and Barbuda'});
 		case 'AR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '54', cf: 'Argentina'});
+				{a: '54', cg: 'Argentina'});
 		case 'AM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '374', cf: 'Armenia (Հայաստան)'});
+				{a: '374', cg: 'Armenia (Հայաստան)'});
 		case 'AW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '297', cf: 'Aruba'});
+				{a: '297', cg: 'Aruba'});
 		case 'AU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '61', cf: 'Australia'});
+				{a: '61', cg: 'Australia'});
 		case 'AT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '43', cf: 'Austria (Österreich)'});
+				{a: '43', cg: 'Austria (Österreich)'});
 		case 'AZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '994', cf: 'Azerbaijan (Azərbaycan)'});
+				{a: '994', cg: 'Azerbaijan (Azərbaycan)'});
 		case 'BS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1242', cf: 'Bahamas'});
+				{a: '1242', cg: 'Bahamas'});
 		case 'BH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '973', cf: 'Bahrain (\u202bالبحرين\u202c\u200e)'});
+				{a: '973', cg: 'Bahrain (\u202bالبحرين\u202c\u200e)'});
 		case 'BD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '880', cf: 'Bangladesh (বাংলাদেশ)'});
+				{a: '880', cg: 'Bangladesh (বাংলাদেশ)'});
 		case 'BB':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1246', cf: 'Barbados'});
+				{a: '1246', cg: 'Barbados'});
 		case 'BY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '375', cf: 'Belarus (Беларусь)'});
+				{a: '375', cg: 'Belarus (Беларусь)'});
 		case 'BE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '32', cf: 'Belgium (België)'});
+				{a: '32', cg: 'Belgium (België)'});
 		case 'BZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '501', cf: 'Belize'});
+				{a: '501', cg: 'Belize'});
 		case 'BJ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '229', cf: 'Benin (Bénin)'});
+				{a: '229', cg: 'Benin (Bénin)'});
 		case 'BM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1441', cf: 'Bermuda'});
+				{a: '1441', cg: 'Bermuda'});
 		case 'BT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '975', cf: 'Bhutan (འབྲུག)'});
+				{a: '975', cg: 'Bhutan (འབྲུག)'});
 		case 'BO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '591', cf: 'Bolivia'});
+				{a: '591', cg: 'Bolivia'});
 		case 'BA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '387', cf: 'Bosnia and Herzegovina (Босна и Херцеговина)'});
+				{a: '387', cg: 'Bosnia and Herzegovina (Босна и Херцеговина)'});
 		case 'BW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '267', cf: 'Botswana'});
+				{a: '267', cg: 'Botswana'});
 		case 'BR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '55', cf: 'Brazil (Brasil)'});
+				{a: '55', cg: 'Brazil (Brasil)'});
 		case 'IO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '246', cf: 'British Indian Ocean Territory'});
+				{a: '246', cg: 'British Indian Ocean Territory'});
 		case 'VG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1284', cf: 'British Virgin Islands'});
+				{a: '1284', cg: 'British Virgin Islands'});
 		case 'BN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '673', cf: 'Brunei'});
+				{a: '673', cg: 'Brunei'});
 		case 'BG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '359', cf: 'Bulgaria (България)'});
+				{a: '359', cg: 'Bulgaria (България)'});
 		case 'BF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '226', cf: 'Burkina Faso'});
+				{a: '226', cg: 'Burkina Faso'});
 		case 'BI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '257', cf: 'Burundi (Uburundi)'});
+				{a: '257', cg: 'Burundi (Uburundi)'});
 		case 'KH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '855', cf: 'Cambodia (កម្ពុជា)'});
+				{a: '855', cg: 'Cambodia (កម្ពុជា)'});
 		case 'CM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '237', cf: 'Cameroon (Cameroun)'});
+				{a: '237', cg: 'Cameroon (Cameroun)'});
 		case 'CA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1', cf: 'Canada'});
+				{a: '1', cg: 'Canada'});
 		case 'CV':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '238', cf: 'Cape Verde (Kabu Verdi)'});
+				{a: '238', cg: 'Cape Verde (Kabu Verdi)'});
 		case 'BQ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '599', cf: 'Caribbean Netherlands'});
+				{a: '599', cg: 'Caribbean Netherlands'});
 		case 'KY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1345', cf: 'Cayman Islands'});
+				{a: '1345', cg: 'Cayman Islands'});
 		case 'CF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '236', cf: 'Central African Republic (République centrafricaine)'});
+				{a: '236', cg: 'Central African Republic (République centrafricaine)'});
 		case 'TD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '235', cf: 'Chad (Tchad)'});
+				{a: '235', cg: 'Chad (Tchad)'});
 		case 'CL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '56', cf: 'Chile'});
+				{a: '56', cg: 'Chile'});
 		case 'CN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '86', cf: 'China (中国)'});
+				{a: '86', cg: 'China (中国)'});
 		case 'CX':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '61', cf: 'Christmas Island'});
+				{a: '61', cg: 'Christmas Island'});
 		case 'CC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '61', cf: 'Cocos (Keeling) Islands'});
+				{a: '61', cg: 'Cocos (Keeling) Islands'});
 		case 'CO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '57', cf: 'Colombia'});
+				{a: '57', cg: 'Colombia'});
 		case 'KM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '269', cf: 'Comoros (\u202bجزر القمر\u202c\u200e)'});
+				{a: '269', cg: 'Comoros (\u202bجزر القمر\u202c\u200e)'});
 		case 'CD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '243', cf: 'Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)'});
+				{a: '243', cg: 'Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)'});
 		case 'CG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '242', cf: 'Congo (Republic) (Congo-Brazzaville)'});
+				{a: '242', cg: 'Congo (Republic) (Congo-Brazzaville)'});
 		case 'CK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '682', cf: 'Cook Islands'});
+				{a: '682', cg: 'Cook Islands'});
 		case 'CR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '506', cf: 'Costa Rica'});
+				{a: '506', cg: 'Costa Rica'});
 		case 'CI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '225', cf: 'Côte d’Ivoire'});
+				{a: '225', cg: 'Côte d’Ivoire'});
 		case 'HR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '385', cf: 'Croatia (Hrvatska)'});
+				{a: '385', cg: 'Croatia (Hrvatska)'});
 		case 'CU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '53', cf: 'Cuba'});
+				{a: '53', cg: 'Cuba'});
 		case 'CW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '599', cf: 'Curaçao'});
+				{a: '599', cg: 'Curaçao'});
 		case 'CY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '357', cf: 'Cyprus (Κύπρος)'});
+				{a: '357', cg: 'Cyprus (Κύπρος)'});
 		case 'CZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '420', cf: 'Czech Republic (Česká republika)'});
+				{a: '420', cg: 'Czech Republic (Česká republika)'});
 		case 'DK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '45', cf: 'Denmark (Danmark)'});
+				{a: '45', cg: 'Denmark (Danmark)'});
 		case 'DJ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '253', cf: 'Djibouti'});
+				{a: '253', cg: 'Djibouti'});
 		case 'DM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1767', cf: 'Dominica'});
+				{a: '1767', cg: 'Dominica'});
 		case 'DO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1', cf: 'Dominican Republic (República Dominicana)'});
+				{a: '1', cg: 'Dominican Republic (República Dominicana)'});
 		case 'EC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '593', cf: 'Ecuador'});
+				{a: '593', cg: 'Ecuador'});
 		case 'EG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '20', cf: 'Egypt (\u202bمصر\u202c\u200e)'});
+				{a: '20', cg: 'Egypt (\u202bمصر\u202c\u200e)'});
 		case 'SV':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '503', cf: 'El Salvador'});
+				{a: '503', cg: 'El Salvador'});
 		case 'GQ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '240', cf: 'Equatorial Guinea (Guinea Ecuatorial)'});
+				{a: '240', cg: 'Equatorial Guinea (Guinea Ecuatorial)'});
 		case 'ER':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '291', cf: 'Eritrea'});
+				{a: '291', cg: 'Eritrea'});
 		case 'EE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '372', cf: 'Estonia (Eesti)'});
+				{a: '372', cg: 'Estonia (Eesti)'});
 		case 'ET':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '251', cf: 'Ethiopia'});
+				{a: '251', cg: 'Ethiopia'});
 		case 'FK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '500', cf: 'Falkland Islands (Islas Malvinas)'});
+				{a: '500', cg: 'Falkland Islands (Islas Malvinas)'});
 		case 'FO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '298', cf: 'Faroe Islands (Føroyar)'});
+				{a: '298', cg: 'Faroe Islands (Føroyar)'});
 		case 'FJ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '679', cf: 'Fiji'});
+				{a: '679', cg: 'Fiji'});
 		case 'FI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '358', cf: 'Finland (Suomi)'});
+				{a: '358', cg: 'Finland (Suomi)'});
 		case 'FR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '33', cf: 'France'});
+				{a: '33', cg: 'France'});
 		case 'GF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '594', cf: 'French Guiana (Guyane française)'});
+				{a: '594', cg: 'French Guiana (Guyane française)'});
 		case 'PF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '689', cf: 'French Polynesia (Polynésie française)'});
+				{a: '689', cg: 'French Polynesia (Polynésie française)'});
 		case 'GA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '241', cf: 'Gabon'});
+				{a: '241', cg: 'Gabon'});
 		case 'GM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '220', cf: 'Gambia'});
+				{a: '220', cg: 'Gambia'});
 		case 'GE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '995', cf: 'Georgia (საქართველო)'});
+				{a: '995', cg: 'Georgia (საქართველო)'});
 		case 'DE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '49', cf: 'Germany (Deutschland)'});
+				{a: '49', cg: 'Germany (Deutschland)'});
 		case 'GH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '233', cf: 'Ghana (Gaana)'});
+				{a: '233', cg: 'Ghana (Gaana)'});
 		case 'GI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '350', cf: 'Gibraltar'});
+				{a: '350', cg: 'Gibraltar'});
 		case 'GR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '30', cf: 'Greece (Ελλάδα)'});
+				{a: '30', cg: 'Greece (Ελλάδα)'});
 		case 'GL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '299', cf: 'Greenland (Kalaallit Nunaat)'});
+				{a: '299', cg: 'Greenland (Kalaallit Nunaat)'});
 		case 'GD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1473', cf: 'Grenada'});
+				{a: '1473', cg: 'Grenada'});
 		case 'GP':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '590', cf: 'Guadeloupe'});
+				{a: '590', cg: 'Guadeloupe'});
 		case 'GU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1671', cf: 'Guam'});
+				{a: '1671', cg: 'Guam'});
 		case 'GT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '502', cf: 'Guatemala'});
+				{a: '502', cg: 'Guatemala'});
 		case 'GG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '44', cf: 'Guernsey'});
+				{a: '44', cg: 'Guernsey'});
 		case 'GN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '224', cf: 'Guinea (Guinée)'});
+				{a: '224', cg: 'Guinea (Guinée)'});
 		case 'GW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '245', cf: 'Guinea-Bissau (Guiné Bissau)'});
+				{a: '245', cg: 'Guinea-Bissau (Guiné Bissau)'});
 		case 'GY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '592', cf: 'Guyana'});
+				{a: '592', cg: 'Guyana'});
 		case 'HT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '509', cf: 'Haiti'});
+				{a: '509', cg: 'Haiti'});
 		case 'HN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '504', cf: 'Honduras'});
+				{a: '504', cg: 'Honduras'});
 		case 'HK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '852', cf: 'Hong Kong (香港)'});
+				{a: '852', cg: 'Hong Kong (香港)'});
 		case 'HU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '36', cf: 'Hungary (Magyarország)'});
+				{a: '36', cg: 'Hungary (Magyarország)'});
 		case 'IS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '354', cf: 'Iceland (Ísland)'});
+				{a: '354', cg: 'Iceland (Ísland)'});
 		case 'IN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '91', cf: 'India (भारत)'});
+				{a: '91', cg: 'India (भारत)'});
 		case 'ID':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '62', cf: 'Indonesia'});
+				{a: '62', cg: 'Indonesia'});
 		case 'IR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '98', cf: 'Iran (\u202bایران\u202c\u200e)'});
+				{a: '98', cg: 'Iran (\u202bایران\u202c\u200e)'});
 		case 'IQ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '964', cf: 'Iraq (\u202bالعراق\u202c\u200e)'});
+				{a: '964', cg: 'Iraq (\u202bالعراق\u202c\u200e)'});
 		case 'IE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '353', cf: 'Ireland'});
+				{a: '353', cg: 'Ireland'});
 		case 'IM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '44', cf: 'Isle of Man'});
+				{a: '44', cg: 'Isle of Man'});
 		case 'IL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '972', cf: 'Israel (\u202bישראל\u202c\u200e)'});
+				{a: '972', cg: 'Israel (\u202bישראל\u202c\u200e)'});
 		case 'IT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '39', cf: 'Italy (Italia)'});
+				{a: '39', cg: 'Italy (Italia)'});
 		case 'JM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1876', cf: 'Jamaica'});
+				{a: '1876', cg: 'Jamaica'});
 		case 'JP':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '81', cf: 'Japan (日本)'});
+				{a: '81', cg: 'Japan (日本)'});
 		case 'JE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '44', cf: 'Jersey'});
+				{a: '44', cg: 'Jersey'});
 		case 'JO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '962', cf: 'Jordan (\u202bالأردن\u202c\u200e)'});
+				{a: '962', cg: 'Jordan (\u202bالأردن\u202c\u200e)'});
 		case 'KZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '7', cf: 'Kazakhstan (Казахстан)'});
+				{a: '7', cg: 'Kazakhstan (Казахстан)'});
 		case 'KE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '254', cf: 'Kenya'});
+				{a: '254', cg: 'Kenya'});
 		case 'KI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '686', cf: 'Kiribati'});
+				{a: '686', cg: 'Kiribati'});
 		case 'XK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '383', cf: 'Kosovo'});
+				{a: '383', cg: 'Kosovo'});
 		case 'KW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '965', cf: 'Kuwait (\u202bالكويت\u202c\u200e)'});
+				{a: '965', cg: 'Kuwait (\u202bالكويت\u202c\u200e)'});
 		case 'KG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '996', cf: 'Kyrgyzstan (Кыргызстан)'});
+				{a: '996', cg: 'Kyrgyzstan (Кыргызстан)'});
 		case 'LA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '856', cf: 'Laos (ລາວ)'});
+				{a: '856', cg: 'Laos (ລາວ)'});
 		case 'LV':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '371', cf: 'Latvia (Latvija)'});
+				{a: '371', cg: 'Latvia (Latvija)'});
 		case 'LB':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '961', cf: 'Lebanon (\u202bلبنان\u202c\u200e)'});
+				{a: '961', cg: 'Lebanon (\u202bلبنان\u202c\u200e)'});
 		case 'LS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '266', cf: 'Lesotho'});
+				{a: '266', cg: 'Lesotho'});
 		case 'LR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '231', cf: 'Liberia'});
+				{a: '231', cg: 'Liberia'});
 		case 'LY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '218', cf: 'Libya (\u202bليبيا\u202c\u200e)'});
+				{a: '218', cg: 'Libya (\u202bليبيا\u202c\u200e)'});
 		case 'LI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '423', cf: 'Liechtenstein'});
+				{a: '423', cg: 'Liechtenstein'});
 		case 'LT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '370', cf: 'Lithuania (Lietuva)'});
+				{a: '370', cg: 'Lithuania (Lietuva)'});
 		case 'LU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '352', cf: 'Luxembourg'});
+				{a: '352', cg: 'Luxembourg'});
 		case 'MO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '853', cf: 'Macau (澳門)'});
+				{a: '853', cg: 'Macau (澳門)'});
 		case 'MK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '389', cf: 'Macedonia (FYROM) (Македонија)'});
+				{a: '389', cg: 'Macedonia (FYROM) (Македонија)'});
 		case 'MG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '261', cf: 'Madagascar (Madagasikara)'});
+				{a: '261', cg: 'Madagascar (Madagasikara)'});
 		case 'MW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '265', cf: 'Malawi'});
+				{a: '265', cg: 'Malawi'});
 		case 'MY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '60', cf: 'Malaysia'});
+				{a: '60', cg: 'Malaysia'});
 		case 'MV':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '960', cf: 'Maldives'});
+				{a: '960', cg: 'Maldives'});
 		case 'ML':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '223', cf: 'Mali'});
+				{a: '223', cg: 'Mali'});
 		case 'MT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '356', cf: 'Malta'});
+				{a: '356', cg: 'Malta'});
 		case 'MH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '692', cf: 'Marshall Islands'});
+				{a: '692', cg: 'Marshall Islands'});
 		case 'MQ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '596', cf: 'Martinique'});
+				{a: '596', cg: 'Martinique'});
 		case 'MR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '222', cf: 'Mauritania (\u202bموريتانيا\u202c\u200e)'});
+				{a: '222', cg: 'Mauritania (\u202bموريتانيا\u202c\u200e)'});
 		case 'MU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '230', cf: 'Mauritius (Moris)'});
+				{a: '230', cg: 'Mauritius (Moris)'});
 		case 'YT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '262', cf: 'Mayotte'});
+				{a: '262', cg: 'Mayotte'});
 		case 'MX':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '52', cf: 'Mexico (México)'});
+				{a: '52', cg: 'Mexico (México)'});
 		case 'FM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '691', cf: 'Micronesia'});
+				{a: '691', cg: 'Micronesia'});
 		case 'MD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '373', cf: 'Moldova (Republica Moldova)'});
+				{a: '373', cg: 'Moldova (Republica Moldova)'});
 		case 'MC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '377', cf: 'Monaco'});
+				{a: '377', cg: 'Monaco'});
 		case 'MN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '976', cf: 'Mongolia (Монгол)'});
+				{a: '976', cg: 'Mongolia (Монгол)'});
 		case 'ME':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '382', cf: 'Montenegro (Crna Gora)'});
+				{a: '382', cg: 'Montenegro (Crna Gora)'});
 		case 'MS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1664', cf: 'Montserrat'});
+				{a: '1664', cg: 'Montserrat'});
 		case 'MA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '212', cf: 'Morocco (\u202bالمغرب\u202c\u200e)'});
+				{a: '212', cg: 'Morocco (\u202bالمغرب\u202c\u200e)'});
 		case 'MZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '258', cf: 'Mozambique (Moçambique)'});
+				{a: '258', cg: 'Mozambique (Moçambique)'});
 		case 'MM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '95', cf: 'Myanmar (Burma) (မြန်မာ)'});
+				{a: '95', cg: 'Myanmar (Burma) (မြန်မာ)'});
 		case 'NA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '264', cf: 'Namibia (Namibië)'});
+				{a: '264', cg: 'Namibia (Namibië)'});
 		case 'NR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '674', cf: 'Nauru'});
+				{a: '674', cg: 'Nauru'});
 		case 'NP':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '977', cf: 'Nepal (नेपाल)'});
+				{a: '977', cg: 'Nepal (नेपाल)'});
 		case 'NL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '31', cf: 'Netherlands (Nederland)'});
+				{a: '31', cg: 'Netherlands (Nederland)'});
 		case 'NC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '687', cf: 'New Caledonia (Nouvelle-Calédonie)'});
+				{a: '687', cg: 'New Caledonia (Nouvelle-Calédonie)'});
 		case 'NZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '64', cf: 'New Zealand'});
+				{a: '64', cg: 'New Zealand'});
 		case 'NI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '505', cf: 'Nicaragua'});
+				{a: '505', cg: 'Nicaragua'});
 		case 'NE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '227', cf: 'Niger (Nijar)'});
+				{a: '227', cg: 'Niger (Nijar)'});
 		case 'NG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '234', cf: 'Nigeria'});
+				{a: '234', cg: 'Nigeria'});
 		case 'NU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '683', cf: 'Niue'});
+				{a: '683', cg: 'Niue'});
 		case 'NF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '672', cf: 'Norfolk Island'});
+				{a: '672', cg: 'Norfolk Island'});
 		case 'KP':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '850', cf: 'North Korea (조선 민주주의 인민 공화국)'});
+				{a: '850', cg: 'North Korea (조선 민주주의 인민 공화국)'});
 		case 'MP':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1670', cf: 'Northern Mariana Islands'});
+				{a: '1670', cg: 'Northern Mariana Islands'});
 		case 'NO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '47', cf: 'Norway (Norge)'});
+				{a: '47', cg: 'Norway (Norge)'});
 		case 'OM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '968', cf: 'Oman (\u202bعُمان\u202c\u200e)'});
+				{a: '968', cg: 'Oman (\u202bعُمان\u202c\u200e)'});
 		case 'PK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '92', cf: 'Pakistan (\u202bپاکستان\u202c\u200e)'});
+				{a: '92', cg: 'Pakistan (\u202bپاکستان\u202c\u200e)'});
 		case 'PW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '680', cf: 'Palau'});
+				{a: '680', cg: 'Palau'});
 		case 'PS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '970', cf: 'Palestine (\u202bفلسطين\u202c\u200e)'});
+				{a: '970', cg: 'Palestine (\u202bفلسطين\u202c\u200e)'});
 		case 'PA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '507', cf: 'Panama (Panamá)'});
+				{a: '507', cg: 'Panama (Panamá)'});
 		case 'PG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '675', cf: 'Papua New Guinea'});
+				{a: '675', cg: 'Papua New Guinea'});
 		case 'PY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '595', cf: 'Paraguay'});
+				{a: '595', cg: 'Paraguay'});
 		case 'PE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '51', cf: 'Peru (Perú)'});
+				{a: '51', cg: 'Peru (Perú)'});
 		case 'PH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '63', cf: 'Philippines'});
+				{a: '63', cg: 'Philippines'});
 		case 'PL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '48', cf: 'Poland (Polska)'});
+				{a: '48', cg: 'Poland (Polska)'});
 		case 'PT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '351', cf: 'Portugal'});
+				{a: '351', cg: 'Portugal'});
 		case 'PR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1', cf: 'Puerto Rico'});
+				{a: '1', cg: 'Puerto Rico'});
 		case 'QA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '974', cf: 'Qatar (\u202bقطر\u202c\u200e)'});
+				{a: '974', cg: 'Qatar (\u202bقطر\u202c\u200e)'});
 		case 'RE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '262', cf: 'Réunion (La Réunion)'});
+				{a: '262', cg: 'Réunion (La Réunion)'});
 		case 'RO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '40', cf: 'Romania (România)'});
+				{a: '40', cg: 'Romania (România)'});
 		case 'RU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '7', cf: 'Russia (Россия)'});
+				{a: '7', cg: 'Russia (Россия)'});
 		case 'RW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '250', cf: 'Rwanda'});
+				{a: '250', cg: 'Rwanda'});
 		case 'BL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '590', cf: 'Saint Barthélemy'});
+				{a: '590', cg: 'Saint Barthélemy'});
 		case 'SH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '290', cf: 'Saint Helena'});
+				{a: '290', cg: 'Saint Helena'});
 		case 'KN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1869', cf: 'Saint Kitts and Nevis'});
+				{a: '1869', cg: 'Saint Kitts and Nevis'});
 		case 'LC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1758', cf: 'Saint Lucia'});
+				{a: '1758', cg: 'Saint Lucia'});
 		case 'MF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '590', cf: 'Saint Martin (Saint-Martin (partie française))'});
+				{a: '590', cg: 'Saint Martin (Saint-Martin (partie française))'});
 		case 'PM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '508', cf: 'Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)'});
+				{a: '508', cg: 'Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)'});
 		case 'VC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1784', cf: 'Saint Vincent and the Grenadines'});
+				{a: '1784', cg: 'Saint Vincent and the Grenadines'});
 		case 'WS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '685', cf: 'Samoa'});
+				{a: '685', cg: 'Samoa'});
 		case 'SM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '378', cf: 'San Marino'});
+				{a: '378', cg: 'San Marino'});
 		case 'ST':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '239', cf: 'São Tomé and Príncipe (São Tomé e Príncipe)'});
+				{a: '239', cg: 'São Tomé and Príncipe (São Tomé e Príncipe)'});
 		case 'SA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '966', cf: 'Saudi Arabia (\u202bالمملكة العربية السعودية\u202c\u200e)'});
+				{a: '966', cg: 'Saudi Arabia (\u202bالمملكة العربية السعودية\u202c\u200e)'});
 		case 'SN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '221', cf: 'Senegal (Sénégal)'});
+				{a: '221', cg: 'Senegal (Sénégal)'});
 		case 'RS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '381', cf: 'Serbia (Србија)'});
+				{a: '381', cg: 'Serbia (Србија)'});
 		case 'SC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '248', cf: 'Seychelles'});
+				{a: '248', cg: 'Seychelles'});
 		case 'SL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '232', cf: 'Sierra Leone'});
+				{a: '232', cg: 'Sierra Leone'});
 		case 'SG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '65', cf: 'Singapore'});
+				{a: '65', cg: 'Singapore'});
 		case 'SX':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1721', cf: 'Sint Maarten'});
+				{a: '1721', cg: 'Sint Maarten'});
 		case 'SK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '421', cf: 'Slovakia (Slovensko)'});
+				{a: '421', cg: 'Slovakia (Slovensko)'});
 		case 'SI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '386', cf: 'Slovenia (Slovenija)'});
+				{a: '386', cg: 'Slovenia (Slovenija)'});
 		case 'SB':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '677', cf: 'Solomon Islands'});
+				{a: '677', cg: 'Solomon Islands'});
 		case 'SO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '252', cf: 'Somalia (Soomaaliya)'});
+				{a: '252', cg: 'Somalia (Soomaaliya)'});
 		case 'ZA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '27', cf: 'South Africa'});
+				{a: '27', cg: 'South Africa'});
 		case 'KR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '82', cf: 'South Korea (대한민국)'});
+				{a: '82', cg: 'South Korea (대한민국)'});
 		case 'SS':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '211', cf: 'South Sudan (\u202bجنوب السودان\u202c\u200e)'});
+				{a: '211', cg: 'South Sudan (\u202bجنوب السودان\u202c\u200e)'});
 		case 'ES':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '34', cf: 'Spain (España)'});
+				{a: '34', cg: 'Spain (España)'});
 		case 'LK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '94', cf: 'Sri Lanka (ශ්\u200dරී ලංකාව)'});
+				{a: '94', cg: 'Sri Lanka (ශ්\u200dරී ලංකාව)'});
 		case 'SD':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '249', cf: 'Sudan (\u202bالسودان\u202c\u200e)'});
+				{a: '249', cg: 'Sudan (\u202bالسودان\u202c\u200e)'});
 		case 'SR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '597', cf: 'Suriname'});
+				{a: '597', cg: 'Suriname'});
 		case 'SJ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '47', cf: 'Svalbard and Jan Mayen'});
+				{a: '47', cg: 'Svalbard and Jan Mayen'});
 		case 'SZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '268', cf: 'Swaziland'});
+				{a: '268', cg: 'Swaziland'});
 		case 'SE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '46', cf: 'Sweden (Sverige)'});
+				{a: '46', cg: 'Sweden (Sverige)'});
 		case 'CH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '41', cf: 'Switzerland (Schweiz)'});
+				{a: '41', cg: 'Switzerland (Schweiz)'});
 		case 'SY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '963', cf: 'Syria (\u202bسوريا\u202c\u200e)'});
+				{a: '963', cg: 'Syria (\u202bسوريا\u202c\u200e)'});
 		case 'TW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '886', cf: 'Taiwan (台灣)'});
+				{a: '886', cg: 'Taiwan (台灣)'});
 		case 'TJ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '992', cf: 'Tajikistan'});
+				{a: '992', cg: 'Tajikistan'});
 		case 'TZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '255', cf: 'Tanzania'});
+				{a: '255', cg: 'Tanzania'});
 		case 'TH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '66', cf: 'Thailand (ไทย)'});
+				{a: '66', cg: 'Thailand (ไทย)'});
 		case 'TL':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '670', cf: 'Timor-Leste'});
+				{a: '670', cg: 'Timor-Leste'});
 		case 'TG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '228', cf: 'Togo'});
+				{a: '228', cg: 'Togo'});
 		case 'TK':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '690', cf: 'Tokelau'});
+				{a: '690', cg: 'Tokelau'});
 		case 'TO':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '676', cf: 'Tonga'});
+				{a: '676', cg: 'Tonga'});
 		case 'TT':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1868', cf: 'Trinidad and Tobago'});
+				{a: '1868', cg: 'Trinidad and Tobago'});
 		case 'TN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '216', cf: 'Tunisia (\u202bتونس\u202c\u200e)'});
+				{a: '216', cg: 'Tunisia (\u202bتونس\u202c\u200e)'});
 		case 'TR':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '90', cf: 'Turkey (Türkiye)'});
+				{a: '90', cg: 'Turkey (Türkiye)'});
 		case 'TM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '993', cf: 'Turkmenistan'});
+				{a: '993', cg: 'Turkmenistan'});
 		case 'TC':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1649', cf: 'Turks and Caicos Islands'});
+				{a: '1649', cg: 'Turks and Caicos Islands'});
 		case 'TV':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '688', cf: 'Tuvalu'});
+				{a: '688', cg: 'Tuvalu'});
 		case 'VI':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1340', cf: 'U.S. Virgin Islands'});
+				{a: '1340', cg: 'U.S. Virgin Islands'});
 		case 'UG':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '256', cf: 'Uganda'});
+				{a: '256', cg: 'Uganda'});
 		case 'UA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '380', cf: 'Ukraine (Україна)'});
+				{a: '380', cg: 'Ukraine (Україна)'});
 		case 'AE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '971', cf: 'United Arab Emirates (\u202bالإمارات العربية المتحدة\u202c\u200e)'});
+				{a: '971', cg: 'United Arab Emirates (\u202bالإمارات العربية المتحدة\u202c\u200e)'});
 		case 'GB':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '44', cf: 'United Kingdom'});
+				{a: '44', cg: 'United Kingdom'});
 		case 'US':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '1', cf: 'United States'});
+				{a: '1', cg: 'United States'});
 		case 'UY':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '598', cf: 'Uruguay'});
+				{a: '598', cg: 'Uruguay'});
 		case 'UZ':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '998', cf: 'Uzbekistan (Oʻzbekiston)'});
+				{a: '998', cg: 'Uzbekistan (Oʻzbekiston)'});
 		case 'VU':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '678', cf: 'Vanuatu'});
+				{a: '678', cg: 'Vanuatu'});
 		case 'VA':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '39', cf: 'Vatican City (Città del Vaticano)'});
+				{a: '39', cg: 'Vatican City (Città del Vaticano)'});
 		case 'VE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '58', cf: 'Venezuela'});
+				{a: '58', cg: 'Venezuela'});
 		case 'VN':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '84', cf: 'Vietnam (Việt Nam)'});
+				{a: '84', cg: 'Vietnam (Việt Nam)'});
 		case 'WF':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '681', cf: 'Wallis and Futuna (Wallis-et-Futuna)'});
+				{a: '681', cg: 'Wallis and Futuna (Wallis-et-Futuna)'});
 		case 'EH':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '212', cf: 'Western Sahara (\u202bالصحراء الغربية\u202c\u200e)'});
+				{a: '212', cg: 'Western Sahara (\u202bالصحراء الغربية\u202c\u200e)'});
 		case 'YE':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '967', cf: 'Yemen (\u202bاليمن\u202c\u200e)'});
+				{a: '967', cg: 'Yemen (\u202bاليمن\u202c\u200e)'});
 		case 'ZM':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '260', cf: 'Zambia'});
+				{a: '260', cg: 'Zambia'});
 		case 'ZW':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '263', cf: 'Zimbabwe'});
+				{a: '263', cg: 'Zimbabwe'});
 		case 'AX':
 			return _Utils_Tuple2(
 				isoCode,
-				{a: '358', cf: 'Åland Islands'});
+				{a: '358', cg: 'Åland Islands'});
 		default:
 			return _Utils_Tuple2(
 				'',
-				{a: '', cf: 'Unknown'});
+				{a: '', cg: 'Unknown'});
 	}
 };
 var elm$core$Dict$Black = 1;
@@ -5858,7 +5858,7 @@ var author$project$IntlPhoneInput$Config$Default$countries = elm$core$Dict$fromL
 	A2(elm$core$List$map, author$project$IntlPhoneInput$Config$Default$toCountryData, author$project$IntlPhoneInput$Config$Default$isoCodes));
 var author$project$IntlPhoneInput$Config$config = F2(
 	function (id, onChange) {
-		return {bn: author$project$IntlPhoneInput$Config$Default$countries, aJ: author$project$IntlPhoneInput$Config$defaultCountriesSorter, bp: author$project$IntlPhoneInput$Config$defaultDialCodeFormatter, a0: id, a3: 'IntlPhoneInput', a6: onChange};
+		return {bo: author$project$IntlPhoneInput$Config$Default$countries, aK: author$project$IntlPhoneInput$Config$defaultCountriesSorter, bq: author$project$IntlPhoneInput$Config$defaultDialCodeFormatter, a1: id, a4: 'IntlPhoneInput', a7: onChange};
 	});
 var author$project$Demo$homePhoneConfig = A2(author$project$IntlPhoneInput$Config$config, 'HomePhone', author$project$Demo$HomePhoneChanged);
 var author$project$IntlPhoneInput$Action$Action = F4(
@@ -5866,7 +5866,7 @@ var author$project$IntlPhoneInput$Action$Action = F4(
 		return {$: 0, a: a, b: b, c: c, d: d};
 	});
 var author$project$IntlPhoneInput$Config$Helper$getCountryPickerId = function (config) {
-	return config.a3 + ('CountryPicker' + config.a0);
+	return config.a4 + ('CountryPicker' + config.a1);
 };
 var author$project$IntlPhoneInput$Config$Helper$isCountryPicker = F2(
 	function (domId, config) {
@@ -5876,10 +5876,10 @@ var author$project$IntlPhoneInput$Config$Helper$isCountryPicker = F2(
 	});
 var author$project$IntlPhoneInput$Config$Helper$getCountryElementId = F2(
 	function (config, isoCode) {
-		return config.a3 + ('Country' + (elm$core$String$toUpper(isoCode) + config.a0));
+		return config.a4 + ('Country' + (elm$core$String$toUpper(isoCode) + config.a1));
 	});
 var author$project$IntlPhoneInput$Config$Helper$getSearchInputId = function (config) {
-	return config.a3 + ('SearchInput' + config.a0);
+	return config.a4 + ('SearchInput' + config.a1);
 };
 var elm$core$Basics$or = _Basics_or;
 var elm$core$Dict$foldl = F3(
@@ -5999,7 +5999,7 @@ var author$project$IntlPhoneInput$Config$Helper$isDropdownElement = F3(
 			A2(
 				elm$core$Set$map,
 				author$project$IntlPhoneInput$Config$Helper$getCountryElementId(config),
-				state.G));
+				state.H));
 		return isCountryElement || isSearchElement;
 	});
 var elm$core$Maybe$withDefault = F2(
@@ -6016,14 +6016,14 @@ var author$project$IntlPhoneInput$Action$autocloseCountryDropdown = F5(
 		var state = _n0;
 		var updatedState = _Utils_update(
 			state,
-			{an: 'autocloseCountryDropdown'});
-		var domId = A2(elm$core$Maybe$withDefault, '', focusEvent.cm);
+			{ao: 'autocloseCountryDropdown'});
+		var domId = A2(elm$core$Maybe$withDefault, '', focusEvent.cn);
 		var doNothingAction = A4(
 			author$project$IntlPhoneInput$Action$Action,
 			config,
 			_Utils_update(
 				state,
-				{an: 'autocloseCountryDropdown.doNothing'}),
+				{ao: 'autocloseCountryDropdown.doNothing'}),
 			phoneNumber,
 			cmd);
 		return (A3(author$project$IntlPhoneInput$Config$Helper$isDropdownElement, domId, config, updatedState) || A2(author$project$IntlPhoneInput$Config$Helper$isCountryPicker, domId, config)) ? doNothingAction : A4(
@@ -6031,7 +6031,7 @@ var author$project$IntlPhoneInput$Action$autocloseCountryDropdown = F5(
 			config,
 			_Utils_update(
 				updatedState,
-				{aZ: 1}),
+				{a_: 1}),
 			phoneNumber,
 			elm$core$Platform$Cmd$none);
 	});
@@ -6056,10 +6056,10 @@ var author$project$IntlPhoneInput$Action$appendCmd = F5(
 	});
 var author$project$IntlPhoneInput$Action$ignoreTaskError = F4(
 	function (config, state, phoneNumber, result) {
-		return A3(config.a6, state, phoneNumber, elm$core$Platform$Cmd$none);
+		return A3(config.a7, state, phoneNumber, elm$core$Platform$Cmd$none);
 	});
 var author$project$IntlPhoneInput$Config$getPhoneNumberInputId = function (configValue) {
-	return configValue.a3 + ('PhoneNumberInput' + configValue.a0);
+	return configValue.a4 + ('PhoneNumberInput' + configValue.a1);
 };
 var elm$browser$Browser$External = function (a) {
 	return {$: 1, a: a};
@@ -6192,7 +6192,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bt: fragment, bu: host, bC: path, bE: port_, bH: protocol, bI: query};
+		return {bu: fragment, bv: host, bD: path, bF: port_, bI: protocol, bJ: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -6345,20 +6345,20 @@ var author$project$IntlPhoneInput$Action$closeCountryDropdown = F5(
 				config,
 				_Utils_update(
 					state,
-					{an: eventName + ':closeCountryDropdown', aZ: 1}),
+					{ao: eventName + ':closeCountryDropdown', a_: 1}),
 				phoneNumber,
 				cmd));
 	});
 var author$project$IntlPhoneInput$Action$doNothing = F3(
 	function (config, state, phoneNumber) {
-		return A3(config.a6, state, phoneNumber, elm$core$Platform$Cmd$none);
+		return A3(config.a7, state, phoneNumber, elm$core$Platform$Cmd$none);
 	});
 var author$project$IntlPhoneInput$Action$done = function (_n0) {
 	var config = _n0.a;
 	var state = _n0.b;
 	var phoneNumber = _n0.c;
 	var cmd = _n0.d;
-	return A3(config.a6, state, phoneNumber, cmd);
+	return A3(config.a7, state, phoneNumber, cmd);
 };
 var author$project$IntlPhoneInput$Action$focus = F5(
 	function (isoCode, config, state, phoneNumber, cmd) {
@@ -6393,7 +6393,7 @@ var author$project$IntlPhoneInput$Action$focusSearchInput = F4(
 	});
 var author$project$IntlPhoneInput$Config$Helper$toCountryDataList = F2(
 	function (config, set) {
-		return config.aJ(
+		return config.aK(
 			A2(
 				elm$core$List$map,
 				author$project$IntlPhoneInput$Config$Default$toCountryData,
@@ -6450,21 +6450,21 @@ var elm$core$Maybe$map = F2(
 var author$project$IntlPhoneInput$Action$nextCountry = F3(
 	function (config, _n0, phoneNumber) {
 		var state = _n0;
-		var isoCode = elm$core$String$toUpper(phoneNumber.b9);
-		return A2(elm$core$Set$member, isoCode, state.G) ? elm$core$Maybe$Just(
+		var isoCode = elm$core$String$toUpper(phoneNumber.ca);
+		return A2(elm$core$Set$member, isoCode, state.H) ? elm$core$Maybe$Just(
 			A2(
 				author$project$IntlPhoneInput$List$next,
 				isoCode,
 				A2(
 					elm$core$List$map,
 					elm$core$Tuple$first,
-					config.aJ(
-						A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.G))))) : A2(
+					config.aK(
+						A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.H))))) : A2(
 			elm$core$Maybe$map,
 			elm$core$Tuple$first,
 			elm$core$List$head(
-				config.aJ(
-					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.G))));
+				config.aK(
+					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.H))));
 	});
 var author$project$IntlPhoneInput$Action$selectNextCountry = F4(
 	function (config, _n0, phoneNumber, cmd) {
@@ -6485,7 +6485,7 @@ var author$project$IntlPhoneInput$Action$selectNextCountry = F4(
 						state,
 						_Utils_update(
 							phoneNumber,
-							{b9: nextIsoCode}),
+							{ca: nextIsoCode}),
 						cmd)));
 		} else {
 			return doNothingAction;
@@ -6522,20 +6522,20 @@ var author$project$IntlPhoneInput$List$prev = F2(
 var author$project$IntlPhoneInput$Action$prevCountry = F3(
 	function (config, _n0, phoneNumber) {
 		var state = _n0;
-		var isoCode = elm$core$String$toUpper(phoneNumber.b9);
-		return A2(elm$core$Set$member, isoCode, state.G) ? elm$core$Maybe$Just(
+		var isoCode = elm$core$String$toUpper(phoneNumber.ca);
+		return A2(elm$core$Set$member, isoCode, state.H) ? elm$core$Maybe$Just(
 			A2(
 				author$project$IntlPhoneInput$List$prev,
 				isoCode,
 				A2(
 					elm$core$List$map,
 					elm$core$Tuple$first,
-					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.G)))) : A2(
+					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.H)))) : A2(
 			elm$core$Maybe$map,
 			elm$core$Tuple$first,
 			elm$core$List$head(
-				config.aJ(
-					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.G))));
+				config.aK(
+					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.H))));
 	});
 var author$project$IntlPhoneInput$Action$selectPrevCountry = F4(
 	function (config, _n0, phoneNumber, cmd) {
@@ -6556,7 +6556,7 @@ var author$project$IntlPhoneInput$Action$selectPrevCountry = F4(
 						state,
 						_Utils_update(
 							phoneNumber,
-							{b9: prevIsoCode}),
+							{ca: prevIsoCode}),
 						cmd)));
 		} else {
 			return doNothingAction;
@@ -6588,7 +6588,7 @@ var author$project$IntlPhoneInput$Action$navigateCountry = F5(
 var elm$core$String$toLower = _String_toLower;
 var author$project$IntlPhoneInput$Filter$contains = F2(
 	function (keyword, _n0) {
-		var name = _n0.b.cf;
+		var name = _n0.b.cg;
 		return A2(
 			elm$core$String$contains,
 			elm$core$String$toLower(keyword),
@@ -6615,27 +6615,27 @@ var author$project$IntlPhoneInput$Filter$filterList = F2(
 var author$project$IntlPhoneInput$Action$filterCountries = F4(
 	function (config, _n0, phoneNumber, cmd) {
 		var state = _n0;
-		var filteredCountries = elm$core$String$isEmpty(state.cc) ? elm$core$Set$fromList(
-			elm$core$Dict$keys(config.bn)) : elm$core$Set$fromList(
+		var filteredCountries = elm$core$String$isEmpty(state.cd) ? elm$core$Set$fromList(
+			elm$core$Dict$keys(config.bo)) : elm$core$Set$fromList(
 			A2(
 				elm$core$List$map,
 				elm$core$Tuple$first,
 				A2(
 					author$project$IntlPhoneInput$Filter$filterList,
-					state.cc,
-					elm$core$Dict$toList(config.bn))));
+					state.cd,
+					elm$core$Dict$toList(config.bo))));
 		var firstCountry = A2(
 			elm$core$Maybe$map,
 			elm$core$Tuple$first,
 			elm$core$List$head(
-				config.aJ(
+				config.aK(
 					A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, filteredCountries))));
 		return A4(
 			author$project$IntlPhoneInput$Action$Action,
 			config,
 			_Utils_update(
 				state,
-				{G: filteredCountries}),
+				{H: filteredCountries}),
 			phoneNumber,
 			cmd);
 	});
@@ -6650,7 +6650,7 @@ var author$project$IntlPhoneInput$Action$updateKeyword = F5(
 				config,
 				_Utils_update(
 					state,
-					{cc: keyword}),
+					{cd: keyword}),
 				phoneNumber,
 				cmd));
 	});
@@ -6659,7 +6659,7 @@ var rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
 };
 var rtfeldman$elm_css$Css$batch = rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
 var rtfeldman$elm_css$Css$Structure$Compatible = 0;
-var rtfeldman$elm_css$Css$borderBox = {aY: 0, aI: 0, cx: 'border-box'};
+var rtfeldman$elm_css$Css$borderBox = {aZ: 0, aJ: 0, w: 'border-box'};
 var rtfeldman$elm_css$Css$Preprocess$AppendProperty = function (a) {
 	return {$: 0, a: a};
 };
@@ -6669,7 +6669,7 @@ var rtfeldman$elm_css$Css$property = F2(
 	});
 var rtfeldman$elm_css$Css$prop1 = F2(
 	function (key, arg) {
-		return A2(rtfeldman$elm_css$Css$property, key, arg.cx);
+		return A2(rtfeldman$elm_css$Css$property, key, arg.w);
 	});
 var rtfeldman$elm_css$Css$boxSizing = rtfeldman$elm_css$Css$prop1('box-sizing');
 var author$project$IntlPhoneInput$Css$boxSizingStyle = rtfeldman$elm_css$Css$batch(
@@ -6682,7 +6682,7 @@ var elm$core$Basics$negate = function (n) {
 	return -n;
 };
 var rtfeldman$elm_css$Css$backgroundColor = function (c) {
-	return A2(rtfeldman$elm_css$Css$property, 'background-color', c.cx);
+	return A2(rtfeldman$elm_css$Css$property, 'background-color', c.w);
 };
 var rtfeldman$elm_css$Css$border = rtfeldman$elm_css$Css$prop1('border');
 var elm$core$String$join = F2(
@@ -6701,7 +6701,7 @@ var rtfeldman$elm_css$Css$prop5 = F6(
 				elm$core$String$join,
 				' ',
 				_List_fromArray(
-					[argA.cx, argB.cx, argC.cx, argD.cx, argE.cx])));
+					[argA.w, argB.w, argC.w, argD.w, argE.w])));
 	});
 var rtfeldman$elm_css$Css$boxShadow5 = rtfeldman$elm_css$Css$prop5('box-shadow');
 var rtfeldman$elm_css$Css$Preprocess$ExtendSelector = F2(
@@ -6726,12 +6726,12 @@ var rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
 };
 var rtfeldman$elm_css$Css$erroneousHex = function (str) {
 	return {
-		ap: 1,
-		ar: 0,
+		aq: 1,
+		as: 0,
 		t: 0,
-		au: 0,
-		aA: 0,
-		cx: rtfeldman$elm_css$Css$withPrecedingHash(str)
+		av: 0,
+		aB: 0,
+		w: rtfeldman$elm_css$Css$withPrecedingHash(str)
 	};
 };
 var elm$core$String$fromList = _String_fromList;
@@ -7000,12 +7000,12 @@ var rtfeldman$elm_css$Css$validHex = F5(
 			var blue = _n6.a.a;
 			var alpha = _n6.b.a;
 			return {
-				ap: alpha / 255,
-				ar: blue,
+				aq: alpha / 255,
+				as: blue,
 				t: 0,
-				au: green,
-				aA: red,
-				cx: rtfeldman$elm_css$Css$withPrecedingHash(str)
+				av: green,
+				aB: red,
+				w: rtfeldman$elm_css$Css$withPrecedingHash(str)
 			};
 		} else {
 			return rtfeldman$elm_css$Css$erroneousHex(str);
@@ -7113,23 +7113,23 @@ var elm$core$String$fromFloat = _String_fromNumber;
 var rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
 	function (units, unitLabel, numericValue) {
 		return {
-			bb: 0,
-			bk: 0,
-			Z: 0,
+			bc: 0,
+			bl: 0,
+			_: 0,
 			l: 0,
-			aw: 0,
-			ab: 0,
-			B: 0,
+			ax: 0,
 			ac: 0,
+			C: 0,
 			ad: 0,
-			K: 0,
+			ae: 0,
 			L: 0,
+			M: 0,
 			u: 0,
-			D: numericValue,
-			aj: 0,
-			al: unitLabel,
-			aF: units,
-			cx: _Utils_ap(
+			E: numericValue,
+			ak: 0,
+			am: unitLabel,
+			aG: units,
+			w: _Utils_ap(
 				elm$core$String$fromFloat(numericValue),
 				unitLabel)
 		};
@@ -7143,12 +7143,12 @@ var rtfeldman$elm_css$Css$cssFunction = F2(
 var rtfeldman$elm_css$Css$rgba = F4(
 	function (r, g, b, alpha) {
 		return {
-			ap: alpha,
-			ar: b,
+			aq: alpha,
+			as: b,
 			t: 0,
-			au: g,
-			aA: r,
-			cx: A2(
+			av: g,
+			aB: r,
+			w: A2(
 				rtfeldman$elm_css$Css$cssFunction,
 				'rgba',
 				_Utils_ap(
@@ -7164,7 +7164,7 @@ var rtfeldman$elm_css$Css$rgba = F4(
 		};
 	});
 var rtfeldman$elm_css$Css$UnitlessInteger = 0;
-var rtfeldman$elm_css$Css$zero = {aw: 0, ab: 0, B: 0, ac: 0, ad: 0, K: 0, L: 0, ay: 0, D: 0, aQ: 0, al: '', aF: 0, cx: '0'};
+var rtfeldman$elm_css$Css$zero = {ax: 0, ac: 0, C: 0, ad: 0, ae: 0, L: 0, M: 0, az: 0, E: 0, aR: 0, am: '', aG: 0, w: '0'};
 var author$project$IntlPhoneInput$Css$searchInput = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
 		[
@@ -7194,7 +7194,7 @@ var author$project$IntlPhoneInput$Event$keyDataDecoder = A5(
 	elm$json$Json$Decode$map4,
 	F4(
 		function (keyCode, altKey, shiftKey, ctrlKey) {
-			return {bW: altKey, b$: ctrlKey, cb: keyCode, cq: shiftKey};
+			return {bX: altKey, b0: ctrlKey, cc: keyCode, cr: shiftKey};
 		}),
 	A2(elm$json$Json$Decode$field, 'keyCode', elm$json$Json$Decode$int),
 	A2(elm$json$Json$Decode$field, 'altKey', elm$json$Json$Decode$bool),
@@ -7231,7 +7231,7 @@ var author$project$IntlPhoneInput$Event$stopProgragationAndPreventDefaultOn = F2
 			A2(
 				elm$json$Json$Decode$map,
 				function (tagger) {
-					return {cd: tagger, cl: true, cr: true};
+					return {ce: tagger, cm: true, cs: true};
 				},
 				decoder));
 	});
@@ -7301,7 +7301,7 @@ var author$project$IntlPhoneInput$Event$onBlur = F2(
 	function (_n0, msg) {
 		var state = _n0;
 		var relatedTargetDecoder = function () {
-			var _n1 = state.aZ;
+			var _n1 = state.a_;
 			if (_n1 === 1) {
 				return elm$json$Json$Decode$fail('country picker is closed');
 			} else {
@@ -7329,7 +7329,7 @@ var author$project$IntlPhoneInput$Event$onBlur = F2(
 				A2(
 					elm$json$Json$Decode$map,
 					function (targetId) {
-						return {cm: targetId};
+						return {cn: targetId};
 					},
 					relatedTargetDecoder)));
 	});
@@ -7349,7 +7349,7 @@ var author$project$IntlPhoneInput$KeyCode$Left = 2;
 var author$project$IntlPhoneInput$KeyCode$Right = 3;
 var author$project$IntlPhoneInput$KeyCode$Up = 0;
 var author$project$IntlPhoneInput$KeyCode$toArrowKey = function (keyData) {
-	var _n0 = keyData.cb;
+	var _n0 = keyData.cc;
 	switch (_n0) {
 		case 37:
 			return elm$core$Result$Ok(2);
@@ -7435,7 +7435,7 @@ var elm$core$List$member = F2(
 			xs);
 	});
 var author$project$IntlPhoneInput$KeyCode$toKeyCode = function (keyData) {
-	var _n0 = keyData.cb;
+	var _n0 = keyData.cc;
 	switch (_n0) {
 		case 27:
 			return elm$core$Result$Ok(author$project$IntlPhoneInput$KeyCode$Esc);
@@ -7446,11 +7446,11 @@ var author$project$IntlPhoneInput$KeyCode$toKeyCode = function (keyData) {
 		case 32:
 			return elm$core$Result$Ok(author$project$IntlPhoneInput$KeyCode$Spacebar);
 		default:
-			return (keyData.b$ || keyData.bW) ? elm$core$Result$Err('alt or ctrl key is pressed') : (A2(elm$core$List$member, keyData.cb, author$project$IntlPhoneInput$KeyCode$alphabetKeyCodes) ? elm$core$Result$Ok(
+			return (keyData.b0 || keyData.bX) ? elm$core$Result$Err('alt or ctrl key is pressed') : (A2(elm$core$List$member, keyData.cc, author$project$IntlPhoneInput$KeyCode$alphabetKeyCodes) ? elm$core$Result$Ok(
 				author$project$IntlPhoneInput$KeyCode$Alphabet(
-					(keyData.cq ? elm$core$Char$toUpper : elm$core$Char$toLower)(
-						elm$core$Char$fromCode(keyData.cb)))) : elm$core$Result$Err(
-				elm$core$String$fromInt(keyData.cb) + 'is ignored'));
+					(keyData.cr ? elm$core$Char$toUpper : elm$core$Char$toLower)(
+						elm$core$Char$fromCode(keyData.cc)))) : elm$core$Result$Err(
+				elm$core$String$fromInt(keyData.cc) + 'is ignored'));
 	}
 };
 var author$project$IntlPhoneInput$KeyCode$key = F2(
@@ -7480,7 +7480,7 @@ var elm$virtual_dom$VirtualDom$property = F2(
 	});
 var Skinney$murmur3$Murmur3$HashData = F4(
 	function (shift, seed, hash, charsProcessed) {
-		return {W: charsProcessed, a0: hash, P: seed, ag: shift};
+		return {X: charsProcessed, a1: hash, Q: seed, ah: shift};
 	});
 var elm$core$Bitwise$and = _Bitwise_and;
 var elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
@@ -7498,8 +7498,8 @@ var Skinney$murmur3$Murmur3$mix = F2(
 	});
 var elm$core$Basics$neq = _Utils_notEqual;
 var Skinney$murmur3$Murmur3$finalize = function (data) {
-	var acc = data.a0 ? A2(Skinney$murmur3$Murmur3$mix, data.P, data.a0) : data.P;
-	var h1 = acc ^ data.W;
+	var acc = data.a1 ? A2(Skinney$murmur3$Murmur3$mix, data.Q, data.a1) : data.Q;
+	var h1 = acc ^ data.X;
 	var h2 = A2(Skinney$murmur3$Murmur3$mur, 2246822507, h1 ^ (h1 >>> 16));
 	var h3 = A2(Skinney$murmur3$Murmur3$mur, 3266489909, h2 ^ (h2 >>> 13));
 	return (h3 ^ (h3 >>> 16)) >>> 0;
@@ -7510,14 +7510,14 @@ var Skinney$murmur3$Murmur3$step = function (acc) {
 };
 var Skinney$murmur3$Murmur3$hashFold = F2(
 	function (c, data) {
-		var res = data.a0 | (c << data.ag);
-		var _n0 = data.ag;
+		var res = data.a1 | (c << data.ah);
+		var _n0 = data.ah;
 		if (_n0 === 24) {
 			var newHash = Skinney$murmur3$Murmur3$step(
-				A2(Skinney$murmur3$Murmur3$mix, data.P, res));
-			return {W: data.W + 1, a0: 0, P: newHash, ag: 0};
+				A2(Skinney$murmur3$Murmur3$mix, data.Q, res));
+			return {X: data.X + 1, a1: 0, Q: newHash, ah: 0};
 		} else {
-			return {W: data.W + 1, a0: res, P: data.P, ag: data.ag + 8};
+			return {X: data.X + 1, a1: res, Q: data.Q, ah: data.ah + 8};
 		}
 	});
 var elm$core$Basics$ge = _Utils_ge;
@@ -7600,7 +7600,7 @@ var elm$core$List$singleton = function (value) {
 		[value]);
 };
 var rtfeldman$elm_css$Css$Preprocess$stylesheet = function (snippets) {
-	return {bm: elm$core$Maybe$Nothing, bv: _List_Nil, bA: _List_Nil, bN: snippets};
+	return {bn: elm$core$Maybe$Nothing, bw: _List_Nil, bB: _List_Nil, bO: snippets};
 };
 var elm$core$List$append = F2(
 	function (xs, ys) {
@@ -8586,7 +8586,7 @@ var rtfeldman$elm_css$Css$Preprocess$Resolve$applyStyles = F2(
 						_List_fromArray(
 							[
 								rtfeldman$elm_css$Css$Structure$Keyframes(
-								{b0: str, cf: name})
+								{b1: str, cg: name})
 							]));
 				case 4:
 					var _n12 = styles.a;
@@ -8721,13 +8721,13 @@ var rtfeldman$elm_css$Css$Preprocess$Resolve$toDeclarations = function (snippetD
 	}
 };
 var rtfeldman$elm_css$Css$Preprocess$Resolve$toStructure = function (_n0) {
-	var charset = _n0.bm;
-	var imports = _n0.bv;
-	var namespaces = _n0.bA;
-	var snippets = _n0.bN;
+	var charset = _n0.bn;
+	var imports = _n0.bw;
+	var namespaces = _n0.bB;
+	var snippets = _n0.bO;
 	var declarations = rtfeldman$elm_css$Css$Preprocess$Resolve$extract(
 		A2(elm$core$List$concatMap, rtfeldman$elm_css$Css$Preprocess$unwrapSnippet, snippets));
-	return {bm: charset, b1: declarations, bv: imports, bA: namespaces};
+	return {bn: charset, b2: declarations, bw: imports, bB: namespaces};
 };
 var elm$core$Basics$not = _Basics_not;
 var elm$core$List$all = F2(
@@ -8780,8 +8780,8 @@ var rtfeldman$elm_css$Css$Structure$compactHelp = F2(
 					A2(elm$core$List$cons, declaration, declarations));
 			case 6:
 				var record = declaration.a;
-				return elm$core$String$isEmpty(record.b0) ? _Utils_Tuple2(keyframesByName, declarations) : _Utils_Tuple2(
-					A3(elm$core$Dict$insert, record.cf, record.b0, keyframesByName),
+				return elm$core$String$isEmpty(record.b1) ? _Utils_Tuple2(keyframesByName, declarations) : _Utils_Tuple2(
+					A3(elm$core$Dict$insert, record.cg, record.b1, keyframesByName),
 					declarations);
 			case 7:
 				var properties = declaration.a;
@@ -8816,16 +8816,16 @@ var rtfeldman$elm_css$Css$Structure$withKeyframeDeclarations = F2(
 					var name = _n0.a;
 					var decl = _n0.b;
 					return rtfeldman$elm_css$Css$Structure$Keyframes(
-						{b0: decl, cf: name});
+						{b1: decl, cg: name});
 				},
 				elm$core$Dict$toList(keyframesByName)),
 			compactedDeclarations);
 	});
 var rtfeldman$elm_css$Css$Structure$compactStylesheet = function (_n0) {
-	var charset = _n0.bm;
-	var imports = _n0.bv;
-	var namespaces = _n0.bA;
-	var declarations = _n0.b1;
+	var charset = _n0.bn;
+	var imports = _n0.bw;
+	var namespaces = _n0.bB;
+	var declarations = _n0.b2;
 	var _n1 = A3(
 		elm$core$List$foldr,
 		rtfeldman$elm_css$Css$Structure$compactHelp,
@@ -8834,7 +8834,7 @@ var rtfeldman$elm_css$Css$Structure$compactStylesheet = function (_n0) {
 	var keyframesByName = _n1.a;
 	var compactedDeclarations = _n1.b;
 	var finalDeclarations = A2(rtfeldman$elm_css$Css$Structure$withKeyframeDeclarations, keyframesByName, compactedDeclarations);
-	return {bm: charset, b1: finalDeclarations, bv: imports, bA: namespaces};
+	return {bn: charset, b2: finalDeclarations, bw: imports, bB: namespaces};
 };
 var rtfeldman$elm_css$Css$Structure$Output$charsetToString = function (charset) {
 	return A2(
@@ -8848,13 +8848,13 @@ var rtfeldman$elm_css$Css$Structure$Output$charsetToString = function (charset) 
 			charset));
 };
 var rtfeldman$elm_css$Css$Structure$Output$mediaExpressionToString = function (expression) {
-	return '(' + (expression.bs + (A2(
+	return '(' + (expression.bt + (A2(
 		elm$core$Maybe$withDefault,
 		'',
 		A2(
 			elm$core$Maybe$map,
 			elm$core$Basics$append(': '),
-			expression.cx)) + ')'));
+			expression.w)) + ')'));
 };
 var rtfeldman$elm_css$Css$Structure$Output$mediaTypeToString = function (mediaType) {
 	switch (mediaType) {
@@ -9096,8 +9096,8 @@ var rtfeldman$elm_css$Css$Structure$Output$prettyPrintDeclaration = function (de
 		case 5:
 			return 'TODO';
 		case 6:
-			var name = decl.a.cf;
-			var declaration = decl.a.b0;
+			var name = decl.a.cg;
+			var declaration = decl.a.b1;
 			return '@keyframes ' + (name + (' {\n' + (declaration + '\n}')));
 		case 7:
 			return 'TODO';
@@ -9108,10 +9108,10 @@ var rtfeldman$elm_css$Css$Structure$Output$prettyPrintDeclaration = function (de
 	}
 };
 var rtfeldman$elm_css$Css$Structure$Output$prettyPrint = function (_n0) {
-	var charset = _n0.bm;
-	var imports = _n0.bv;
-	var namespaces = _n0.bA;
-	var declarations = _n0.b1;
+	var charset = _n0.bn;
+	var imports = _n0.bw;
+	var namespaces = _n0.bB;
+	var declarations = _n0.b2;
 	return A2(
 		elm$core$String$join,
 		'\n\n',
@@ -9268,7 +9268,7 @@ var author$project$IntlPhoneInput$searchInput = F3(
 					rtfeldman$elm_css$Html$Styled$Attributes$id(
 					author$project$IntlPhoneInput$Config$Helper$getSearchInputId(config)),
 					function () {
-					var _n1 = state.aZ;
+					var _n1 = state.a_;
 					if (!_n1) {
 						return rtfeldman$elm_css$Html$Styled$Attributes$tabindex(0);
 					} else {
@@ -9278,7 +9278,7 @@ var author$project$IntlPhoneInput$searchInput = F3(
 					rtfeldman$elm_css$Html$Styled$Attributes$css(
 					_List_fromArray(
 						[author$project$IntlPhoneInput$Css$searchInput])),
-					rtfeldman$elm_css$Html$Styled$Attributes$value(state.cc),
+					rtfeldman$elm_css$Html$Styled$Attributes$value(state.cd),
 					rtfeldman$elm_css$Html$Styled$Attributes$placeholder('Search'),
 					A2(
 					author$project$IntlPhoneInput$Event$onBlur,
@@ -9315,7 +9315,7 @@ var author$project$IntlPhoneInput$searchInput = F3(
 			_List_Nil);
 	});
 var author$project$IntlPhoneInput$Config$Helper$getCountryListScrollId = function (config) {
-	return config.a3 + ('CountryListScroll' + config.a0);
+	return config.a4 + ('CountryListScroll' + config.a1);
 };
 var author$project$IntlPhoneInput$Action$appendKeyword = F5(
 	function (keyCode, config, _n0, phoneNumber, cmd) {
@@ -9332,8 +9332,8 @@ var author$project$IntlPhoneInput$Action$appendKeyword = F5(
 					_Utils_update(
 						state,
 						{
-							cc: _Utils_ap(
-								state.cc,
+							cd: _Utils_ap(
+								state.cd,
 								elm$core$String$fromChar(_char))
 						}),
 					phoneNumber,
@@ -9377,7 +9377,7 @@ var author$project$IntlPhoneInput$Action$deleteKeyword = F4(
 				_Utils_update(
 					state,
 					{
-						cc: A2(elm$core$String$dropRight, 1, state.cc)
+						cd: A2(elm$core$String$dropRight, 1, state.cd)
 					}),
 				phoneNumber,
 				cmd));
@@ -9390,10 +9390,10 @@ var author$project$IntlPhoneInput$Action$selectCountry = F6(
 			config,
 			_Utils_update(
 				state,
-				{an: eventName + (':selectCountry:' + isoCode)}),
+				{ao: eventName + (':selectCountry:' + isoCode)}),
 			_Utils_update(
 				phoneNumber,
-				{b9: isoCode}),
+				{ca: isoCode}),
 			cmd);
 	});
 var author$project$IntlPhoneInput$Css$buttonStyle = rtfeldman$elm_css$Css$batch(
@@ -9410,7 +9410,7 @@ var author$project$IntlPhoneInput$Css$highlightedStyle = rtfeldman$elm_css$Css$b
 			A4(rtfeldman$elm_css$Css$rgba, 0, 0, 0, 0.15))
 		]));
 var rtfeldman$elm_css$Css$cursor = rtfeldman$elm_css$Css$prop1('cursor');
-var rtfeldman$elm_css$Css$pointer = {b: 0, cx: 'pointer'};
+var rtfeldman$elm_css$Css$pointer = {b: 0, w: 'pointer'};
 var author$project$IntlPhoneInput$Css$hoverStyle = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
 		[
@@ -9514,7 +9514,7 @@ var rtfeldman$elm_css$Css$prop4 = F5(
 				elm$core$String$join,
 				' ',
 				_List_fromArray(
-					[argA.cx, argB.cx, argC.cx, argD.cx])));
+					[argA.w, argB.w, argC.w, argD.w])));
 	});
 var rtfeldman$elm_css$Css$padding4 = rtfeldman$elm_css$Css$prop4('padding');
 var rtfeldman$elm_css$Css$PercentageUnits = 0;
@@ -9560,7 +9560,7 @@ var author$project$IntlPhoneInput$Css$countryName = rtfeldman$elm_css$Css$batch(
 			rtfeldman$elm_css$Css$em(0.5))
 		]));
 var rtfeldman$elm_css$Css$color = function (c) {
-	return A2(rtfeldman$elm_css$Css$property, 'color', c.cx);
+	return A2(rtfeldman$elm_css$Css$property, 'color', c.w);
 };
 var author$project$IntlPhoneInput$Css$dialCode = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
@@ -9574,9 +9574,9 @@ var author$project$IntlPhoneInput$Css$flagImage = 'data:image/png;base64,iVBORw0
 var rtfeldman$elm_css$Css$backgroundImage = rtfeldman$elm_css$Css$prop1('background-image');
 var rtfeldman$elm_css$Css$display = rtfeldman$elm_css$Css$prop1('display');
 var rtfeldman$elm_css$Css$height = rtfeldman$elm_css$Css$prop1('height');
-var rtfeldman$elm_css$Css$inlineBlock = {g: 0, cx: 'inline-block'};
+var rtfeldman$elm_css$Css$inlineBlock = {g: 0, w: 'inline-block'};
 var rtfeldman$elm_css$Css$url = function (urlValue) {
-	return {U: 0, cx: 'url(' + (urlValue + ')')};
+	return {V: 0, w: 'url(' + (urlValue + ')')};
 };
 var author$project$IntlPhoneInput$Css$flag = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
@@ -10323,7 +10323,7 @@ var rtfeldman$elm_css$Css$prop2 = F3(
 				elm$core$String$join,
 				' ',
 				_List_fromArray(
-					[argA.cx, argB.cx])));
+					[argA.w, argB.w])));
 	});
 var rtfeldman$elm_css$Css$backgroundPosition2 = rtfeldman$elm_css$Css$prop2('background-position');
 var author$project$IntlPhoneInput$Css$flagIso = function (isoCode) {
@@ -10350,7 +10350,7 @@ var rtfeldman$elm_css$Html$Styled$span = rtfeldman$elm_css$Html$Styled$node('spa
 var author$project$IntlPhoneInput$Flag$flag = F2(
 	function (config, originalIsoCode) {
 		var upperCasedIsoCode = elm$core$String$toUpper(originalIsoCode);
-		var isoCode = A2(elm$core$Dict$member, upperCasedIsoCode, config.bn) ? upperCasedIsoCode : '';
+		var isoCode = A2(elm$core$Dict$member, upperCasedIsoCode, config.bo) ? upperCasedIsoCode : '';
 		return A2(
 			rtfeldman$elm_css$Html$Styled$span,
 			_List_fromArray(
@@ -10402,7 +10402,7 @@ var author$project$IntlPhoneInput$Country$countryView = F5(
 						elm$core$List$cons,
 						author$project$IntlPhoneInput$Css$country,
 						_Utils_eq(
-							elm$core$String$toUpper(phoneNumber.b9),
+							elm$core$String$toUpper(phoneNumber.ca),
 							isoCode) ? _List_fromArray(
 							[author$project$IntlPhoneInput$Css$countryHighlighted]) : _List_Nil)),
 					rtfeldman$elm_css$Html$Styled$Attributes$id(
@@ -10485,7 +10485,7 @@ var author$project$IntlPhoneInput$Country$countryView = F5(
 							_List_Nil,
 							_List_fromArray(
 								[
-									rtfeldman$elm_css$Html$Styled$text(countryData.cf)
+									rtfeldman$elm_css$Html$Styled$text(countryData.cg)
 								])),
 							A2(
 							rtfeldman$elm_css$Html$Styled$span,
@@ -10498,7 +10498,7 @@ var author$project$IntlPhoneInput$Country$countryView = F5(
 							_List_fromArray(
 								[
 									rtfeldman$elm_css$Html$Styled$text(
-									config.bp(countryData.a))
+									config.bq(countryData.a))
 								]))
 						]))
 				]));
@@ -10515,7 +10515,7 @@ var author$project$IntlPhoneInput$Css$countryList = rtfeldman$elm_css$Css$batch(
 			rtfeldman$elm_css$Css$margin(rtfeldman$elm_css$Css$zero)
 		]));
 var rtfeldman$elm_css$Css$listStyle = rtfeldman$elm_css$Css$prop1('list-style');
-var rtfeldman$elm_css$Css$none = {U: 0, bi: 0, n: 0, b: 0, g: 0, b6: 0, bw: 0, a1: 0, ad: 0, K: 0, u: 0, d: 0, c: 0, a4: 0, aQ: 0, ck: 0, r: 0, aR: 0, co: 0, ai: 0, R: 0, p: 0, f: 0, cv: 0, cx: 'none'};
+var rtfeldman$elm_css$Css$none = {V: 0, bj: 0, n: 0, b: 0, g: 0, b7: 0, bx: 0, a2: 0, ae: 0, L: 0, u: 0, d: 0, c: 0, a5: 0, aR: 0, cl: 0, r: 0, aS: 0, cp: 0, aj: 0, S: 0, p: 0, f: 0, cw: 0, w: 'none'};
 var author$project$IntlPhoneInput$Css$countryListItem = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
 		[
@@ -10524,7 +10524,7 @@ var author$project$IntlPhoneInput$Css$countryListItem = rtfeldman$elm_css$Css$ba
 			rtfeldman$elm_css$Css$margin(rtfeldman$elm_css$Css$zero),
 			rtfeldman$elm_css$Css$padding(rtfeldman$elm_css$Css$zero)
 		]));
-var rtfeldman$elm_css$Css$auto = {bV: 0, b: 0, Z: 0, aN: 0, ca: 0, ab: 0, B: 0, u: 0, ae: 0, r: 0, aU: 0, ak: 0, p: 0, cx: 'auto'};
+var rtfeldman$elm_css$Css$auto = {bW: 0, b: 0, _: 0, aO: 0, cb: 0, ac: 0, C: 0, u: 0, af: 0, r: 0, aV: 0, al: 0, p: 0, w: 'auto'};
 var rtfeldman$elm_css$Css$overflowY = rtfeldman$elm_css$Css$prop1('overflow-y');
 var author$project$IntlPhoneInput$Css$countryListScroll = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
@@ -10595,12 +10595,12 @@ var author$project$IntlPhoneInput$Country$countriesView = F3(
 											A5(author$project$IntlPhoneInput$Country$countryView, config, isoCode, countryData, state, phoneNumber)
 										])));
 						},
-						(elm$core$Set$isEmpty(state.G) && elm$core$String$isEmpty(state.cc)) ? config.aJ(
-							elm$core$Dict$toList(config.bn)) : A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.G)))
+						(elm$core$Set$isEmpty(state.H) && elm$core$String$isEmpty(state.cd)) ? config.aK(
+							elm$core$Dict$toList(config.bo)) : A2(author$project$IntlPhoneInput$Config$Helper$toCountryDataList, config, state.H)))
 				]));
 	});
 var author$project$IntlPhoneInput$Css$countryDropdownWidth = 500;
-var rtfeldman$elm_css$Css$absolute = {az: 0, cx: 'absolute'};
+var rtfeldman$elm_css$Css$absolute = {aA: 0, w: 'absolute'};
 var rtfeldman$elm_css$Css$prop3 = F4(
 	function (key, argA, argB, argC) {
 		return A2(
@@ -10610,25 +10610,25 @@ var rtfeldman$elm_css$Css$prop3 = F4(
 				elm$core$String$join,
 				' ',
 				_List_fromArray(
-					[argA.cx, argB.cx, argC.cx])));
+					[argA.w, argB.w, argC.w])));
 	});
 var rtfeldman$elm_css$Css$border3 = rtfeldman$elm_css$Css$prop3('border');
-var rtfeldman$elm_css$Css$row = {a$: 0, at: 0, cx: 'row'};
+var rtfeldman$elm_css$Css$row = {a0: 0, au: 0, w: 'row'};
 var rtfeldman$elm_css$Css$column = _Utils_update(
 	rtfeldman$elm_css$Css$row,
-	{cx: 'column'});
+	{w: 'column'});
 var rtfeldman$elm_css$Css$flexDirection = rtfeldman$elm_css$Css$prop1('flex-direction');
 var rtfeldman$elm_css$Css$int = function (val) {
 	return {
-		A: 0,
-		aN: 0,
-		L: 0,
+		B: 0,
+		aO: 0,
+		M: 0,
 		u: 0,
-		ay: 0,
-		D: val,
-		al: '',
-		aF: 0,
-		cx: elm$core$String$fromInt(val)
+		az: 0,
+		E: val,
+		am: '',
+		aG: 0,
+		w: elm$core$String$fromInt(val)
 	};
 };
 var rtfeldman$elm_css$Css$maxHeight = rtfeldman$elm_css$Css$prop1('max-height');
@@ -10636,13 +10636,13 @@ var rtfeldman$elm_css$Css$minWidth = rtfeldman$elm_css$Css$prop1('min-width');
 var rtfeldman$elm_css$Css$UnitlessFloat = 0;
 var rtfeldman$elm_css$Css$num = function (val) {
 	return {
-		L: 0,
+		M: 0,
 		u: 0,
-		ay: 0,
-		D: val,
-		al: '',
-		aF: 0,
-		cx: elm$core$String$fromFloat(val)
+		az: 0,
+		E: val,
+		am: '',
+		aG: 0,
+		w: elm$core$String$fromFloat(val)
 	};
 };
 var rtfeldman$elm_css$Css$opacity = rtfeldman$elm_css$Css$prop1('opacity');
@@ -10651,7 +10651,7 @@ var rtfeldman$elm_css$Css$scale2 = F2(
 	function (x, y) {
 		return {
 			f: 0,
-			cx: A2(
+			w: A2(
 				rtfeldman$elm_css$Css$cssFunction,
 				'scale',
 				A2(
@@ -10661,17 +10661,17 @@ var rtfeldman$elm_css$Css$scale2 = F2(
 						[x, y])))
 		};
 	});
-var rtfeldman$elm_css$Css$solid = {n: 0, Q: 0, cx: 'solid'};
+var rtfeldman$elm_css$Css$solid = {n: 0, R: 0, w: 'solid'};
 var rtfeldman$elm_css$Css$top = rtfeldman$elm_css$Css$prop1('top');
 var rtfeldman$elm_css$Css$valuesOrNone = function (list) {
-	return elm$core$List$isEmpty(list) ? {cx: 'none'} : {
-		cx: A2(
+	return elm$core$List$isEmpty(list) ? {w: 'none'} : {
+		w: A2(
 			elm$core$String$join,
 			' ',
 			A2(
 				elm$core$List$map,
 				function ($) {
-					return $.cx;
+					return $.w;
 				},
 				list))
 	};
@@ -10730,7 +10730,7 @@ var author$project$IntlPhoneInput$countryDropdownView = F3(
 		return A2(
 			rtfeldman$elm_css$Html$Styled$div,
 			function () {
-				var _n1 = state.aZ;
+				var _n1 = state.a_;
 				if (_n1 === 1) {
 					return _List_fromArray(
 						[
@@ -10823,7 +10823,7 @@ var author$project$IntlPhoneInput$Action$clearKeyword = F4(
 			config,
 			_Utils_update(
 				state,
-				{cc: ''}),
+				{cd: ''}),
 			phoneNumber,
 			cmd);
 	});
@@ -10842,21 +10842,21 @@ var author$project$IntlPhoneInput$Action$openCountryDropdown = F4(
 					config,
 					_Utils_update(
 						state,
-						{aZ: 0}),
+						{a_: 0}),
 					phoneNumber,
 					cmd)));
 	});
 var author$project$IntlPhoneInput$Action$toggleCountryDropdown = F4(
 	function (config, _n0, phoneNumber, cmd) {
 		var state = _n0;
-		var _n1 = state.aZ;
+		var _n1 = state.a_;
 		if (!_n1) {
 			return A4(
 				author$project$IntlPhoneInput$Action$Action,
 				config,
 				_Utils_update(
 					state,
-					{an: 'toggleCountryDropdown', aZ: 1}),
+					{ao: 'toggleCountryDropdown', a_: 1}),
 				phoneNumber,
 				cmd);
 		} else {
@@ -10867,7 +10867,7 @@ var author$project$IntlPhoneInput$Config$Helper$dialCode = F2(
 	function (config, isoCode) {
 		return A2(
 			elm$core$Maybe$map,
-			config.bp,
+			config.bq,
 			A2(
 				elm$core$Maybe$map,
 				function ($) {
@@ -10876,7 +10876,7 @@ var author$project$IntlPhoneInput$Config$Helper$dialCode = F2(
 				A2(
 					elm$core$Dict$get,
 					elm$core$String$toUpper(isoCode),
-					config.bn)));
+					config.bo)));
 	});
 var author$project$IntlPhoneInput$Css$countryPicker = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
@@ -10929,7 +10929,7 @@ var author$project$IntlPhoneInput$countryPickerView = F3(
 						elm$core$List$cons,
 						author$project$IntlPhoneInput$Css$countryPicker,
 						function () {
-							var _n1 = state.aZ;
+							var _n1 = state.a_;
 							if (!_n1) {
 								return _List_fromArray(
 									[author$project$IntlPhoneInput$Css$countryPickerHighlighted]);
@@ -10947,7 +10947,7 @@ var author$project$IntlPhoneInput$countryPickerView = F3(
 							A2(
 								author$project$IntlPhoneInput$Action$delay,
 								10,
-								author$project$IntlPhoneInput$Action$focus(phoneNumber.b9)),
+								author$project$IntlPhoneInput$Action$focus(phoneNumber.ca)),
 							A2(
 								author$project$IntlPhoneInput$Action$andThen,
 								author$project$IntlPhoneInput$Action$focusSearchInput,
@@ -10968,7 +10968,7 @@ var author$project$IntlPhoneInput$countryPickerView = F3(
 											A2(
 												author$project$IntlPhoneInput$Action$delay,
 												10,
-												author$project$IntlPhoneInput$Action$focus(keyPhoneNumber.b9)),
+												author$project$IntlPhoneInput$Action$focus(keyPhoneNumber.ca)),
 											A4(author$project$IntlPhoneInput$Action$openCountryDropdown, keyConfig, keyState, keyPhoneNumber, cmd)));
 								})),
 							_Utils_Tuple2(
@@ -10982,7 +10982,7 @@ var author$project$IntlPhoneInput$countryPickerView = F3(
 				]),
 			_List_fromArray(
 				[
-					A2(author$project$IntlPhoneInput$Flag$flag, config, phoneNumber.b9),
+					A2(author$project$IntlPhoneInput$Flag$flag, config, phoneNumber.ca),
 					A2(
 					elm$core$Maybe$withDefault,
 					rtfeldman$elm_css$Html$Styled$text(''),
@@ -11002,7 +11002,7 @@ var author$project$IntlPhoneInput$countryPickerView = F3(
 										rtfeldman$elm_css$Html$Styled$text(dialCode)
 									]));
 						},
-						A2(author$project$IntlPhoneInput$Config$Helper$dialCode, config, phoneNumber.b9))),
+						A2(author$project$IntlPhoneInput$Config$Helper$dialCode, config, phoneNumber.ca))),
 					A2(author$project$IntlPhoneInput$arrowView, config, state)
 				]));
 	});
@@ -11015,7 +11015,7 @@ var author$project$IntlPhoneInput$Action$updatePhoneNumber = F5(
 			state,
 			_Utils_update(
 				phoneNumber,
-				{cj: newPhoneNumber}),
+				{ck: newPhoneNumber}),
 			cmd);
 	});
 var author$project$IntlPhoneInput$Css$phoneInput = rtfeldman$elm_css$Css$batch(
@@ -11035,7 +11035,7 @@ var author$project$IntlPhoneInput$phoneInputView = F4(
 						rtfeldman$elm_css$Html$Styled$Attributes$css(
 						_List_fromArray(
 							[author$project$IntlPhoneInput$Css$phoneInput])),
-						rtfeldman$elm_css$Html$Styled$Attributes$value(phoneNumber.cj),
+						rtfeldman$elm_css$Html$Styled$Attributes$value(phoneNumber.ck),
 						rtfeldman$elm_css$Html$Styled$Events$onInput(
 						function (value) {
 							return author$project$IntlPhoneInput$Action$done(
@@ -11045,7 +11045,7 @@ var author$project$IntlPhoneInput$phoneInputView = F4(
 				attributes),
 			_List_Nil);
 	});
-var rtfeldman$elm_css$Css$relative = {az: 0, cx: 'relative'};
+var rtfeldman$elm_css$Css$relative = {aA: 0, w: 'relative'};
 var author$project$IntlPhoneInput$Css$intlPhoneInput = rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
 		[
@@ -11557,7 +11557,7 @@ var rtfeldman$elm_css$Html$Styled$toUnstyled = rtfeldman$elm_css$VirtualDom$Styl
 var rtfeldman$elm_css$Html$Styled$Attributes$for = rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('htmlFor');
 var author$project$Demo$view = function (model) {
 	return {
-		bZ: _List_fromArray(
+		b_: _List_fromArray(
 			[
 				rtfeldman$elm_css$Html$Styled$toUnstyled(
 				A2(
@@ -11584,16 +11584,16 @@ var author$project$Demo$view = function (model) {
 										[
 											rtfeldman$elm_css$Html$Styled$text('Home Phone')
 										])),
-									A3(author$project$IntlPhoneInput$inputStyled, author$project$Demo$homePhoneConfig, model.av.a, model.av.b)
+									A3(author$project$IntlPhoneInput$inputStyled, author$project$Demo$homePhoneConfig, model.aw.a, model.aw.b)
 								]))
 						])))
 			]),
-		ct: ''
+		cu: ''
 	};
 };
 var elm$browser$Browser$document = _Browser_document;
 var author$project$Demo$main = elm$browser$Browser$document(
-	{b8: author$project$Demo$init, cs: author$project$Demo$subscriptions, cu: author$project$Demo$update, cy: author$project$Demo$view});
+	{b9: author$project$Demo$init, ct: author$project$Demo$subscriptions, cv: author$project$Demo$update, cy: author$project$Demo$view});
 _Platform_export({'Demo':{'init':author$project$Demo$main(
 	elm$json$Json$Decode$succeed(0))(0)}});}(this));
 
