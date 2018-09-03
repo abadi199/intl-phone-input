@@ -19,24 +19,13 @@ type alias Model =
 
 homePhoneConfig : Config Msg
 homePhoneConfig =
-    Config.defaultConfig HomePhoneChanged
+    Config.config "HomePhone" HomePhoneChanged
 
 
 view : Model -> Html Msg
 view model =
-    let
-        { css } =
-            Css.compile
-                [ IntlPhoneInput.Css.css homePhoneConfig.namespace
-                , Css.css homePhoneConfig.namespace
-                ]
-
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace homePhoneConfig.namespace
-    in
-    div [ class [ Demo ] ]
-        [ Html.node "style" [] [ Html.text css ]
-        , div [ class [ FormField ] ]
+   div []
+        [ div [ class [ FormField ] ]
             [ label
                 [ for (Config.getPhoneNumberInputId homePhoneConfig)
                 , class [ Label ]
@@ -76,7 +65,7 @@ config : IntlPhoneInput.Config.Config Msg
 config =
     let
         baseConfig =
-            Config.defaultConfig PhoneChanged
+            Config.config "HomePhone" PhoneChanged
     in
         { baseConfig | dialCodeFormatter = \dialCode -> "(+" ++ dialCode ++ ")" }
 ```
@@ -84,10 +73,11 @@ config =
 `IntlPhoneInput` comes with minimal amount of styles. It doesn't even come with any styles for the phone number input field because everybody usually have their own styles for the input field. You can always override the styles in your own css or inject the class name into the input field by passing the custom `Html` attributes to the `customIntlPhoneInput` function.
 
 ### With Elm-Css
-If you use [`elm-css`](http://package.elm-lang.org/packages/rtfeldman/elm-css/latest), all the CSS classes can be found at `IntlPhoneInput.Css.Class` and CSS styles can be found at `IntlPhoneInput.Css.css`. Include the `css` into your `elm-css` compile/style function.
+If you use [`elm-css`](http://package.elm-lang.org/packages/rtfeldman/elm-css/latest), use `IntlPhoneInput.inputStyled` or `IntlPhoneInput.customInputStyled` function to use `Html.Styled`.
 
 ### Without Elm-Css
-If you don't use `elm-css`, you can download the compiled `css` file at [https://github.com/abadi199/intl-phone-input/styles/intl-phone-input.css]([https://github.com/abadi199/intl-phone-input/styles/intl-phone-input.css) or the minified version at [https://github.com/abadi199/intl-phone-input/styles/intl-phone-input.min.css]([https://github.com/abadi199/intl-phone-input/styles/intl-phone-input.min.css)
+If you don't use `elm-css`, use `IntlPhoneInput.input` or `IntlPhoneInput.customInput` view function to render the css in the `style` tag automatically.
+
 
 ## Contributing
 - [Submit a pull request](https://github.com/abadi199/intl-phone-input)! If you're missing a feature you want to have, or just found a bug, or found an error in the docs, please submit a pull request.
