@@ -76,9 +76,23 @@ input =
     customInput []
 
 
+{-| Elm CSS version of `input` function. Use this if you use Elm CSS on your project to avoid the `style` tag being rendered to early.
+-}
 inputStyled : Config msg -> State -> PhoneNumber -> Html msg
 inputStyled =
     customInputStyled []
+
+
+{-| Elm CSS version of `input` function. Use this if you use Elm CSS on your project to avoid the `style` tag being rendered to early.
+-}
+customInputStyled : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
+customInputStyled attributes config (State state) phoneNumber =
+    div [ css [ Css.intlPhoneInput ] ]
+        [ global [ Css.flagImage ]
+        , countryPickerView config (State state) phoneNumber
+        , countryDropdownView config (State state) phoneNumber
+        , phoneInputView attributes config (State state) phoneNumber
+        ]
 
 
 {-| Render the Intl Phone Input element as part of your `view` function with some custom attributes to the phone number field.
@@ -100,16 +114,6 @@ inputStyled =
             model.phoneNumber
 
 -}
-customInputStyled : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
-customInputStyled attributes config (State state) phoneNumber =
-    div [ css [ Css.intlPhoneInput ] ]
-        [ global [ Css.flagImage ]
-        , countryPickerView config (State state) phoneNumber
-        , countryDropdownView config (State state) phoneNumber
-        , phoneInputView attributes config (State state) phoneNumber
-        ]
-
-
 customInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html.Html msg
 customInput attributes config state phoneNumber =
     customInputStyled attributes config state phoneNumber
