@@ -1,12 +1,11 @@
-module IntlPhoneInput.Internal
-    exposing
-        ( CountryPickerState(..)
-        , FocusEvent
-        , State(..)
-        , StateData
-        , initialState
-        , toggleCountryPickerState
-        )
+module IntlPhoneInput.Internal exposing
+    ( CountryPickerState(..)
+    , FocusEvent
+    , State(..)
+    , StateData
+    , initialState
+    , toggleCountryPickerState
+    )
 
 import Set exposing (Set)
 

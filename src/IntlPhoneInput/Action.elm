@@ -1,32 +1,30 @@
-module IntlPhoneInput.Action
-    exposing
-        ( Action
-        , andThen
-        , appendKeyword
-        , autocloseCountryDropdown
-        , closeCountryDropdown
-        , delay
-        , deleteKeyword
-        , doNothing
-        , done
-        , focus
-        , focusPhoneNumberInput
-        , focusSearchInput
-        , navigateCountry
-        , openCountryDropdown
-        , selectCountry
-        , toggleCountryDropdown
-        , updateKeyword
-        , updatePhoneNumber
-        )
+module IntlPhoneInput.Action exposing
+    ( Action
+    , andThen
+    , appendKeyword
+    , autocloseCountryDropdown
+    , closeCountryDropdown
+    , delay
+    , deleteKeyword
+    , doNothing
+    , done
+    , focus
+    , focusPhoneNumberInput
+    , focusSearchInput
+    , navigateCountry
+    , openCountryDropdown
+    , selectCountry
+    , toggleCountryDropdown
+    , updateKeyword
+    , updatePhoneNumber
+    )
 
+import Browser.Dom as Dom
 import Dict
-import Dom
-import Dom.Scroll
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Config.Helper as Config
 import IntlPhoneInput.Filter as Filter
-import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), FocusEvent, State(State))
+import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), FocusEvent, State(..))
 import IntlPhoneInput.KeyCode as KeyCode exposing (ArrowKey(..), KeyCode(..))
 import IntlPhoneInput.List as List
 import IntlPhoneInput.Type as Type exposing (PhoneNumber)
@@ -133,6 +131,7 @@ filterCountries config (State state) phoneNumber cmd =
         filteredCountries =
             if String.isEmpty state.keyword then
                 config.countries |> Dict.keys |> Set.fromList
+
             else
                 config.countries
                     |> Dict.toList
@@ -166,7 +165,7 @@ filterCountries config (State state) phoneNumber cmd =
 appendKeyword : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 appendKeyword keyCode config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
     in
     case keyCode of
@@ -179,7 +178,7 @@ appendKeyword keyCode config (State state) phoneNumber cmd =
                 |> andThen filterCountries
 
         _ ->
-            doNothing
+            doNothingAction
 
 
 deleteKeyword : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -195,7 +194,7 @@ deleteKeyword config (State state) phoneNumber cmd =
 selectNextCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectNextCountry config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
 
         maybeNextIsoCode =
@@ -212,7 +211,7 @@ selectNextCountry config (State state) phoneNumber cmd =
                 |> andThen (focus nextIsoCode)
 
         Nothing ->
-            doNothing
+            doNothingAction
 
 
 nextCountry : Config msg -> State -> PhoneNumber -> Maybe String
@@ -228,6 +227,7 @@ nextCountry config (State state) phoneNumber =
             |> List.map Tuple.first
             |> List.next isoCode
             |> Just
+
     else
         state.filteredCountries
             |> Config.toCountryDataList config
@@ -239,7 +239,7 @@ nextCountry config (State state) phoneNumber =
 selectPrevCountry : Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 selectPrevCountry config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
 
         maybePrevIsoCode =
@@ -256,7 +256,7 @@ selectPrevCountry config (State state) phoneNumber cmd =
                 |> andThen (focus prevIsoCode)
 
         Nothing ->
-            doNothing
+            doNothingAction
 
 
 prevCountry : Config msg -> State -> PhoneNumber -> Maybe String
@@ -271,6 +271,7 @@ prevCountry config (State state) phoneNumber =
             |> List.map Tuple.first
             |> List.prev isoCode
             |> Just
+
     else
         state.filteredCountries
             |> Config.toCountryDataList config
@@ -281,15 +282,6 @@ prevCountry config (State state) phoneNumber =
 
 ignoreTaskError : Config msg -> State -> PhoneNumber -> Result.Result Dom.Error a -> msg
 ignoreTaskError config state phoneNumber result =
-    let
-        _ =
-            case result of
-                Result.Err err ->
-                    err |> toString
-
-                Result.Ok a ->
-                    a |> toString
-    in
     config.onChange state phoneNumber Cmd.none
 
 
@@ -335,7 +327,7 @@ updateKeyword keyword config (State state) phoneNumber cmd =
 navigateCountry : KeyCode -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
 navigateCountry arrowKey config (State state) phoneNumber cmd =
     let
-        doNothing =
+        doNothingAction =
             Action config (State state) phoneNumber cmd
     in
     case arrowKey of
@@ -352,7 +344,7 @@ navigateCountry arrowKey config (State state) phoneNumber cmd =
             selectNextCountry config (State state) phoneNumber cmd
 
         _ ->
-            doNothing
+            doNothingAction
 
 
 autocloseCountryDropdown : FocusEvent -> Config msg -> State -> PhoneNumber -> Cmd msg -> Action msg
@@ -361,13 +353,14 @@ autocloseCountryDropdown focusEvent config (State state) phoneNumber cmd =
         updatedState =
             { state | action = "autocloseCountryDropdown" }
 
-        doNothing =
+        doNothingAction =
             Action config (State { state | action = "autocloseCountryDropdown.doNothing" }) phoneNumber cmd
 
         domId =
             focusEvent.relatedTargetId |> Maybe.withDefault ""
     in
     if Config.isDropdownElement domId config (State updatedState) || Config.isCountryPicker domId config then
-        doNothing
+        doNothingAction
+
     else
         Action config (State { updatedState | countryPickerState = CountryPickerClosed }) phoneNumber Cmd.none

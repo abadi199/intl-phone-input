@@ -1,11 +1,10 @@
-module IntlPhoneInput.Config.Default
-    exposing
-        ( countries
-        , countryList
-        , isoCodes
-        , namespace
-        , toCountryData
-        )
+module IntlPhoneInput.Config.Default exposing
+    ( countries
+    , countryList
+    , isoCodes
+    , namespace
+    , toCountryData
+    )
 
 import Dict exposing (Dict)
 import IntlPhoneInput.Type as Type exposing (CountryData)
@@ -52,13 +51,13 @@ toCountryData originalIsoCode =
     in
     case isoCode of
         "AF" ->
-            ( isoCode, { name = "Afghanistan (\x202Bافغانستان\x202C\x200E)", dialCode = "93" } )
+            ( isoCode, { name = "Afghanistan (\u{202B}افغانستان\u{202C}\u{200E})", dialCode = "93" } )
 
         "AL" ->
             ( isoCode, { name = "Albania (Shqipëri)", dialCode = "355" } )
 
         "DZ" ->
-            ( isoCode, { name = "Algeria (\x202Bالجزائر\x202C\x200E)", dialCode = "213" } )
+            ( isoCode, { name = "Algeria (\u{202B}الجزائر\u{202C}\u{200E})", dialCode = "213" } )
 
         "AS" ->
             ( isoCode, { name = "American Samoa", dialCode = "1684" } )
@@ -97,7 +96,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Bahamas", dialCode = "1242" } )
 
         "BH" ->
-            ( isoCode, { name = "Bahrain (\x202Bالبحرين\x202C\x200E)", dialCode = "973" } )
+            ( isoCode, { name = "Bahrain (\u{202B}البحرين\u{202C}\u{200E})", dialCode = "973" } )
 
         "BD" ->
             ( isoCode, { name = "Bangladesh (বাংলাদেশ)", dialCode = "880" } )
@@ -193,7 +192,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Colombia", dialCode = "57" } )
 
         "KM" ->
-            ( isoCode, { name = "Comoros (\x202Bجزر القمر\x202C\x200E)", dialCode = "269" } )
+            ( isoCode, { name = "Comoros (\u{202B}جزر القمر\u{202C}\u{200E})", dialCode = "269" } )
 
         "CD" ->
             ( isoCode, { name = "Congo (DRC) (Jamhuri ya Kidemokrasia ya Kongo)", dialCode = "243" } )
@@ -241,7 +240,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Ecuador", dialCode = "593" } )
 
         "EG" ->
-            ( isoCode, { name = "Egypt (\x202Bمصر\x202C\x200E)", dialCode = "20" } )
+            ( isoCode, { name = "Egypt (\u{202B}مصر\u{202C}\u{200E})", dialCode = "20" } )
 
         "SV" ->
             ( isoCode, { name = "El Salvador", dialCode = "503" } )
@@ -349,10 +348,10 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Indonesia", dialCode = "62" } )
 
         "IR" ->
-            ( isoCode, { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98" } )
+            ( isoCode, { name = "Iran (\u{202B}ایران\u{202C}\u{200E})", dialCode = "98" } )
 
         "IQ" ->
-            ( isoCode, { name = "Iraq (\x202Bالعراق\x202C\x200E)", dialCode = "964" } )
+            ( isoCode, { name = "Iraq (\u{202B}العراق\u{202C}\u{200E})", dialCode = "964" } )
 
         "IE" ->
             ( isoCode, { name = "Ireland", dialCode = "353" } )
@@ -361,7 +360,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Isle of Man", dialCode = "44" } )
 
         "IL" ->
-            ( isoCode, { name = "Israel (\x202Bישראל\x202C\x200E)", dialCode = "972" } )
+            ( isoCode, { name = "Israel (\u{202B}ישראל\u{202C}\u{200E})", dialCode = "972" } )
 
         "IT" ->
             ( isoCode, { name = "Italy (Italia)", dialCode = "39" } )
@@ -376,7 +375,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Jersey", dialCode = "44" } )
 
         "JO" ->
-            ( isoCode, { name = "Jordan (\x202Bالأردن\x202C\x200E)", dialCode = "962" } )
+            ( isoCode, { name = "Jordan (\u{202B}الأردن\u{202C}\u{200E})", dialCode = "962" } )
 
         "KZ" ->
             ( isoCode, { name = "Kazakhstan (Казахстан)", dialCode = "7" } )
@@ -391,7 +390,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Kosovo", dialCode = "383" } )
 
         "KW" ->
-            ( isoCode, { name = "Kuwait (\x202Bالكويت\x202C\x200E)", dialCode = "965" } )
+            ( isoCode, { name = "Kuwait (\u{202B}الكويت\u{202C}\u{200E})", dialCode = "965" } )
 
         "KG" ->
             ( isoCode, { name = "Kyrgyzstan (Кыргызстан)", dialCode = "996" } )
@@ -403,7 +402,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Latvia (Latvija)", dialCode = "371" } )
 
         "LB" ->
-            ( isoCode, { name = "Lebanon (\x202Bلبنان\x202C\x200E)", dialCode = "961" } )
+            ( isoCode, { name = "Lebanon (\u{202B}لبنان\u{202C}\u{200E})", dialCode = "961" } )
 
         "LS" ->
             ( isoCode, { name = "Lesotho", dialCode = "266" } )
@@ -412,7 +411,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Liberia", dialCode = "231" } )
 
         "LY" ->
-            ( isoCode, { name = "Libya (\x202Bليبيا\x202C\x200E)", dialCode = "218" } )
+            ( isoCode, { name = "Libya (\u{202B}ليبيا\u{202C}\u{200E})", dialCode = "218" } )
 
         "LI" ->
             ( isoCode, { name = "Liechtenstein", dialCode = "423" } )
@@ -454,7 +453,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Martinique", dialCode = "596" } )
 
         "MR" ->
-            ( isoCode, { name = "Mauritania (\x202Bموريتانيا\x202C\x200E)", dialCode = "222" } )
+            ( isoCode, { name = "Mauritania (\u{202B}موريتانيا\u{202C}\u{200E})", dialCode = "222" } )
 
         "MU" ->
             ( isoCode, { name = "Mauritius (Moris)", dialCode = "230" } )
@@ -484,7 +483,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Montserrat", dialCode = "1664" } )
 
         "MA" ->
-            ( isoCode, { name = "Morocco (\x202Bالمغرب\x202C\x200E)", dialCode = "212" } )
+            ( isoCode, { name = "Morocco (\u{202B}المغرب\u{202C}\u{200E})", dialCode = "212" } )
 
         "MZ" ->
             ( isoCode, { name = "Mozambique (Moçambique)", dialCode = "258" } )
@@ -535,16 +534,16 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Norway (Norge)", dialCode = "47" } )
 
         "OM" ->
-            ( isoCode, { name = "Oman (\x202Bعُمان\x202C\x200E)", dialCode = "968" } )
+            ( isoCode, { name = "Oman (\u{202B}عُمان\u{202C}\u{200E})", dialCode = "968" } )
 
         "PK" ->
-            ( isoCode, { name = "Pakistan (\x202Bپاکستان\x202C\x200E)", dialCode = "92" } )
+            ( isoCode, { name = "Pakistan (\u{202B}پاکستان\u{202C}\u{200E})", dialCode = "92" } )
 
         "PW" ->
             ( isoCode, { name = "Palau", dialCode = "680" } )
 
         "PS" ->
-            ( isoCode, { name = "Palestine (\x202Bفلسطين\x202C\x200E)", dialCode = "970" } )
+            ( isoCode, { name = "Palestine (\u{202B}فلسطين\u{202C}\u{200E})", dialCode = "970" } )
 
         "PA" ->
             ( isoCode, { name = "Panama (Panamá)", dialCode = "507" } )
@@ -571,7 +570,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Puerto Rico", dialCode = "1" } )
 
         "QA" ->
-            ( isoCode, { name = "Qatar (\x202Bقطر\x202C\x200E)", dialCode = "974" } )
+            ( isoCode, { name = "Qatar (\u{202B}قطر\u{202C}\u{200E})", dialCode = "974" } )
 
         "RE" ->
             ( isoCode, { name = "Réunion (La Réunion)", dialCode = "262" } )
@@ -616,7 +615,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "São Tomé and Príncipe (São Tomé e Príncipe)", dialCode = "239" } )
 
         "SA" ->
-            ( isoCode, { name = "Saudi Arabia (\x202Bالمملكة العربية السعودية\x202C\x200E)", dialCode = "966" } )
+            ( isoCode, { name = "Saudi Arabia (\u{202B}المملكة العربية السعودية\u{202C}\u{200E})", dialCode = "966" } )
 
         "SN" ->
             ( isoCode, { name = "Senegal (Sénégal)", dialCode = "221" } )
@@ -655,16 +654,16 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "South Korea (대한민국)", dialCode = "82" } )
 
         "SS" ->
-            ( isoCode, { name = "South Sudan (\x202Bجنوب السودان\x202C\x200E)", dialCode = "211" } )
+            ( isoCode, { name = "South Sudan (\u{202B}جنوب السودان\u{202C}\u{200E})", dialCode = "211" } )
 
         "ES" ->
             ( isoCode, { name = "Spain (España)", dialCode = "34" } )
 
         "LK" ->
-            ( isoCode, { name = "Sri Lanka (ශ්\x200Dරී ලංකාව)", dialCode = "94" } )
+            ( isoCode, { name = "Sri Lanka (ශ්\u{200D}රී ලංකාව)", dialCode = "94" } )
 
         "SD" ->
-            ( isoCode, { name = "Sudan (\x202Bالسودان\x202C\x200E)", dialCode = "249" } )
+            ( isoCode, { name = "Sudan (\u{202B}السودان\u{202C}\u{200E})", dialCode = "249" } )
 
         "SR" ->
             ( isoCode, { name = "Suriname", dialCode = "597" } )
@@ -682,7 +681,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Switzerland (Schweiz)", dialCode = "41" } )
 
         "SY" ->
-            ( isoCode, { name = "Syria (\x202Bسوريا\x202C\x200E)", dialCode = "963" } )
+            ( isoCode, { name = "Syria (\u{202B}سوريا\u{202C}\u{200E})", dialCode = "963" } )
 
         "TW" ->
             ( isoCode, { name = "Taiwan (台灣)", dialCode = "886" } )
@@ -712,7 +711,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Trinidad and Tobago", dialCode = "1868" } )
 
         "TN" ->
-            ( isoCode, { name = "Tunisia (\x202Bتونس\x202C\x200E)", dialCode = "216" } )
+            ( isoCode, { name = "Tunisia (\u{202B}تونس\u{202C}\u{200E})", dialCode = "216" } )
 
         "TR" ->
             ( isoCode, { name = "Turkey (Türkiye)", dialCode = "90" } )
@@ -736,7 +735,7 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Ukraine (Україна)", dialCode = "380" } )
 
         "AE" ->
-            ( isoCode, { name = "United Arab Emirates (\x202Bالإمارات العربية المتحدة\x202C\x200E)", dialCode = "971" } )
+            ( isoCode, { name = "United Arab Emirates (\u{202B}الإمارات العربية المتحدة\u{202C}\u{200E})", dialCode = "971" } )
 
         "GB" ->
             ( isoCode, { name = "United Kingdom", dialCode = "44" } )
@@ -766,10 +765,10 @@ toCountryData originalIsoCode =
             ( isoCode, { name = "Wallis and Futuna (Wallis-et-Futuna)", dialCode = "681" } )
 
         "EH" ->
-            ( isoCode, { name = "Western Sahara (\x202Bالصحراء الغربية\x202C\x200E)", dialCode = "212" } )
+            ( isoCode, { name = "Western Sahara (\u{202B}الصحراء الغربية\u{202C}\u{200E})", dialCode = "212" } )
 
         "YE" ->
-            ( isoCode, { name = "Yemen (\x202Bاليمن\x202C\x200E)", dialCode = "967" } )
+            ( isoCode, { name = "Yemen (\u{202B}اليمن\u{202C}\u{200E})", dialCode = "967" } )
 
         "ZM" ->
             ( isoCode, { name = "Zambia", dialCode = "260" } )

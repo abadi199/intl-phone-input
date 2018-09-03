@@ -1,9 +1,7 @@
-module IntlPhoneInput.Type
-    exposing
-        ( CountryData
-        , PhoneNumber
-        , emptyPhoneNumber
-        )
+module IntlPhoneInput.Type exposing
+    ( PhoneNumber, CountryData
+    , emptyPhoneNumber
+    )
 
 {-| Contains all the data types used in IntlPhoneInput
 

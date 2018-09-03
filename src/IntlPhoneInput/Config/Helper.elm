@@ -1,14 +1,13 @@
-module IntlPhoneInput.Config.Helper
-    exposing
-        ( dialCode
-        , getCountryElementId
-        , getCountryListScrollId
-        , getCountryPickerId
-        , getSearchInputId
-        , isCountryPicker
-        , isDropdownElement
-        , toCountryDataList
-        )
+module IntlPhoneInput.Config.Helper exposing
+    ( dialCode
+    , getCountryElementId
+    , getCountryListScrollId
+    , getCountryPickerId
+    , getSearchInputId
+    , isCountryPicker
+    , isDropdownElement
+    , toCountryDataList
+    )
 
 import Dict
 import IntlPhoneInput.Config exposing (Config)

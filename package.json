@@ -21,7 +21,7 @@
   "scripts": {
     "test": "elm test",
     "css": "cd styles && elm-css Stylesheets.elm --output . && postcss intl-phone-input.css -o intl-phone-input.min.css",
-    "demo": "cd demo && elm make Demo.elm --output ../docs/index.html"
+    "demo": "cd demo && elm make Demo.elm --optimize --output ../docs/index.html"
   },
   "repository": {
     "type": "git",

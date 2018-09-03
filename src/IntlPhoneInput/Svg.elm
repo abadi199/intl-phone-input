@@ -1,10 +1,7 @@
-module IntlPhoneInput.Svg
-    exposing
-        ( arrow
-        )
+module IntlPhoneInput.Svg exposing (arrow)
 
-import Svg exposing (Svg, polygon, svg)
-import Svg.Attributes exposing (..)
+import Svg.Styled exposing (Svg, polygon, svg)
+import Svg.Styled.Attributes exposing (..)
 
 
 arrow : Svg msg

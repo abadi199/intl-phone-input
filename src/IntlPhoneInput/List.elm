@@ -1,8 +1,7 @@
-module IntlPhoneInput.List
-    exposing
-        ( next
-        , prev
-        )
+module IntlPhoneInput.List exposing
+    ( next
+    , prev
+    )
 
 
 next : comparable -> List comparable -> comparable
@@ -17,6 +16,7 @@ next current list =
         head :: tail ->
             if head == current then
                 List.head tail |> Maybe.withDefault current
+
             else
                 next current tail
 
@@ -33,5 +33,6 @@ prev current list =
         head :: second :: tail ->
             if second == current then
                 head
+
             else
                 prev current (second :: tail)

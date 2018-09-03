@@ -1,15 +1,13 @@
-module IntlPhoneInput.Country
-    exposing
-        ( countriesView
-        , countryView
-        )
+module IntlPhoneInput.Country exposing
+    ( countriesView
+    , countryView
+    )
 
 import Dict
-import Html exposing (Html, button, div, li, span, text, ul)
-import Html.Attributes exposing (type_)
-import Html.CssHelpers
-import Html.Events exposing (onBlur, onClick, onFocus, onMouseOver)
-import Html.Keyed
+import Html.Styled exposing (Html, button, div, li, span, text, ul)
+import Html.Styled.Attributes exposing (css, id, type_)
+import Html.Styled.Events exposing (onBlur, onClick, onFocus, onMouseOver)
+import Html.Styled.Keyed
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Config.Helper as Config
@@ -17,7 +15,7 @@ import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Filter as Filter
 import IntlPhoneInput.Flag as Flag
-import IntlPhoneInput.Internal as Internal exposing (State(State))
+import IntlPhoneInput.Internal as Internal exposing (State(..))
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Type exposing (CountryData, PhoneNumber)
 import Set
@@ -25,21 +23,18 @@ import Set
 
 countriesView : Config msg -> State -> PhoneNumber -> Html msg
 countriesView config (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
-    div [ class [ Css.CountryListScroll ], id <| Config.getCountryListScrollId config ]
-        [ Html.Keyed.ul [ class [ Css.CountryList ] ]
+    div [ css [ Css.countryListScroll ], id <| Config.getCountryListScrollId config ]
+        [ Html.Styled.Keyed.ul [ css [ Css.countryList ] ]
             (List.map
                 (\( isoCode, countryData ) ->
                     ( isoCode
-                    , li [ class [ Css.CountryListItem ] ]
+                    , li [ css [ Css.countryListItem ] ]
                         [ countryView config isoCode countryData (State state) phoneNumber ]
                     )
                 )
                 (if Set.isEmpty state.filteredCountries && String.isEmpty state.keyword then
                     config.countries |> Dict.toList |> config.countriesSorter
+
                  else
                     state.filteredCountries |> Config.toCountryDataList config
                 )
@@ -49,21 +44,18 @@ countriesView config (State state) phoneNumber =
 
 countryView : Config msg -> String -> CountryData -> State -> PhoneNumber -> Html msg
 countryView config isoCode countryData (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
     div
-        [ class
-            (Css.Country
+        [ css
+            (Css.country
                 :: (if String.toUpper phoneNumber.isoCode == isoCode then
-                        [ Css.Highlighted ]
+                        [ Css.countryHighlighted ]
+
                     else
                         []
                    )
             )
         , id (Config.getCountryElementId config isoCode)
-        , Html.Attributes.tabindex -1
+        , Html.Styled.Attributes.tabindex -1
         , Event.onClickStopPropagation
             (Action.selectCountry "countryView:onClick:delay" isoCode config (State state) phoneNumber Cmd.none
                 |> Action.andThen (Action.closeCountryDropdown "countryView:onClick")
@@ -75,12 +67,15 @@ countryView config isoCode countryData (State state) phoneNumber =
         , onFocus (Action.selectCountry "countryView:focus" isoCode config (State state) phoneNumber Cmd.none |> Action.done)
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey, Action.navigateCountry )
-            , ( KeyCode.alphabetKey, \keyCode config state phoneNumber cmd -> Action.appendKeyword keyCode config state phoneNumber cmd |> Action.andThen Action.focusSearchInput )
+            , ( KeyCode.alphabetKey
+              , \keyCode keyConfig keyState keyPhoneNumber cmd ->
+                    Action.appendKeyword keyCode keyConfig keyState keyPhoneNumber cmd |> Action.andThen Action.focusSearchInput
+              )
             , ( KeyCode.key Esc, always <| Action.closeCountryDropdown "countryView:Esc" )
             , ( KeyCode.key Backspace, always Action.deleteKeyword )
             , ( KeyCode.key Enter
-              , \_ config state phoneNumber cmd ->
-                    Action.closeCountryDropdown "countryView:Enter" config state phoneNumber cmd
+              , \_ enterConfig enterState enterPhoneNumber cmd ->
+                    Action.closeCountryDropdown "countryView:Enter" enterConfig enterState enterPhoneNumber cmd
                         |> Action.andThen (Action.delay 0 (Action.selectCountry "countryView:Enter" isoCode))
               )
             , ( KeyCode.key Spacebar, always <| Action.appendKeyword (KeyCode.Alphabet ' ') )
@@ -90,8 +85,8 @@ countryView config isoCode countryData (State state) phoneNumber =
             phoneNumber
         ]
         [ Flag.flag config isoCode
-        , span [ class [ Css.CountryName ] ]
+        , span [ css [ Css.countryName ] ]
             [ span [] [ text countryData.name ]
-            , span [ class [ Css.DialCode ] ] [ text <| config.dialCodeFormatter countryData.dialCode ]
+            , span [ css [ Css.dialCode ] ] [ text <| config.dialCodeFormatter countryData.dialCode ]
             ]
         ]

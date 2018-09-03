@@ -1,10 +1,8 @@
-module IntlPhoneInput
-    exposing
-        ( State
-        , customInput
-        , initialState
-        , input
-        )
+module IntlPhoneInput exposing
+    ( input, customInput
+    , State, initialState
+    , customInputStyled, inputStyled
+    )
 
 {-| Phone number input with built in international dial code selector.
 
@@ -20,10 +18,11 @@ module IntlPhoneInput
 
 -}
 
-import Html exposing (Attribute, Html, button, div, input, label, span, text)
-import Html.Attributes exposing (id, placeholder, type_, value)
-import Html.CssHelpers
-import Html.Events exposing (on, onBlur, onClick, onFocus, onInput)
+import Css.Global exposing (global)
+import Html
+import Html.Styled exposing (Attribute, Html, button, div, input, label, span, text)
+import Html.Styled.Attributes exposing (css, id, placeholder, type_, value)
+import Html.Styled.Events exposing (on, onBlur, onClick, onFocus, onInput)
 import IntlPhoneInput.Action as Action
 import IntlPhoneInput.Config as Config exposing (Config)
 import IntlPhoneInput.Config.Helper as Config
@@ -31,7 +30,7 @@ import IntlPhoneInput.Country as Country
 import IntlPhoneInput.Css as Css
 import IntlPhoneInput.Event as Event
 import IntlPhoneInput.Flag as Flag
-import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(State), StateData)
+import IntlPhoneInput.Internal as Internal exposing (CountryPickerState(..), State(..), StateData)
 import IntlPhoneInput.KeyCode as KeyCode exposing (KeyCode(..))
 import IntlPhoneInput.Svg
 import IntlPhoneInput.Type exposing (PhoneNumber)
@@ -72,9 +71,28 @@ initialState =
             model.phoneNumber
 
 -}
-input : Config msg -> State -> PhoneNumber -> Html msg
+input : Config msg -> State -> PhoneNumber -> Html.Html msg
 input =
     customInput []
+
+
+{-| Elm CSS version of `input` function. Use this if you use Elm CSS on your project to avoid the `style` tag being rendered to early.
+-}
+inputStyled : Config msg -> State -> PhoneNumber -> Html msg
+inputStyled =
+    customInputStyled []
+
+
+{-| Elm CSS version of `input` function. Use this if you use Elm CSS on your project to avoid the `style` tag being rendered to early.
+-}
+customInputStyled : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
+customInputStyled attributes config (State state) phoneNumber =
+    div [ css [ Css.intlPhoneInput ] ]
+        [ global [ Css.flagImage ]
+        , countryPickerView config (State state) phoneNumber
+        , countryDropdownView config (State state) phoneNumber
+        , phoneInputView attributes config (State state) phoneNumber
+        ]
 
 
 {-| Render the Intl Phone Input element as part of your `view` function with some custom attributes to the phone number field.
@@ -96,31 +114,20 @@ input =
             model.phoneNumber
 
 -}
-customInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
-customInput attributes config (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
-    div [ class [ Css.IntlPhoneInput ] ]
-        [ countryPickerView config (State state) phoneNumber
-        , countryDropdownView config (State state) phoneNumber
-        , phoneInputView attributes config (State state) phoneNumber
-        ]
+customInput : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html.Html msg
+customInput attributes config state phoneNumber =
+    customInputStyled attributes config state phoneNumber
+        |> Html.Styled.toUnstyled
 
 
 countryPickerView : Config msg -> State -> PhoneNumber -> Html msg
 countryPickerView config (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
     button
-        [ class
-            (Css.CountryPicker
+        [ css
+            (Css.countryPicker
                 :: (case state.countryPickerState of
                         CountryPickerOpened ->
-                            [ Css.Highlighted ]
+                            [ Css.countryPickerHighlighted ]
 
                         CountryPickerClosed ->
                             []
@@ -136,9 +143,9 @@ countryPickerView config (State state) phoneNumber =
             )
         , Event.batchKeyDown
             [ ( KeyCode.arrowKey
-              , \_ config state phoneNumber cmd ->
-                    Action.openCountryDropdown config state phoneNumber cmd
-                        |> Action.andThen (Action.delay 10 (Action.focus phoneNumber.isoCode))
+              , \_ keyConfig keyState keyPhoneNumber cmd ->
+                    Action.openCountryDropdown keyConfig keyState keyPhoneNumber cmd
+                        |> Action.andThen (Action.delay 10 (Action.focus keyPhoneNumber.isoCode))
                         |> Action.andThen Action.focusSearchInput
               )
             , ( KeyCode.key Esc, always <| Action.closeCountryDropdown "CountryPicker:Esc" )
@@ -149,7 +156,7 @@ countryPickerView config (State state) phoneNumber =
         ]
         [ Flag.flag config phoneNumber.isoCode
         , Config.dialCode config phoneNumber.isoCode
-            |> Maybe.map (\dialCode -> span [ class [ Css.DialCode ] ] [ text dialCode ])
+            |> Maybe.map (\dialCode -> span [ css [ Css.dialCode ] ] [ text dialCode ])
             |> Maybe.withDefault (text "")
         , arrowView config (State state)
         ]
@@ -157,26 +164,18 @@ countryPickerView config (State state) phoneNumber =
 
 arrowView : Config msg -> State -> Html msg
 arrowView config (State state) =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
-    span [ class [ Css.Arrow ] ] [ IntlPhoneInput.Svg.arrow ]
+    span [ css [ Css.arrow ] ] [ IntlPhoneInput.Svg.arrow ]
 
 
 countryDropdownView : Config msg -> State -> PhoneNumber -> Html msg
 countryDropdownView config (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
     div
         (case state.countryPickerState of
             CountryPickerClosed ->
-                [ class [ Css.CountryDropdown, Css.CountryDropdownHidden ], Html.Attributes.attribute "aria-hidden" "true" ]
+                [ css [ Css.countryDropdown, Css.countryDropdownHidden ], Html.Styled.Attributes.attribute "aria-hidden" "true" ]
 
             CountryPickerOpened ->
-                [ class [ Css.CountryDropdown ] ]
+                [ css [ Css.countryDropdown ] ]
         )
         [ searchInput config (State state) phoneNumber
         , Country.countriesView config (State state) phoneNumber
@@ -185,20 +184,16 @@ countryDropdownView config (State state) phoneNumber =
 
 searchInput : Config msg -> State -> PhoneNumber -> Html msg
 searchInput config (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
-    Html.input
+    Html.Styled.input
         [ type_ "text"
         , id <| Config.getSearchInputId config
         , case state.countryPickerState of
             Internal.CountryPickerOpened ->
-                Html.Attributes.tabindex 0
+                Html.Styled.Attributes.tabindex 0
 
             Internal.CountryPickerClosed ->
-                Html.Attributes.tabindex -1
-        , class [ Css.SearchInput ]
+                Html.Styled.Attributes.tabindex -1
+        , css [ Css.searchInput ]
         , value state.keyword
         , placeholder "Search"
         , Event.onBlur (State state)
@@ -223,14 +218,10 @@ searchInput config (State state) phoneNumber =
 
 phoneInputView : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
 phoneInputView attributes config (State state) phoneNumber =
-    let
-        { id, class, classList } =
-            Html.CssHelpers.withNamespace config.namespace
-    in
-    Html.input
+    Html.Styled.input
         ([ type_ "tel"
          , id <| Config.getPhoneNumberInputId config
-         , class [ Css.PhoneInput ]
+         , css [ Css.phoneInput ]
          , value phoneNumber.phoneNumber
          , onInput
             (\value ->
