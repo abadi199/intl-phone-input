@@ -1,7 +1,6 @@
 module IntlPhoneInput exposing
-    ( input, customInput
+    ( input, customInput, inputStyled, customInputStyled
     , State, initialState
-    , customInputStyled, inputStyled
     )
 
 {-| Phone number input with built in international dial code selector.
@@ -9,7 +8,7 @@ module IntlPhoneInput exposing
 
 # View
 
-@docs input, customInput
+@docs input, customInput, inputStyled, customInputStyled
 
 
 # Internal
