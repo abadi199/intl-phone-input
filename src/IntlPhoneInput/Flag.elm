@@ -2,7 +2,7 @@ module IntlPhoneInput.Flag exposing (flag)
 
 import Dict
 import Html.Styled exposing (Html, span)
-import Html.Styled.Attributes exposing (css)
+import Html.Styled.Attributes exposing (class, css)
 import IntlPhoneInput.Config exposing (Config)
 import IntlPhoneInput.Css as Css
 import String
@@ -22,6 +22,10 @@ flag config originalIsoCode =
                 ""
     in
     span
-        [ css [ Css.flag, Css.flagIso isoCode ]
+        [ css
+            [ Css.flag
+            , Css.flagIso isoCode
+            ]
+        , class Css.flagIconClass
         ]
         []

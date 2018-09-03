@@ -18,6 +18,7 @@ module IntlPhoneInput exposing
 
 -}
 
+import Css.Global exposing (global)
 import Html
 import Html.Styled exposing (Attribute, Html, button, div, input, label, span, text)
 import Html.Styled.Attributes exposing (css, id, placeholder, type_, value)
@@ -102,7 +103,8 @@ inputStyled =
 customInputStyled : List (Attribute msg) -> Config msg -> State -> PhoneNumber -> Html msg
 customInputStyled attributes config (State state) phoneNumber =
     div [ css [ Css.intlPhoneInput ] ]
-        [ countryPickerView config (State state) phoneNumber
+        [ global [ Css.flagImage ]
+        , countryPickerView config (State state) phoneNumber
         , countryDropdownView config (State state) phoneNumber
         , phoneInputView attributes config (State state) phoneNumber
         ]
