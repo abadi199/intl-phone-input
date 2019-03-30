@@ -1,7 +1,6 @@
 module IntlPhoneInput exposing
-    ( input, customInput
+    ( input, customInput, inputStyled, customInputStyled
     , State, initialState
-    , customInputStyled, inputStyled
     )
 
 {-| Phone number input with built in international dial code selector.
@@ -9,7 +8,7 @@ module IntlPhoneInput exposing
 
 # View
 
-@docs input, customInput
+@docs input, customInput, inputStyled, customInputStyled
 
 
 # Internal
@@ -169,17 +168,18 @@ arrowView config (State state) =
 
 countryDropdownView : Config msg -> State -> PhoneNumber -> Html msg
 countryDropdownView config (State state) phoneNumber =
-    div
-        (case state.countryPickerState of
-            CountryPickerClosed ->
+    case state.countryPickerState of
+        CountryPickerClosed ->
+            div
                 [ css [ Css.countryDropdown, Css.countryDropdownHidden ], Html.Styled.Attributes.attribute "aria-hidden" "true" ]
+                []
 
-            CountryPickerOpened ->
+        CountryPickerOpened ->
+            div
                 [ css [ Css.countryDropdown ] ]
-        )
-        [ searchInput config (State state) phoneNumber
-        , Country.countriesView config (State state) phoneNumber
-        ]
+                [ searchInput config (State state) phoneNumber
+                , Country.countriesView config (State state) phoneNumber
+                ]
 
 
 searchInput : Config msg -> State -> PhoneNumber -> Html msg
