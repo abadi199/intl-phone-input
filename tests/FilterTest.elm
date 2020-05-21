@@ -15,7 +15,7 @@ filterListSuite =
                 -- Config.isoCodes
                 [ ( "IN", { name = "Indonesia", dialCode = "62" } )
                 , ( "US", { name = "United States", dialCode = "62" } )
-                , ( "IR", { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98" } )
+                , ( "IR", { name = "Iran (\u{202B}ایران\u{202C}\u{200E})", dialCode = "98" } )
                 ]
                     |> Filter.filterList "Ind"
                     |> List.map Tuple.first
@@ -25,7 +25,7 @@ filterListSuite =
                 -- Config.isoCodes
                 [ ( "IN", { name = "Indonesia", dialCode = "62" } )
                 , ( "US", { name = "United States", dialCode = "62" } )
-                , ( "IR", { name = "Iran (\x202Bایران\x202C\x200E)", dialCode = "98" } )
+                , ( "IR", { name = "Iran (\u{202B}ایران\u{202C}\u{200E})", dialCode = "98" } )
                 ]
                     |> Filter.filterList "ind"
                     |> List.map Tuple.first

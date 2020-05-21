@@ -26,6 +26,7 @@ nextSuite =
                     |> Expect.equal
                         (if max == current then
                             current
+
                          else
                             current + 1
                         )
@@ -52,6 +53,7 @@ prevSuite =
                     |> Expect.equal
                         (if current == 0 then
                             current
+
                          else
                             current - 1
                         )
@@ -60,4 +62,17 @@ prevSuite =
 
 currentMaxFuzzer : Fuzz.Fuzzer ( Int, Int )
 currentMaxFuzzer =
-    Fuzz.intRange 0 999999 |> Fuzz.andThen (\max -> Fuzz.intRange 0 max |> Fuzz.map (\current -> ( current, max )))
+    Fuzz.map2
+        (\a b ->
+            if a > b then
+                ( b, a )
+
+            else
+                ( a, b )
+        )
+        (Fuzz.intRange 0 999999)
+        (Fuzz.intRange 0 999999)
+
+
+
+-- |> Fuzz.andThen (\max -> Fuzz.intRange 0 max |> Fuzz.map (\current -> ( current, max )))
